@@ -16,7 +16,7 @@ public class ShopScript : MonoBehaviour
     public TextMeshProUGUI piggionHeroName;
     public TextMeshProUGUI piggionHealth, piggionShield, piggionActionPoint, piggionHeroCost;
 
-    private Piggion catomic;
+    private Catomic catomic;
     [Header("Catomic")]
     public TextMeshProUGUI catomicHeroName;
     public TextMeshProUGUI catomicHealth, catomicShield, catomicActionPoint, catomicHeroCost;
