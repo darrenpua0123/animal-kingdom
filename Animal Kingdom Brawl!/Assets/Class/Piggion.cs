@@ -9,6 +9,6 @@ public class Piggion : AnimalHero
 
     public Piggion() : base()
     { 
-        // TODO: Finish other hero class
+        // TODO: Create CardDB, static with each character's cardpool. Example: Piggion.CardList(), Stormterror.CardList()
     }
 }
