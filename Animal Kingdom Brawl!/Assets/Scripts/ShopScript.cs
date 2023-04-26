@@ -96,7 +96,8 @@ public class ShopScript : MonoBehaviour
         UpdateShopUI();
     }
 
-    private void UpdateShopUI() // TODO: Remodify this to fit more with DB
+    // TODO: Remodify this to fit more with DB
+    private void UpdateShopUI() 
     {
         coinText.text = playerCoin.ToString();
 
@@ -111,8 +112,10 @@ public class ShopScript : MonoBehaviour
     {
         if (playerCoin >= Piggion.SHOP_COST)
         {
-            playerCoin -= Piggion.SHOP_COST; // TODO: Should update DB too
-            piggionOwned = true; // DEV: Instantly owned piggion
+            // TODO: Should update DB too
+            playerCoin -= Piggion.SHOP_COST; 
+            // DEV: Instantly owned piggion
+            piggionOwned = true; 
             SetPurchasePanelText("sufficient");
         }
         else 
