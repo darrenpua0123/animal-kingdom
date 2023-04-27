@@ -432,7 +432,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1431741398}
         m_TargetAssemblyTypeName: LoginScript, Assembly-CSharp
-        m_MethodName: LoginUser
+        m_MethodName: LoginButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5647,6 +5647,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   promptText: {fileID: 1954666378}
+  dependencyStatus: 0
   loginPanel: {fileID: 993497630}
   loginUsernameInput: {fileID: 1675160883}
   loginEmailInput: {fileID: 705315329}
@@ -7246,7 +7247,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1431741398}
         m_TargetAssemblyTypeName: LoginScript, Assembly-CSharp
-        m_MethodName: RegisterUser
+        m_MethodName: RegisterButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
