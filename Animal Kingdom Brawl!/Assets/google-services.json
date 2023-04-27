@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "817160381013",
+    "project_id": "animal-kingdom-brawl-d56f3",
+    "storage_bucket": "animal-kingdom-brawl-d56f3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:817160381013:android:5f008f0ed68356c84baadc",
+        "android_client_info": {
+          "package_name": "edu.sunway.darren"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "817160381013-3uj0f5g4slqke5ksln1hvsn5h0nrihsn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwm5xKbyMsprHyFirJMuEyp96Y7r2DaSY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "817160381013-3uj0f5g4slqke5ksln1hvsn5h0nrihsn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
