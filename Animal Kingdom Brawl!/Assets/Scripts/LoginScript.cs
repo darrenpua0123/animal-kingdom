@@ -280,6 +280,7 @@ public class LoginScript : MonoBehaviour
     private IEnumerator Register(string username, string email, string password)
     {
         // Check username here
+        // here
 
         var registerTask = auth.CreateUserWithEmailAndPasswordAsync(email, password);
         yield return new WaitUntil(predicate: () => registerTask.IsCompleted);
