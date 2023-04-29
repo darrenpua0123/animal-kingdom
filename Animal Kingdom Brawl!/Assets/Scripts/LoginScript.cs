@@ -20,6 +20,7 @@ public class LoginScript : MonoBehaviour
     private readonly string wrongPassword = "Wrong password!";
 
     private readonly string usernameTooShort = "Username too short! Must be at least 4 characters!";
+    private readonly string usernameTaken = "Username is already taken!";
     private readonly string ageInvalidFormat = "Age is invalid! The age range is between 1 to 120!";
     private readonly string emailTaken = "Email already taken!";
     private readonly string passwordTooShort = "Weak password! Password must be at least 6 characters!";
@@ -27,6 +28,7 @@ public class LoginScript : MonoBehaviour
 
     [Header("Firebase")]
     public DependencyStatus dependencyStatus;
+    public DatabaseReference firebaseDBReference;
     public FirebaseAuth auth;
     public FirebaseUser user;
 
@@ -78,6 +80,7 @@ public class LoginScript : MonoBehaviour
     private void InitialiseFirebase()
     {
         auth = FirebaseAuth.DefaultInstance;
+        firebaseDBReference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
     private void SetPromptMessage(string message)
@@ -210,12 +213,6 @@ public class LoginScript : MonoBehaviour
             return;
         }
 
-        // TODO: MISSING USERNAME TAKEN
-        //else if ()
-        //{ 
-        
-        //}
-
         // Age >= 120, or  <= 0 
         else if (AgeInvalid())
         {
@@ -279,69 +276,107 @@ public class LoginScript : MonoBehaviour
 
     private IEnumerator Register(string username, string email, string password)
     {
-        // Check username here
-        // here
+        // Check username taken or not
+        var checkUsernameTask = firebaseDBReference.Child("users").OrderByChild("username").EqualTo(username).GetValueAsync();
+        yield return new WaitUntil(predicate: () => checkUsernameTask.IsCompleted);
 
-        var registerTask = auth.CreateUserWithEmailAndPasswordAsync(email, password);
-        yield return new WaitUntil(predicate: () => registerTask.IsCompleted);
-
-        if (registerTask.Exception != null)
+        if (checkUsernameTask.Exception != null)
         {
-            // All register error handling
-            Debug.LogWarning(message: $"Failed to register task with {registerTask.Exception}");
-            FirebaseException firebaseExp = registerTask.Exception.GetBaseException() as FirebaseException;
-            AuthError errorCode = (AuthError)firebaseExp.ErrorCode;
-
-            switch (errorCode)
-            {
-                case AuthError.InvalidEmail:
-                    SetPromptMessage(invalidEmailFormat);
-                    break;
-
-                case AuthError.EmailAlreadyInUse:
-                    SetPromptMessage(emailTaken);
-                    break;
-
-                case AuthError.WeakPassword:
-                    SetPromptMessage(passwordTooShort);
-                    break;
-            }
+            // Handle the database query error
+            Debug.LogWarning(message: $"Failed to check username with {checkUsernameTask.Exception}");
         }
         else 
         {
-            // User registered as FirebaseUser into FirebaseAuth
-            user = registerTask.Result;
+            var usernameResult = checkUsernameTask.Result;
 
-            if (user != null) 
+            if (usernameResult.Exists)
             {
-                // Creates new userprofile to FirebaseAuth with the username
-                UserProfile profile = new UserProfile{ DisplayName = username };
+                // The username is already taken, display an error message to the user
+                SetPromptMessage(usernameTaken);
+            }
+            else {
+                // Username not taken, proceed with registering user
+                var registerTask = auth.CreateUserWithEmailAndPasswordAsync(email, password);
+                yield return new WaitUntil(predicate: () => registerTask.IsCompleted);
 
-                var profileUpdatetask = user.UpdateUserProfileAsync(profile);
-                yield return new WaitUntil(predicate: () => profileUpdatetask.IsCompleted);
-
-                if (profileUpdatetask.Exception != null)
+                if (registerTask.Exception != null)
                 {
-                    // All profile updates error handling
-                    Debug.LogWarning($"Failed to update username task with {profileUpdatetask.Exception}");
-                    FirebaseException firebaseExp = profileUpdatetask.Exception.GetBaseException() as FirebaseException;
+                    // All register error handling
+                    Debug.LogWarning(message: $"Failed to register task with {registerTask.Exception}");
+                    FirebaseException firebaseExp = registerTask.Exception.GetBaseException() as FirebaseException;
                     AuthError errorCode = (AuthError)firebaseExp.ErrorCode;
 
-                    //switch (errorCode)
-                    //{
+                    switch (errorCode)
+                    {
+                        case AuthError.InvalidEmail:
+                            SetPromptMessage(invalidEmailFormat);
+                            break;
 
-                    //}
+                        case AuthError.EmailAlreadyInUse:
+                            SetPromptMessage(emailTaken);
+                            break;
+
+                        case AuthError.WeakPassword:
+                            SetPromptMessage(passwordTooShort);
+                            break;
+                    }
                 }
-                else 
-                {   
-                    // User registered with DisplayName and as FirebaseAuth. All register logic goes here.
-                    ResetRegisterInputField();
-                    SetPromptMessage(userRegistered);
+                else
+                {
+                    // User registered as FirebaseUser into FirebaseAuth
+                    user = registerTask.Result;
 
-                    loginPanel.SetActive(true);
-                    registerPanel.SetActive(false);
-                    Debug.Log($"User registered as: {user.DisplayName} and {user.Email}");
-                } 
+                    if (user != null)
+                    {
+                        // Creates new userprofile to FirebaseAuth with the username
+                        UserProfile profile = new UserProfile { DisplayName = username };
+
+                        var profileUpdatetask = user.UpdateUserProfileAsync(profile);
+                        yield return new WaitUntil(predicate: () => profileUpdatetask.IsCompleted);
+
+                        if (profileUpdatetask.Exception != null)
+                        {
+                            // All profile updates error handling
+                            Debug.LogWarning($"Failed to update username task with {profileUpdatetask.Exception}");
+                            FirebaseException firebaseExp = profileUpdatetask.Exception.GetBaseException() as FirebaseException;
+                            AuthError errorCode = (AuthError)firebaseExp.ErrorCode;
+                            
+                            //switch (errorCode)
+                            //{
+                            // if any error code persist
+                            //}
+                        }
+                        else
+                        {   
+                            // User registered with DisplayName and as FirebaseAuth. All register logic goes here
+                            Player player = new Player(user.DisplayName, registerAge, registerGender);
+                            //string playerJSON = JsonUtility.ToJson(player);
+
+                            // TODO: FIX THIS, currently JSON cannot write into DB, and username taken sometime will still bug
+
+                            firebaseDBReference.Child("users").Child(user.UserId).Child("username").SetValueAsync(player.username);
+                            firebaseDBReference.Child("users").Child(user.UserId).Child("age").SetValueAsync(player.age);
+                            firebaseDBReference.Child("users").Child(user.UserId).Child("gender").SetValueAsync(player.gender);
+
+                            //var DBTask = firebaseDBReference.Child("users").Child(user.UserId).SetRawJsonValueAsync(playerJSON);
+                            //yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+
+                            //if (DBTask.Exception != null)
+                            //{
+                            //    Debug.LogWarning($"Failed to perform set value task with {DBTask.Exception}");
+                            //}
+                            //else
+                            //{
+                            //}
+                            ResetRegisterInputField();
+                            SetPromptMessage(userRegistered);
+
+                            loginPanel.SetActive(true);
+                            registerPanel.SetActive(false);
+                            Debug.Log($"User registered as: {user.UserId}, {user.DisplayName}, {user.Email}, {registerAge}, and {registerGender}");
+                        }
+                    }
+                }
             }
         }
     }

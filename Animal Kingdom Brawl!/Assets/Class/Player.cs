@@ -1,17 +1,16 @@
 ﻿
 public class Player
 {
-    public string id { get; set; }
-    public string username { get; set; }    
-    //public int age { get; set; }
-    //public string gender { get; set; }
-    //public string email { get; set; }
-    public string[] unlockedAnimalHeroes;
+    public string username { get; set; }
+    public string age { get; set; }
+    public string gender { get; set; }
+    //public string[] unlockedAnimalHeroes = { };
 
-    public Player(string id, string username)
+    public Player(string username, string age, string gender)
     {
-        this.id = id;
         this.username = username;
+        this.age = age;
+        this.gender = gender;
     }
 
 }
