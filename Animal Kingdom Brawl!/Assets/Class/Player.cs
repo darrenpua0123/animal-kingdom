@@ -1,16 +1,14 @@
 ﻿
+using System;
+
 public class Player
 {
-    public string username { get; set; }
-    public string age { get; set; }
-    public string gender { get; set; }
-    //public string[] unlockedAnimalHeroes = { };
-
-    public Player(string username, string age, string gender)
+    public string userId;
+    public string username;
+    public string totalCoins;
+    public string[] animalHeroesUnlocked;
+    public Player(string userid, string username)
     {
-        this.username = username;
-        this.age = age;
-        this.gender = gender;
+        // TODO: Use this for Game's player uses. EX: Shop heroes, coins, game card, and win record etc
     }
-
 }

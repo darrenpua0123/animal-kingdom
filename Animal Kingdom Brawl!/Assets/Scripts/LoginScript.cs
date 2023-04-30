@@ -7,9 +7,14 @@ using Firebase;
 using Firebase.Auth;
 using Unity.VisualScripting;
 using Firebase.Database;
+using Google.MiniJSON;
+using System.Linq.Expressions;
 
 public class LoginScript : MonoBehaviour
 {
+    public static string PLAYER_ID_KEY = "playerID";
+
+    [Header("Prompt Messages")]
     public TextMeshProUGUI promptText;
     private readonly string loginString = "Welcome back! Please login!";
     private readonly string registerString = "Welcome! Please sign up!";
@@ -18,7 +23,6 @@ public class LoginScript : MonoBehaviour
     private readonly string userNotExist = "User does not exist!";
     private readonly string invalidEmailFormat = "Invalid email address format!";
     private readonly string wrongPassword = "Wrong password!";
-
     private readonly string usernameTooShort = "Username too short! Must be at least 4 characters!";
     private readonly string usernameTaken = "Username is already taken!";
     private readonly string ageInvalidFormat = "Age is invalid! The age range is between 1 to 120!";
@@ -30,12 +34,11 @@ public class LoginScript : MonoBehaviour
     public DependencyStatus dependencyStatus;
     public DatabaseReference firebaseDBReference;
     public FirebaseAuth auth;
-    public FirebaseUser user;
+    public FirebaseUser firebaseUser;
 
     [Header("Login")]
     public GameObject loginPanel;
-    public TMP_InputField loginUsernameInput, loginEmailInput, loginPasswordInput;
-    private string loginUsername;
+    public TMP_InputField loginEmailInput, loginPasswordInput;
     private string loginEmail;
     private string loginPassword;
 
@@ -74,7 +77,7 @@ public class LoginScript : MonoBehaviour
 
     void Update()
     {
-
+        //TODO: When press TAB, can switch input field
     }
 
     private void InitialiseFirebase()
@@ -99,7 +102,6 @@ public class LoginScript : MonoBehaviour
 
     public void LoginButton()
     {
-        loginUsername = loginUsernameInput.text;
         loginEmail = loginEmailInput.text;
         loginPassword = loginPasswordInput.text;
 
@@ -115,16 +117,14 @@ public class LoginScript : MonoBehaviour
 
     private bool LoginFieldIsEmpty()
     {
-        string userText = loginUsernameInput.text;
         string emailText = loginEmailInput.text;
         string passwordText = loginPasswordInput.text;
 
-        return (string.IsNullOrEmpty(userText) || string.IsNullOrEmpty(emailText) || string.IsNullOrEmpty(passwordText));
+        return (string.IsNullOrEmpty(emailText) || string.IsNullOrEmpty(passwordText));
     }
 
     private void ResetLoginInputField()
     {
-        loginUsernameInput.text = null;
         loginEmailInput.text = null;
         loginPasswordInput.text = null;
     }
@@ -158,11 +158,11 @@ public class LoginScript : MonoBehaviour
         }
         else
         {
-            // TODO: User loggged in, perform logic here
-            user = loginTask.Result;
-            SceneManager.LoadScene("MainMenuScene");
+            firebaseUser = loginTask.Result;
+            PlayerPrefs.SetString(PLAYER_ID_KEY, firebaseUser.UserId);
 
-            Debug.Log($"User signed in: {user.UserId}, {user.DisplayName}, and {user.Email}");
+            SceneManager.LoadScene("MainMenuScene");
+            Debug.Log($"User logged in with ID:{firebaseUser.UserId}, username: {firebaseUser.DisplayName}, and email: {firebaseUser.Email}");
         }
 
         ResetLoginInputField();
@@ -207,20 +207,19 @@ public class LoginScript : MonoBehaviour
             return;
         }
         // Username too short or long
-        else if (UsernameTooShortOrLong())
+        else if (UsernameTooShortOrLong(registerUsername))
         {
             SetPromptMessage(usernameTooShort);
             return;
         }
-
         // Age >= 120, or  <= 0 
-        else if (AgeInvalid())
+        else if (AgeInvalid(registerAge))
         {
             SetPromptMessage(ageInvalidFormat);
             return;
         }
         // Password mismatch
-        else if (PasswordIsMismatch()) 
+        else if (PasswordIsMismatch(registerPassword, registerRepassword)) 
         {
             SetPromptMessage(passwordMismatch);
             return;
@@ -243,25 +242,20 @@ public class LoginScript : MonoBehaviour
         );
     }
 
-    private bool UsernameTooShortOrLong() 
+    private bool UsernameTooShortOrLong(string username) 
     {
-        string username = registerUsernameInput.text;
-
         return (username.Length < 4 || username.Length >= 21);
     }
 
-    private bool AgeInvalid() 
+    private bool AgeInvalid(string age) 
     {
-        int age = int.Parse(registerAgeInput.text);
+        int parsedAge = int.Parse(age);
 
-        return (age <= 0 || age >= 121);
+        return (parsedAge <= 0 || parsedAge >= 121);
     }
 
-    private bool PasswordIsMismatch() 
+    private bool PasswordIsMismatch(string password, string repassword) 
     { 
-        string password = registerPasswordInput.text;
-        string repassword = registerRepasswordInput.text;
-
         return (!password.Equals(repassword));
     }
 
@@ -295,7 +289,7 @@ public class LoginScript : MonoBehaviour
                 SetPromptMessage(usernameTaken);
             }
             else {
-                // Username not taken, proceed with registering user
+                // Username not taken, proceed with registering the user
                 var registerTask = auth.CreateUserWithEmailAndPasswordAsync(email, password);
                 yield return new WaitUntil(predicate: () => registerTask.IsCompleted);
 
@@ -324,56 +318,44 @@ public class LoginScript : MonoBehaviour
                 else
                 {
                     // User registered as FirebaseUser into FirebaseAuth
-                    user = registerTask.Result;
+                    firebaseUser = registerTask.Result;
 
-                    if (user != null)
+                    if (firebaseUser != null)
                     {
                         // Creates new userprofile to FirebaseAuth with the username
                         UserProfile profile = new UserProfile { DisplayName = username };
 
-                        var profileUpdatetask = user.UpdateUserProfileAsync(profile);
+                        var profileUpdatetask = firebaseUser.UpdateUserProfileAsync(profile);
                         yield return new WaitUntil(predicate: () => profileUpdatetask.IsCompleted);
 
                         if (profileUpdatetask.Exception != null)
                         {
                             // All profile updates error handling
                             Debug.LogWarning($"Failed to update username task with {profileUpdatetask.Exception}");
-                            FirebaseException firebaseExp = profileUpdatetask.Exception.GetBaseException() as FirebaseException;
-                            AuthError errorCode = (AuthError)firebaseExp.ErrorCode;
-                            
-                            //switch (errorCode)
-                            //{
-                            // if any error code persist
-                            //}
                         }
                         else
                         {   
-                            // User registered with DisplayName and as FirebaseAuth. All register logic goes here
-                            Player player = new Player(user.DisplayName, registerAge, registerGender);
-                            //string playerJSON = JsonUtility.ToJson(player);
+                            // User is now registered with DisplayName and as FirebaseAuth.
+                            // User Class is then being created and stored into the Database with it's additional credential
+                            User user = new User(firebaseUser.DisplayName, registerAge, registerGender);
+                            string playerJSON = JsonUtility.ToJson(user);
 
-                            // TODO: FIX THIS, currently JSON cannot write into DB, and username taken sometime will still bug
+                            var insertUserToDbTask = firebaseDBReference.Child("users").Child(firebaseUser.UserId).SetRawJsonValueAsync(playerJSON);
+                            yield return new WaitUntil(() => insertUserToDbTask.IsCompleted);
 
-                            firebaseDBReference.Child("users").Child(user.UserId).Child("username").SetValueAsync(player.username);
-                            firebaseDBReference.Child("users").Child(user.UserId).Child("age").SetValueAsync(player.age);
-                            firebaseDBReference.Child("users").Child(user.UserId).Child("gender").SetValueAsync(player.gender);
+                            if (insertUserToDbTask.Exception != null)
+                            {
+                                Debug.LogWarning($"Failed to perform set user's value task with {insertUserToDbTask.Exception}");
+                            }
+                            else
+                            {
+                                ResetRegisterInputField();
+                                SetPromptMessage(userRegistered);
 
-                            //var DBTask = firebaseDBReference.Child("users").Child(user.UserId).SetRawJsonValueAsync(playerJSON);
-                            //yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
-
-                            //if (DBTask.Exception != null)
-                            //{
-                            //    Debug.LogWarning($"Failed to perform set value task with {DBTask.Exception}");
-                            //}
-                            //else
-                            //{
-                            //}
-                            ResetRegisterInputField();
-                            SetPromptMessage(userRegistered);
-
-                            loginPanel.SetActive(true);
-                            registerPanel.SetActive(false);
-                            Debug.Log($"User registered as: {user.UserId}, {user.DisplayName}, {user.Email}, {registerAge}, and {registerGender}");
+                                loginPanel.SetActive(true);
+                                registerPanel.SetActive(false);
+                                Debug.Log($"User registered with ID: {firebaseUser.UserId}, username: {firebaseUser.DisplayName}, email: {firebaseUser.Email}, age: {registerAge}, and gender: {registerGender}");
+                            }
                         }
                     }
                 }
