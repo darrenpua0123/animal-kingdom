@@ -12,7 +12,7 @@ using System.Linq.Expressions;
 
 public class LoginScript : MonoBehaviour
 {
-    public static string PLAYER_ID_KEY = "playerID";
+    public static readonly string PLAYER_ID_KEY = "playerID";
 
     [Header("Prompt Messages")]
     public TextMeshProUGUI promptText;

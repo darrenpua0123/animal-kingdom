@@ -1,15 +1,87 @@
+using Firebase.Database;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MainMenuScript : MonoBehaviour
 {
+    public static readonly string PLAYER_CURRENCY_KEY = "playerCurrency";
+    public static readonly string PLAYER_UNLOCKED_HEROES_KEY = "playerUnlockedHeroes";
+
+    [Header("Firebase")]
+    private DatabaseReference firebaseDBReference = FirebaseDatabase.DefaultInstance.RootReference;
+
+    private string userID;
+    private string username;
+    private string currency;
+    private List<string> unlockedAnimalHeroes = new List<string>(){};
+
+    [Header("Welcome Text")]
+    public TMP_Text welcomeText;
+
+    void Awake()
+    {
+        userID = PlayerPrefs.GetString(LoginScript.PLAYER_ID_KEY);
+    }
+
     void Start()
     {
-        // TODO: Once get the ID, create player class here from DATABASE
-        string id = PlayerPrefs.GetString(LoginScript.PLAYER_ID_KEY);    
-        Debug.Log(id + " for testing purpose");
+        StartCoroutine(LoadUserData());
+    }
+
+    private IEnumerator LoadUserData() 
+    {
+        var userTask = firebaseDBReference.Child("users").Child(userID).GetValueAsync();
+        yield return new WaitUntil(predicate: () => userTask.IsCompleted);
+
+        if (userTask.Exception != null)
+        {
+            Debug.LogWarning($"Failed to complete username task with error: {userTask.Exception}");
+        }
+        else 
+        {
+            DataSnapshot userSnapshot = userTask.Result;
+
+            username = userSnapshot.Child("username").Value.ToString();
+            UpdateWelcomeText(username);
+
+            // Check for player's currency on whether the player is first time logging in
+            var playerCurrency = userSnapshot.Child("currency");
+            if (!playerCurrency.Exists)
+            {
+                firebaseDBReference.Child("users").Child(userID).Child("currency").SetValueAsync(GameData.defaultStartingCurrency);
+            }
+            else 
+            {
+                currency = playerCurrency.Value.ToString();
+            }
+
+            // Check for player's unlocked animal heroes on whether the player is first time logging in
+            var playerAnimalHeroes = userSnapshot.Child("unlockedAnimalHeroes");
+            if (!playerAnimalHeroes.Exists)
+            {
+                firebaseDBReference.Child("users").Child(userID).Child("unlockedAnimalHeroes").SetValueAsync(GameData.defaultHeroes);
+            }
+            else 
+            {
+                foreach (var hero in playerAnimalHeroes.Children) {
+                    unlockedAnimalHeroes.Add(hero.Value.ToString());
+                }
+            }
+
+            PlayerPrefs.SetString(PLAYER_CURRENCY_KEY, currency);
+            //PlayerPrefs.SetString(PLAYER_UNLOCKED_HEROES_KEY, here);
+            // TODO: SET PLAYERPREF FOR LIST<STRING> HERE
+
+            Debug.Log($"Currency: {currency}, Animal Heroes {unlockedAnimalHeroes[0]}");
+        }
+    }
+
+    private void UpdateWelcomeText(string username)
+    {
+        welcomeText.text = $"Welcome back, <br><b>{username}</b>";
     }
 
     public void PlayGame() 

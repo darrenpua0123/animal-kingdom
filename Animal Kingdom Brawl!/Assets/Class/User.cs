@@ -1,7 +1,4 @@
-﻿
-using System;
-
-public class User
+﻿public class User
 {
     public string userId { get; set; }
     public string username;
