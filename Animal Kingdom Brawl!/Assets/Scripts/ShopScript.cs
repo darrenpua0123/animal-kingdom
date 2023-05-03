@@ -1,18 +1,27 @@
+using Firebase.Database;
 using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ShopScript : MonoBehaviour
 {
+    private string userID;
+    private int playerCurrency;
+    private List<string> unlockedAnimalHeroes = new List<string>();
+
     public TextMeshProUGUI coinText;
-    private int playerCoin = 30; // TODO: change to get from PLAYER DB 
-    private bool piggionOwned = false; // DEV: change to check and get from PLAYER DB
-    private string x_icon = "× ";
+    private readonly string x_icon = "× ";
+
+    [Header("Firebase")]
+    private DatabaseReference firebaseDBReference = FirebaseDatabase.DefaultInstance.RootReference;
 
     private Piggion piggion;
     [Header("Piggion")]
@@ -24,25 +33,29 @@ public class ShopScript : MonoBehaviour
     [Header("Catomic")]
     public TextMeshProUGUI catomicHeroName;
     public TextMeshProUGUI catomicHealth, catomicShield, catomicActionPoint, catomicHeroCost;
+    public Button catomicBuyButton;
 
     private Pandragon pandragon;
     [Header("Pandragon")]
     public TextMeshProUGUI pandragonHeroName;
     public TextMeshProUGUI pandragonHealth, pandragonShield, pandragonActionPoint, pandragonHeroCost;
+    public Button pandragonBuyButton;
 
     private Beedle beedle;
     [Header("Beedle")]
     public TextMeshProUGUI beedleHeroName;
     public TextMeshProUGUI beedleHealth, beedleShield, beedleActionPoint, beedleHeroCost;
+    public Button beedleBuyButton;
 
     [Header("Purchase Panel")]
     public GameObject purchasePanel;
     public TextMeshProUGUI purchasePanelText;
 
-
     void Awake()
     {
-        playerCoin = 1000; // DEV: Use to instant get coins
+        userID = PlayerPrefs.GetString(LoginScript.PLAYER_ID_KEY);
+        playerCurrency = int.Parse(PlayerPrefs.GetString(MainMenuScript.PLAYER_CURRENCY_KEY));
+        unlockedAnimalHeroes = PlayerPrefs.GetString(MainMenuScript.PLAYER_UNLOCKED_HEROES_KEY).Split(new[] {"#"}, StringSplitOptions.None).ToList();
 
         piggion = new Piggion();
         catomic = new Catomic();
@@ -55,67 +68,82 @@ public class ShopScript : MonoBehaviour
         SetShopHeroUI();
     }
 
-    void Update()
-    {
-
-    }
-
     private void SetShopHeroUI() {
         #region Piggion
-        piggionHeroName.text = Piggion.HERO_NAME;
+        piggionHeroName.text = Piggion.HERO_NAME.FirstCharacterToUpper();
         piggionHealth.text = x_icon + piggion.initialHealth.ToString();
         piggionShield.text = x_icon + piggion.initialShield.ToString();
         piggionActionPoint.text = x_icon + piggion.initialActionPoint.ToString();
-        piggionHeroCost.text = Piggion.SHOP_COST.ToString();
+        piggionHeroCost.text = GameData.PiggionShopCost.ToString();
         #endregion
 
         #region Catomic
-        catomicHeroName.text = Catomic.HERO_NAME;
+        catomicHeroName.text = Catomic.HERO_NAME.FirstCharacterToUpper();
         catomicHealth.text = x_icon + catomic.initialHealth.ToString();
         catomicShield.text = x_icon + catomic.initialShield.ToString();
         catomicActionPoint.text = x_icon + catomic.initialActionPoint.ToString();
-        catomicHeroCost.text = Catomic.SHOP_COST.ToString();
+        catomicHeroCost.text = GameData.CatomicShopCost.ToString();
         #endregion
 
         #region Pandragon
-        pandragonHeroName.text = Pandragon.HERO_NAME;
+        pandragonHeroName.text = Pandragon.HERO_NAME.FirstCharacterToUpper();
         pandragonHealth.text = x_icon + pandragon.initialHealth.ToString();
         pandragonShield.text = x_icon + pandragon.initialShield.ToString();
         pandragonActionPoint.text = x_icon + pandragon.initialActionPoint.ToString();
-        pandragonHeroCost.text = Pandragon.SHOP_COST.ToString();
+        pandragonHeroCost.text = GameData.PandragonShopCost.ToString();
         #endregion
 
         #region Beedle
-        beedleHeroName.text = Beedle.HERO_NAME;
+        beedleHeroName.text = Beedle.HERO_NAME.FirstCharacterToUpper();
         beedleHealth.text = x_icon + beedle.initialHealth.ToString();
         beedleShield.text = x_icon + beedle.initialShield.ToString();
         beedleActionPoint.text = x_icon + beedle.initialActionPoint.ToString();
-        beedleHeroCost.text = Beedle.SHOP_COST.ToString();
+        beedleHeroCost.text = GameData.BeedleShopCost.ToString();
         #endregion
 
         UpdateShopUI();
     }
 
-    // TODO: Remodify this to fit more with DB
     private void UpdateShopUI() 
     {
-        coinText.text = playerCoin.ToString();
+        coinText.text = playerCurrency.ToString();
 
-        if (piggionOwned) {
-            piggionBuyButton.interactable = false;
-            piggionHeroCost.text = "Owned";
+        foreach (var hero in unlockedAnimalHeroes) {
+            if (hero.Equals(Piggion.HERO_NAME))
+            {
+                piggionBuyButton.interactable = false;
+                piggionHeroCost.text = "Owned";
+            }
+            else if (hero.Equals(Catomic.HERO_NAME)) 
+            {
+                catomicBuyButton.interactable = false;
+                catomicHeroCost.text = "Owned";
+            }
+            else if (hero.Equals(Pandragon.HERO_NAME))
+            {
+                pandragonBuyButton.interactable = false;
+                pandragonHeroCost.text = "Owned";
+            }
+            else if (hero.Equals(Beedle.HERO_NAME))
+            {
+                beedleBuyButton.interactable = false;
+                beedleHeroCost.text = "Owned";
+            }
         }
-        
     }
 
-    public void PurchasePiggion()
+    public void PurchasePiggionButton()
     {
-        if (playerCoin >= Piggion.SHOP_COST)
+        int piggionCost = GameData.PiggionShopCost;
+
+        if (playerCurrency >= piggionCost)
         {
-            // TODO: Should update DB too
-            playerCoin -= Piggion.SHOP_COST; 
-            // DEV: Instantly owned piggion
-            piggionOwned = true; 
+            playerCurrency -= piggionCost; 
+            firebaseDBReference.Child("users").Child(userID).Child("currency").SetValueAsync(playerCurrency);
+
+            unlockedAnimalHeroes.Add(Piggion.HERO_NAME);
+            firebaseDBReference.Child("users").Child(userID).Child("unlockedAnimalHeroes").SetValueAsync(unlockedAnimalHeroes);
+
             SetPurchasePanelText("sufficient");
         }
         else 
@@ -127,19 +155,73 @@ public class ShopScript : MonoBehaviour
         ShowPurchasePanel();
     }
 
-    public void PurchaseCatomic() 
-    { 
-    
-    }
-
-    public void PurchasePandragon() 
-    { 
-    
-    }
-
-    public void PurchaseBeedle()
+    public void PurchaseCatomicButton() 
     {
+        int catomicCost = GameData.CatomicShopCost;
 
+        if (playerCurrency >= catomicCost)
+        {
+            playerCurrency -= catomicCost;
+            firebaseDBReference.Child("users").Child(userID).Child("currency").SetValueAsync(playerCurrency);
+
+            unlockedAnimalHeroes.Add(Catomic.HERO_NAME);
+            firebaseDBReference.Child("users").Child(userID).Child("unlockedAnimalHeroes").SetValueAsync(unlockedAnimalHeroes);
+
+            SetPurchasePanelText("sufficient");
+        }
+        else
+        {
+            SetPurchasePanelText("insufficient");
+        }
+
+        UpdateShopUI();
+        ShowPurchasePanel();
+    }
+
+    public void PurchasePandragonButton() 
+    {
+        int pandragonCost = GameData.PandragonShopCost;
+
+        if (playerCurrency >= pandragonCost)
+        {
+            playerCurrency -= pandragonCost;
+            firebaseDBReference.Child("users").Child(userID).Child("currency").SetValueAsync(playerCurrency);
+
+            unlockedAnimalHeroes.Add(Pandragon.HERO_NAME);
+            firebaseDBReference.Child("users").Child(userID).Child("unlockedAnimalHeroes").SetValueAsync(unlockedAnimalHeroes);
+
+            SetPurchasePanelText("sufficient");
+        }
+        else
+        {
+            SetPurchasePanelText("insufficient");
+        }
+
+        UpdateShopUI();
+        ShowPurchasePanel();
+    }
+
+    public void PurchaseBeedleButton()
+    {
+        int beedleCost = GameData.BeedleShopCost;
+
+        if (playerCurrency >= beedleCost)
+        {
+            playerCurrency -= beedleCost;
+            firebaseDBReference.Child("users").Child(userID).Child("currency").SetValueAsync(playerCurrency);
+
+            unlockedAnimalHeroes.Add(Beedle.HERO_NAME);
+            firebaseDBReference.Child("users").Child(userID).Child("unlockedAnimalHeroes").SetValueAsync(unlockedAnimalHeroes);
+
+            SetPurchasePanelText("sufficient");
+        }
+        else
+        {
+            SetPurchasePanelText("insufficient");
+        }
+
+        UpdateShopUI();
+        ShowPurchasePanel();
     }
 
     public void BackToMainMenu()

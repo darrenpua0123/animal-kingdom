@@ -1,6 +1,8 @@
 using Firebase.Database;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -16,7 +18,7 @@ public class MainMenuScript : MonoBehaviour
     private string userID;
     private string username;
     private string currency;
-    private List<string> unlockedAnimalHeroes = new List<string>(){};
+    public List<string> unlockedAnimalHeroes = new List<string>();
 
     [Header("Welcome Text")]
     public TMP_Text welcomeText;
@@ -51,7 +53,7 @@ public class MainMenuScript : MonoBehaviour
             var playerCurrency = userSnapshot.Child("currency");
             if (!playerCurrency.Exists)
             {
-                firebaseDBReference.Child("users").Child(userID).Child("currency").SetValueAsync(GameData.defaultStartingCurrency);
+                firebaseDBReference.Child("users").Child(userID).Child("currency").SetValueAsync(GameData.DefaultStartingCurrency);
             }
             else 
             {
@@ -62,7 +64,7 @@ public class MainMenuScript : MonoBehaviour
             var playerAnimalHeroes = userSnapshot.Child("unlockedAnimalHeroes");
             if (!playerAnimalHeroes.Exists)
             {
-                firebaseDBReference.Child("users").Child(userID).Child("unlockedAnimalHeroes").SetValueAsync(GameData.defaultHeroes);
+                firebaseDBReference.Child("users").Child(userID).Child("unlockedAnimalHeroes").SetValueAsync(GameData.DefaultHeroes);
             }
             else 
             {
@@ -72,10 +74,9 @@ public class MainMenuScript : MonoBehaviour
             }
 
             PlayerPrefs.SetString(PLAYER_CURRENCY_KEY, currency);
-            //PlayerPrefs.SetString(PLAYER_UNLOCKED_HEROES_KEY, here);
-            // TODO: SET PLAYERPREF FOR LIST<STRING> HERE
 
-            Debug.Log($"Currency: {currency}, Animal Heroes {unlockedAnimalHeroes[0]}");
+            string unlockedAnimalHeroesAsString = string.Join("#",unlockedAnimalHeroes);
+            PlayerPrefs.SetString(PLAYER_UNLOCKED_HEROES_KEY, unlockedAnimalHeroesAsString);
         }
     }
 

@@ -771,7 +771,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 348916836}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 900776299}
+        m_TargetAssemblyTypeName: ShopScript, Assembly-CSharp
+        m_MethodName: PurchaseCatomicButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &348916836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2942,22 +2954,24 @@ MonoBehaviour:
   piggionActionPoint: {fileID: 633995141}
   piggionHeroCost: {fileID: 736867455}
   piggionBuyButton: {fileID: 1007591456}
-  piggionBuyButtonText: {fileID: 736867455}
   catomicHeroName: {fileID: 1141884061}
   catomicHealth: {fileID: 452400520}
   catomicShield: {fileID: 1934949582}
   catomicActionPoint: {fileID: 2012037407}
   catomicHeroCost: {fileID: 701944786}
+  catomicBuyButton: {fileID: 348916835}
   pandragonHeroName: {fileID: 1196417513}
   pandragonHealth: {fileID: 1178048996}
   pandragonShield: {fileID: 1195961037}
   pandragonActionPoint: {fileID: 880231724}
   pandragonHeroCost: {fileID: 1730961665}
+  pandragonBuyButton: {fileID: 1970227692}
   beedleHeroName: {fileID: 1206524006}
   beedleHealth: {fileID: 684965318}
   beedleShield: {fileID: 2101823932}
   beedleActionPoint: {fileID: 905547298}
   beedleHeroCost: {fileID: 684215207}
+  beedleBuyButton: {fileID: 1497280228}
   purchasePanel: {fileID: 372427892}
   purchasePanelText: {fileID: 905497609}
 --- !u!1 &905497607
@@ -3319,7 +3333,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 900776299}
         m_TargetAssemblyTypeName: ShopScript, Assembly-CSharp
-        m_MethodName: PurchasePiggion
+        m_MethodName: PurchasePiggionButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5215,7 +5229,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1497280229}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 900776299}
+        m_TargetAssemblyTypeName: ShopScript, Assembly-CSharp
+        m_MethodName: PurchaseBeedleButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1497280229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7239,7 +7265,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1970227693}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 900776299}
+        m_TargetAssemblyTypeName: ShopScript, Assembly-CSharp
+        m_MethodName: PurchasePandragonButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1970227693
 MonoBehaviour:
   m_ObjectHideFlags: 0
