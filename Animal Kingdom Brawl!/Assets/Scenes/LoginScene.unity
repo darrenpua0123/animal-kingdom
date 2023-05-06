@@ -5596,15 +5596,23 @@ MonoBehaviour:
   promptText: {fileID: 1954666378}
   dependencyStatus: 0
   loginPanel: {fileID: 993497630}
-  loginUsernameInput: {fileID: 0}
   loginEmailInput: {fileID: 705315329}
   loginPasswordInput: {fileID: 1218379859}
+  loginInputFields:
+  - {fileID: 705315329}
+  - {fileID: 1218379859}
   registerPanel: {fileID: 689272146}
   registerUsernameInput: {fileID: 946444054}
   registerAgeInput: {fileID: 1934526312}
   registerEmailInput: {fileID: 1031879615}
   registerPasswordInput: {fileID: 414375415}
   registerRepasswordInput: {fileID: 1313633349}
+  registerInputFields:
+  - {fileID: 946444054}
+  - {fileID: 1934526312}
+  - {fileID: 1031879615}
+  - {fileID: 414375415}
+  - {fileID: 1313633349}
 --- !u!1 &1435075420
 GameObject:
   m_ObjectHideFlags: 0

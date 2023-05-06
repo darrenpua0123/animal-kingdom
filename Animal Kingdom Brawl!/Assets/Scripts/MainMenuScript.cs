@@ -74,7 +74,7 @@ public class MainMenuScript : MonoBehaviour
             }
 
             PlayerPrefs.SetString(PLAYER_CURRENCY_KEY, currency);
-
+            // TODO: Optimize this code
             string unlockedAnimalHeroesAsString = string.Join("#",unlockedAnimalHeroes);
             PlayerPrefs.SetString(PLAYER_UNLOCKED_HEROES_KEY, unlockedAnimalHeroesAsString);
         }

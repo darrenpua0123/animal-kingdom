@@ -9,6 +9,9 @@ using Unity.VisualScripting;
 using Firebase.Database;
 using Google.MiniJSON;
 using System.Linq.Expressions;
+using System.Security.Cryptography;
+using System;
+using UnityEngine.UI;
 
 public class LoginScript : MonoBehaviour
 {
@@ -39,12 +42,14 @@ public class LoginScript : MonoBehaviour
     [Header("Login")]
     public GameObject loginPanel;
     public TMP_InputField loginEmailInput, loginPasswordInput;
+    public List<TMP_InputField> loginInputFields;
     private string loginEmail;
     private string loginPassword;
 
     [Header("Register")]
     public GameObject registerPanel;
     public TMP_InputField registerUsernameInput, registerAgeInput, registerEmailInput, registerPasswordInput, registerRepasswordInput;
+    public List<TMP_InputField> registerInputFields;
     private string registerUsername;
     private string registerAge;
     private string registerGender = "male";
@@ -72,12 +77,21 @@ public class LoginScript : MonoBehaviour
 
     void Start()
     {
-
+        
     }
 
     void Update()
     {
-        //TODO: When press TAB, can switch input field
+        if (Input.GetKeyDown(KeyCode.Tab)) {
+            if (loginPanel.activeSelf)
+            {
+                TabToSwitchField("login");
+            }
+            else if (registerPanel.activeSelf) 
+            {
+                TabToSwitchField("register");
+            }
+        }
     }
 
     private void InitialiseFirebase()
@@ -89,6 +103,54 @@ public class LoginScript : MonoBehaviour
     private void SetPromptMessage(string message)
     {
         promptText.text = message;
+    }
+
+    private void TabToSwitchField(string panel)
+    {
+        TMP_InputField currentField = null;
+
+        switch (panel)
+        {
+            case "login":
+                foreach (var field in loginInputFields)
+                {
+                    if (field.isFocused)
+                    {
+                        currentField = field;
+                        break;
+                    }
+                }
+
+                if (currentField != null)
+                {
+                    int currentIndex = loginInputFields.IndexOf(currentField);
+
+                    int nextIndex = (currentIndex + 1) % loginInputFields.Count;
+                    loginInputFields[nextIndex].ActivateInputField();
+                }
+
+                break;
+
+            case "register":
+                foreach (var field in registerInputFields)
+                {
+                    if (field.isFocused)
+                    {
+                        currentField = field;
+                        break;
+                    }
+                }
+
+                if (currentField != null)
+                {
+                    int currentIndex = registerInputFields.IndexOf(currentField);
+
+                    int nextIndex = (currentIndex + 1) % registerInputFields.Count;
+                    registerInputFields[nextIndex].ActivateInputField();
+                }
+
+                break;
+        }
     }
 
     // LOGIN
