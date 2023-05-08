@@ -74,7 +74,7 @@ public class MainMenuScript : MonoBehaviour
             }
 
             PlayerPrefs.SetString(PLAYER_CURRENCY_KEY, currency);
-            // TODO: Optimize this code
+            // TODO: Optimize this code, 1st
             string unlockedAnimalHeroesAsString = string.Join("#",unlockedAnimalHeroes);
             PlayerPrefs.SetString(PLAYER_UNLOCKED_HEROES_KEY, unlockedAnimalHeroesAsString);
         }
@@ -89,7 +89,7 @@ public class MainMenuScript : MonoBehaviour
     {
         // TODO: transition animation tutorial
         // https://www.youtube.com/watch?v=CE9VOZivb3I
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene("ChooseHeroScene");
     }
 
     public void ViewTutorial()
