@@ -1,3 +1,4 @@
+using Firebase.Auth;
 using Firebase.Database;
 using JetBrains.Annotations;
 using System;
@@ -21,7 +22,8 @@ public class ShopScript : MonoBehaviour
     private readonly string x_icon = "× ";
 
     [Header("Firebase")]
-    private DatabaseReference firebaseDBReference = FirebaseDatabase.DefaultInstance.RootReference;
+    public FirebaseAuth auth;
+    public DatabaseReference firebaseDBReference;
 
     private Piggion piggion;
     [Header("Piggion")]
@@ -53,19 +55,52 @@ public class ShopScript : MonoBehaviour
 
     void Awake()
     {
-        userID = PlayerPrefs.GetString(LoginScript.PLAYER_ID_KEY);
-        playerCurrency = int.Parse(PlayerPrefs.GetString(MainMenuScript.PLAYER_CURRENCY_KEY));
-        unlockedAnimalHeroes = PlayerPrefs.GetString(MainMenuScript.PLAYER_UNLOCKED_HEROES_KEY).Split(new[] {"#"}, StringSplitOptions.None).ToList();
+        InitialiseFirebase();
+
+        userID = auth.CurrentUser.UserId;
 
         piggion = new Piggion();
         catomic = new Catomic();
         pandragon = new Pandragon();
         beedle = new Beedle();
+
+        StartCoroutine(GetUserData());
     }
 
     void Start()
     {
-        SetShopHeroUI();
+
+    }
+
+    private void InitialiseFirebase()
+    {
+        auth = FirebaseAuth.DefaultInstance;
+        firebaseDBReference = FirebaseDatabase.DefaultInstance.RootReference;
+    }
+
+    private IEnumerator GetUserData() 
+    {
+        var userTask = firebaseDBReference.Child("users").Child(userID).GetValueAsync();
+        yield return new WaitUntil(predicate: () => userTask.IsCompleted);
+
+        if (userTask.Exception != null)
+        {
+            Debug.LogWarning($"Failed to complete username task with error: {userTask.Exception} at {this.name}");
+        }
+        else
+        {
+            DataSnapshot userSnapshot = userTask.Result;
+
+            playerCurrency = int.Parse(userSnapshot.Child("currency").Value.ToString());
+
+            var playerAnimalHeroes = userSnapshot.Child("unlockedAnimalHeroes");
+            foreach (var hero in playerAnimalHeroes.Children) 
+            {
+                unlockedAnimalHeroes.Add(hero.Value.ToString());
+            }
+
+            SetShopHeroUI();
+        }
     }
 
     private void SetShopHeroUI() {
@@ -139,10 +174,9 @@ public class ShopScript : MonoBehaviour
         if (playerCurrency >= piggionCost)
         {
             playerCurrency -= piggionCost; 
-            firebaseDBReference.Child("users").Child(userID).Child("currency").SetValueAsync(playerCurrency);
-
             unlockedAnimalHeroes.Add(Piggion.HERO_NAME);
-            firebaseDBReference.Child("users").Child(userID).Child("unlockedAnimalHeroes").SetValueAsync(unlockedAnimalHeroes);
+
+            UpdateCurrencyAndUnlockedHeroesToDB(playerCurrency, unlockedAnimalHeroes);
 
             SetPurchasePanelText("sufficient");
         }
@@ -162,10 +196,9 @@ public class ShopScript : MonoBehaviour
         if (playerCurrency >= catomicCost)
         {
             playerCurrency -= catomicCost;
-            firebaseDBReference.Child("users").Child(userID).Child("currency").SetValueAsync(playerCurrency);
-
             unlockedAnimalHeroes.Add(Catomic.HERO_NAME);
-            firebaseDBReference.Child("users").Child(userID).Child("unlockedAnimalHeroes").SetValueAsync(unlockedAnimalHeroes);
+
+            UpdateCurrencyAndUnlockedHeroesToDB(playerCurrency, unlockedAnimalHeroes);
 
             SetPurchasePanelText("sufficient");
         }
@@ -185,10 +218,9 @@ public class ShopScript : MonoBehaviour
         if (playerCurrency >= pandragonCost)
         {
             playerCurrency -= pandragonCost;
-            firebaseDBReference.Child("users").Child(userID).Child("currency").SetValueAsync(playerCurrency);
-
             unlockedAnimalHeroes.Add(Pandragon.HERO_NAME);
-            firebaseDBReference.Child("users").Child(userID).Child("unlockedAnimalHeroes").SetValueAsync(unlockedAnimalHeroes);
+
+            UpdateCurrencyAndUnlockedHeroesToDB(playerCurrency, unlockedAnimalHeroes);
 
             SetPurchasePanelText("sufficient");
         }
@@ -208,10 +240,9 @@ public class ShopScript : MonoBehaviour
         if (playerCurrency >= beedleCost)
         {
             playerCurrency -= beedleCost;
-            firebaseDBReference.Child("users").Child(userID).Child("currency").SetValueAsync(playerCurrency);
-
             unlockedAnimalHeroes.Add(Beedle.HERO_NAME);
-            firebaseDBReference.Child("users").Child(userID).Child("unlockedAnimalHeroes").SetValueAsync(unlockedAnimalHeroes);
+
+            UpdateCurrencyAndUnlockedHeroesToDB(playerCurrency, unlockedAnimalHeroes);
 
             SetPurchasePanelText("sufficient");
         }
@@ -222,6 +253,12 @@ public class ShopScript : MonoBehaviour
 
         UpdateShopUI();
         ShowPurchasePanel();
+    }
+
+    private void UpdateCurrencyAndUnlockedHeroesToDB(int currency, List<string> unlockHeroes) 
+    {
+        firebaseDBReference.Child("users").Child(userID).Child("currency").SetValueAsync(currency);
+        firebaseDBReference.Child("users").Child(userID).Child("unlockedAnimalHeroes").SetValueAsync(unlockHeroes);
     }
 
     public void BackToMainMenu()

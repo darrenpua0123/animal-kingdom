@@ -1,3 +1,4 @@
+using Firebase.Auth;
 using Firebase.Database;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,75 +10,33 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuScript : MonoBehaviour
 {
-    public static readonly string PLAYER_CURRENCY_KEY = "playerCurrency";
-    public static readonly string PLAYER_UNLOCKED_HEROES_KEY = "playerUnlockedHeroes";
-
-    [Header("Firebase")]
-    private DatabaseReference firebaseDBReference = FirebaseDatabase.DefaultInstance.RootReference;
-
     private string userID;
     private string username;
-    private string currency;
-    public List<string> unlockedAnimalHeroes = new List<string>();
+
+    [Header("Firebase")]
+    public FirebaseAuth auth;
+    public DatabaseReference firebaseDBReference;
 
     [Header("Welcome Text")]
     public TMP_Text welcomeText;
 
     void Awake()
     {
-        userID = PlayerPrefs.GetString(LoginScript.PLAYER_ID_KEY);
+        InitialiseFirebase();
+
+        userID = auth.CurrentUser.UserId;
+        username = auth.CurrentUser.DisplayName;
     }
 
     void Start()
     {
-        StartCoroutine(LoadUserData());
+        UpdateWelcomeText(username);
     }
 
-    private IEnumerator LoadUserData() 
+    private void InitialiseFirebase()
     {
-        var userTask = firebaseDBReference.Child("users").Child(userID).GetValueAsync();
-        yield return new WaitUntil(predicate: () => userTask.IsCompleted);
-
-        if (userTask.Exception != null)
-        {
-            Debug.LogWarning($"Failed to complete username task with error: {userTask.Exception}");
-        }
-        else 
-        {
-            DataSnapshot userSnapshot = userTask.Result;
-
-            username = userSnapshot.Child("username").Value.ToString();
-            UpdateWelcomeText(username);
-
-            // Check for player's currency on whether the player is first time logging in
-            var playerCurrency = userSnapshot.Child("currency");
-            if (!playerCurrency.Exists)
-            {
-                firebaseDBReference.Child("users").Child(userID).Child("currency").SetValueAsync(GameData.DefaultStartingCurrency);
-            }
-            else 
-            {
-                currency = playerCurrency.Value.ToString();
-            }
-
-            // Check for player's unlocked animal heroes on whether the player is first time logging in
-            var playerAnimalHeroes = userSnapshot.Child("unlockedAnimalHeroes");
-            if (!playerAnimalHeroes.Exists)
-            {
-                firebaseDBReference.Child("users").Child(userID).Child("unlockedAnimalHeroes").SetValueAsync(GameData.DefaultHeroes);
-            }
-            else 
-            {
-                foreach (var hero in playerAnimalHeroes.Children) {
-                    unlockedAnimalHeroes.Add(hero.Value.ToString());
-                }
-            }
-
-            PlayerPrefs.SetString(PLAYER_CURRENCY_KEY, currency);
-            // TODO: Optimize this code, 1st
-            string unlockedAnimalHeroesAsString = string.Join("#",unlockedAnimalHeroes);
-            PlayerPrefs.SetString(PLAYER_UNLOCKED_HEROES_KEY, unlockedAnimalHeroesAsString);
-        }
+        auth = FirebaseAuth.DefaultInstance;
+        firebaseDBReference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
     private void UpdateWelcomeText(string username)
@@ -105,6 +64,8 @@ public class MainMenuScript : MonoBehaviour
     public void QuitGame() 
     {
         Debug.Log("Quit");
+        //auth.SignOut();
+
         Application.Quit();
     }
 

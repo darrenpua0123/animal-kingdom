@@ -15,8 +15,6 @@ using UnityEngine.UI;
 
 public class LoginScript : MonoBehaviour
 {
-    public static readonly string PLAYER_ID_KEY = "playerID";
-
     [Header("Prompt Messages")]
     public TextMeshProUGUI promptText;
     private readonly string loginString = "Welcome back! Please login!";
@@ -34,10 +32,10 @@ public class LoginScript : MonoBehaviour
     private readonly string passwordMismatch = "The repeated password is incorrect!";
 
     [Header("Firebase")]
-    public DependencyStatus dependencyStatus;
-    public DatabaseReference firebaseDBReference;
     public FirebaseAuth auth;
     public FirebaseUser firebaseUser;
+    public DatabaseReference firebaseDBReference;
+    public DependencyStatus dependencyStatus;
 
     [Header("Login")]
     public GameObject loginPanel;
@@ -70,7 +68,7 @@ public class LoginScript : MonoBehaviour
             else
             {
                 // Dependencies missing
-                Debug.LogError("Could not resolve all Firebase dependencies: " + dependencyStatus);
+                Debug.LogError($"Could not resolve all Firebase dependencies: {dependencyStatus} at {this.name}");
             }
         });
     }
@@ -199,7 +197,7 @@ public class LoginScript : MonoBehaviour
         if (loginTask.Exception != null)
         {
             // All login error handling
-            Debug.LogWarning(message: $"Failed to login task with {loginTask.Exception}");
+            Debug.LogWarning($"Failed to login task with {loginTask.Exception} at {this.name}");
             FirebaseException firebaseExp = loginTask.Exception.GetBaseException() as FirebaseException;
             AuthError errorCode = (AuthError)firebaseExp.ErrorCode;
 
@@ -221,7 +219,6 @@ public class LoginScript : MonoBehaviour
         else
         {
             firebaseUser = loginTask.Result;
-            PlayerPrefs.SetString(PLAYER_ID_KEY, firebaseUser.UserId);
 
             SceneManager.LoadScene("MainMenuScene");
             Debug.Log($"User logged in with ID:{firebaseUser.UserId}, username: {firebaseUser.DisplayName}, and email: {firebaseUser.Email}");
@@ -339,7 +336,7 @@ public class LoginScript : MonoBehaviour
         if (checkUsernameTask.Exception != null)
         {
             // Handle the database query error
-            Debug.LogWarning(message: $"Failed to check username with {checkUsernameTask.Exception}");
+            Debug.LogWarning($"Failed to check username with {checkUsernameTask.Exception} at {this.name}");
         }
         else 
         {
@@ -358,7 +355,7 @@ public class LoginScript : MonoBehaviour
                 if (registerTask.Exception != null)
                 {
                     // All register error handling
-                    Debug.LogWarning(message: $"Failed to register task with {registerTask.Exception}");
+                    Debug.LogWarning($"Failed to register task with {registerTask.Exception} at {this.name}");
                     FirebaseException firebaseExp = registerTask.Exception.GetBaseException() as FirebaseException;
                     AuthError errorCode = (AuthError)firebaseExp.ErrorCode;
 
@@ -393,7 +390,7 @@ public class LoginScript : MonoBehaviour
                         if (profileUpdatetask.Exception != null)
                         {
                             // All profile updates error handling
-                            Debug.LogWarning($"Failed to update username task with {profileUpdatetask.Exception}");
+                            Debug.LogWarning($"Failed to update username task with {profileUpdatetask.Exception} at {this.name}");
                         }
                         else
                         {   
@@ -407,10 +404,16 @@ public class LoginScript : MonoBehaviour
 
                             if (insertUserToDbTask.Exception != null)
                             {
-                                Debug.LogWarning($"Failed to perform set user's value task with {insertUserToDbTask.Exception}");
+                                Debug.LogWarning($"Failed to perform set user's value task with {insertUserToDbTask.Exception} at {this.name}");
                             }
                             else
                             {
+                                // Insert player's default value
+                                #region Player's Default Value
+                                firebaseDBReference.Child("users").Child(firebaseUser.UserId).Child("currency").SetValueAsync(GameData.DefaultStartingCurrency);
+                                firebaseDBReference.Child("users").Child(firebaseUser.UserId).Child("unlockedAnimalHeroes").SetValueAsync(GameData.DefaultHeroes);
+                                #endregion
+
                                 ResetRegisterInputField();
                                 SetPromptMessage(userRegistered);
 
