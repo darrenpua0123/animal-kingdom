@@ -18,7 +18,7 @@ public class ShopScript : MonoBehaviour
     private int playerCurrency;
     private List<string> unlockedAnimalHeroes = new List<string>();
 
-    public TextMeshProUGUI coinText;
+    public TMP_Text coinText;
     private readonly string x_icon = "× ";
 
     [Header("Firebase")]
@@ -27,31 +27,31 @@ public class ShopScript : MonoBehaviour
 
     private Piggion piggion;
     [Header("Piggion")]
-    public TextMeshProUGUI piggionHeroName;
-    public TextMeshProUGUI piggionHealth, piggionShield, piggionActionPoint, piggionHeroCost;
+    public TMP_Text piggionHeroName;
+    public TMP_Text piggionHealth, piggionShield, piggionActionPoint, piggionHeroCost;
     public Button piggionBuyButton;
 
     private Catomic catomic;
     [Header("Catomic")]
-    public TextMeshProUGUI catomicHeroName;
-    public TextMeshProUGUI catomicHealth, catomicShield, catomicActionPoint, catomicHeroCost;
+    public TMP_Text catomicHeroName;
+    public TMP_Text catomicHealth, catomicShield, catomicActionPoint, catomicHeroCost;
     public Button catomicBuyButton;
 
     private Pandragon pandragon;
     [Header("Pandragon")]
-    public TextMeshProUGUI pandragonHeroName;
-    public TextMeshProUGUI pandragonHealth, pandragonShield, pandragonActionPoint, pandragonHeroCost;
+    public TMP_Text pandragonHeroName;
+    public TMP_Text pandragonHealth, pandragonShield, pandragonActionPoint, pandragonHeroCost;
     public Button pandragonBuyButton;
 
     private Beedle beedle;
     [Header("Beedle")]
-    public TextMeshProUGUI beedleHeroName;
-    public TextMeshProUGUI beedleHealth, beedleShield, beedleActionPoint, beedleHeroCost;
+    public TMP_Text beedleHeroName;
+    public TMP_Text beedleHealth, beedleShield, beedleActionPoint, beedleHeroCost;
     public Button beedleBuyButton;
 
     [Header("Purchase Panel")]
     public GameObject purchasePanel;
-    public TextMeshProUGUI purchasePanelText;
+    public TMP_Text purchasePanelText;
 
     void Awake()
     {
@@ -85,7 +85,7 @@ public class ShopScript : MonoBehaviour
 
         if (userTask.Exception != null)
         {
-            Debug.LogWarning($"Failed to complete username task with error: {userTask.Exception} at {this.name}");
+            Debug.LogWarning($"Failed to complete user task with error: {userTask.Exception} at {this.name}");
         }
         else
         {

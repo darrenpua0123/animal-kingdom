@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1536
     height: 780.8
   m_ShowMode: 4
-  m_Title: Scene
+  m_Title: Project
   m_RootView: {fileID: 4}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -74,7 +74,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 22
+  controlID: 19
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -170,7 +170,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 103
+  controlID: 40
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -195,7 +195,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 21
+  controlID: 18
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -401,9 +401,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
+      m_SelectedIDs: 8a5f0000
       m_LastClickedID: 0
-      m_ExpandedIDs: 08a0ffffd2a0ffff24a2ffff24acffff12b8ffff8abaffff3af2ffff26fbffffb4bb0000e6bb0000ecbb0000febb000048bc000048c10000bcc10000dec10000e4c10000eec10000
+      m_ExpandedIDs: e693ffffba95ffffcc99ffff029cffff749effffe49effffcca1ffff5ab8ffff4abeffffa6c1ffff2ac3ffff72c5ffff0ac6ffff4ec7fffffaf5ffff08f6ffff34f6ffff22f7ffff96f8ffff26fbffffa25d0000d25d0000786000008861000098610000b26100002862000052620000586200007a620000be62000038910000b491000038930000b4930000f89300003e970000a8970000ba970000fe9700000ac8000074c8000086c80000cac8000098df000002e0000014e0000058e000007ce500008ce50000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -460,7 +460,7 @@ MonoBehaviour:
       floating: 0
       collapsed: 0
       displayed: 1
-      snapOffset: {x: -100, y: -25.600006}
+      snapOffset: {x: -101, y: -26}
       snapOffsetDelta: {x: 0, y: 0}
       snapCorner: 3
       id: Tool Settings
@@ -708,9 +708,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 966.53253, y: 501.61734, z: -11.559111}
+    m_Target: {x: 878.79443, y: 512.44556, z: -15.98165}
     speed: 2
-    m_Value: {x: 966.53253, y: 501.61734, z: -11.559111}
+    m_Value: {x: 878.79443, y: 512.44556, z: -15.98165}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -761,9 +761,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 572.4246
+    m_Target: 568.95416
     speed: 2
-    m_Value: 572.4246
+    m_Value: 568.95416
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -830,22 +830,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Class
+    - Assets/Scenes
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Class
+  - Assets/Scenes
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\Darren Pua\Desktop\Personal Project\animal-kingdom-brawl\Animal
     Kingdom Brawl!
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: e05e0000
-    m_LastClickedID: 24288
+    scrollPos: {x: 0, y: 14.200012}
+    m_SelectedIDs: f05e0000
+    m_LastClickedID: 24304
     m_ExpandedIDs: 00000000c85e0000ca5e0000cc5e0000ce5e0000d05e0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -901,7 +901,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000f286000092740000ca5d00003ae70000000000008c620000
     m_RenameOverlay:
       m_UserAcceptedRename: 0

@@ -75,7 +75,7 @@ public class LoginScript : MonoBehaviour
 
     void Start()
     {
-        
+
     }
 
     void Update()
@@ -85,10 +85,16 @@ public class LoginScript : MonoBehaviour
             {
                 TabToSwitchField("login");
             }
-            else if (registerPanel.activeSelf) 
+            else if (registerPanel.activeSelf)
             {
                 TabToSwitchField("register");
             }
+        }
+
+        // DEV: Remove these when done
+        if (Input.GetKeyDown(KeyCode.R)) {
+            loginEmailInput.text = "dummy@gmail.com";
+            loginPasswordInput.text = "123123";
         }
     }
 
