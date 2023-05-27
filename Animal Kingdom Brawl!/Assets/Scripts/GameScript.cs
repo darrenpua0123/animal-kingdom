@@ -7,59 +7,40 @@ public class GameScript : MonoBehaviour
 {
     public GameObject cardHolder;
     public GameObject cardPrefab;
-    public float cardSpacing = 0.5f;
     // TODO: Game Area
 
     // Start is called before the first frame update
     void Start()
     {
         DrawCard(1);
+        CenterPlayableCard();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        // Left click: Can drag card to MIDDLE to play it.
+        // If card is CanTargetPlayers (mostly Attack/Mixed/Ability cards has)
+        // Then prompt Target Selector
+        // Else, target self
+        
+        // Right click: Stop all action, make that card in the middle to read the description
+        // left click anywhere to closed it.
     }
 
     public void PlayerEndTurn() 
     {
         DrawCard(3);
-
-        //CenterPlayableCard();
-        CenterCards();
+        CenterPlayableCard();
     }
 
     public void DrawCard(int numberOfDraw) 
     {
+        // TODO: Optimize this
         for (int i = 0; i < numberOfDraw; i++)
         {
             GameObject newCard = Instantiate(cardPrefab, cardHolder.transform);
-            newCard.transform.localPosition = Vector3.zero;
-            newCard.transform.localRotation = Quaternion.identity;
         }   
-    }
-
-    private void CenterCards()
-    {
-        int cardCount = cardHolder.transform.childCount;
-        float totalWidth = (cardCount - 1) * cardSpacing;
-        float offsetX = totalWidth / 2f;
-        float offsetY = 0f;
-
-        if (cardCount > 1)
-        {
-            offsetY = ((cardCount - 1) * cardSpacing) / 2f;
-        }
-
-        Vector3 startingPosition = new Vector3(-offsetX, offsetY, -1f);
-
-        for (int i = 0; i < cardCount; i++)
-        {
-            Transform cardTransform = cardHolder.transform.GetChild(i);
-            Vector3 newPosition = startingPosition + new Vector3(i * cardSpacing, -i * cardSpacing, 0f);
-            cardTransform.localPosition = newPosition;
-        }
     }
 
     private void CenterPlayableCard()
@@ -100,7 +81,7 @@ public class GameScript : MonoBehaviour
             float xPos = startX + (cardWidth / 2f);
             float yPos = startY - (cardHeight / 2f);
 
-            Vector3 newPos = new Vector3(xPos, yPos, -1);
+            Vector3 newPos = new Vector3(xPos, yPos, 0);
             child.position = newPos;
 
             startX += cardWidth;

@@ -33,7 +33,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -178,6 +178,27 @@ TextureImporter:
       bones: []
       spriteID: e6b2bb9a2e28f814ca94763c866ffab7
       internalID: 169064640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health Bar_2
+      rect:
+        serializedVersion: 2
+        x: 148
+        y: 166
+        width: 23
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2d7a313c6e932c249b34b31b0caa4119
+      internalID: -1622479942
       vertices: []
       indices: 
       edges: []
