@@ -10,7 +10,6 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuScript : MonoBehaviour
 {
-    private string userID;
     private string username;
 
     [Header("Firebase")]
@@ -24,7 +23,6 @@ public class MainMenuScript : MonoBehaviour
     {
         InitialiseFirebase();
 
-        userID = auth.CurrentUser.UserId;
         username = auth.CurrentUser.DisplayName;
     }
 

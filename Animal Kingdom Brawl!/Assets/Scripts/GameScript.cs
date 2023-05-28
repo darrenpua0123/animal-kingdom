@@ -5,6 +5,20 @@ using UnityEngine;
 
 public class GameScript : MonoBehaviour
 {
+    // TODO: Remove
+    public Beedle bee = new Beedle();
+    int health;
+    int shield;
+    // REMOVE ^
+    
+    [Header("Chracter Life Hub")]
+    public LifeHUB playerLifeHUB;
+    public LifeHUB hornterrorLifeHUB;
+    public LifeHUB enemyOneHUB;
+    public LifeHUB enemyTwoHUB;
+    public LifeHUB enemyThreeHUB;
+
+    [Header("Player GameObjects")]
     public GameObject cardHolder;
     public GameObject cardPrefab;
     // TODO: Game Area
@@ -12,8 +26,14 @@ public class GameScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        health = bee.initialHealth;
+        shield = 3;
+
+        playerLifeHUB.SetMaxHealth(health);
+        playerLifeHUB.SetShield(shield);
+
         DrawCard(1);
-        CenterPlayableCard();
+        CenterPlayableCard(); 
     }
 
     // Update is called once per frame
@@ -23,9 +43,28 @@ public class GameScript : MonoBehaviour
         // If card is CanTargetPlayers (mostly Attack/Mixed/Ability cards has)
         // Then prompt Target Selector
         // Else, target self
-        
+
         // Right click: Stop all action, make that card in the middle to read the description
         // left click anywhere to closed it.
+
+        // DEV: Remove;
+        if (Input.GetKeyDown(KeyCode.Space)) 
+        {
+            health -= 2;
+            shield--;
+
+            playerLifeHUB.SetHealthBar(health);
+            playerLifeHUB.SetShield(shield);
+        }
+        if (Input.GetKeyDown(KeyCode.R)) 
+        {
+            health++;
+            shield++;
+
+            playerLifeHUB.SetHealthBar(health);
+            playerLifeHUB.SetShield(shield);
+        }
+        // REMOVE ^
     }
 
     public void PlayerEndTurn() 
