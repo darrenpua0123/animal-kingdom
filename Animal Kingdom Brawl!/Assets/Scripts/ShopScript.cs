@@ -18,6 +18,7 @@ public class ShopScript : MonoBehaviour
     private int playerCurrency;
     private List<string> unlockedAnimalHeroes = new List<string>();
 
+    [Header("Shop UI")]
     public TMP_Text coinText;
     private readonly string x_icon = "× ";
 
@@ -106,33 +107,33 @@ public class ShopScript : MonoBehaviour
     private void SetShopHeroUI() {
         #region Piggion
         piggionHeroName.text = Piggion.HERO_NAME.FirstCharacterToUpper();
-        piggionHealth.text = x_icon + piggion.initialHealth.ToString();
-        piggionShield.text = x_icon + piggion.initialShield.ToString();
-        piggionActionPoint.text = x_icon + piggion.initialActionPoint.ToString();
+        piggionHealth.text = x_icon + piggion.defaultHealth.ToString();
+        piggionShield.text = x_icon + piggion.defaultShield.ToString();
+        piggionActionPoint.text = x_icon + piggion.startingActionPoint.ToString();
         piggionHeroCost.text = GameData.PiggionShopCost.ToString();
         #endregion
 
         #region Catomic
         catomicHeroName.text = Catomic.HERO_NAME.FirstCharacterToUpper();
-        catomicHealth.text = x_icon + catomic.initialHealth.ToString();
-        catomicShield.text = x_icon + catomic.initialShield.ToString();
-        catomicActionPoint.text = x_icon + catomic.initialActionPoint.ToString();
+        catomicHealth.text = x_icon + catomic.defaultHealth.ToString();
+        catomicShield.text = x_icon + catomic.defaultShield.ToString();
+        catomicActionPoint.text = x_icon + catomic.startingActionPoint.ToString();
         catomicHeroCost.text = GameData.CatomicShopCost.ToString();
         #endregion
 
         #region Pandragon
         pandragonHeroName.text = Pandragon.HERO_NAME.FirstCharacterToUpper();
-        pandragonHealth.text = x_icon + pandragon.initialHealth.ToString();
-        pandragonShield.text = x_icon + pandragon.initialShield.ToString();
-        pandragonActionPoint.text = x_icon + pandragon.initialActionPoint.ToString();
+        pandragonHealth.text = x_icon + pandragon.defaultHealth.ToString();
+        pandragonShield.text = x_icon + pandragon.defaultShield.ToString();
+        pandragonActionPoint.text = x_icon + pandragon.startingActionPoint.ToString();
         pandragonHeroCost.text = GameData.PandragonShopCost.ToString();
         #endregion
 
         #region Beedle
         beedleHeroName.text = Beedle.HERO_NAME.FirstCharacterToUpper();
-        beedleHealth.text = x_icon + beedle.initialHealth.ToString();
-        beedleShield.text = x_icon + beedle.initialShield.ToString();
-        beedleActionPoint.text = x_icon + beedle.initialActionPoint.ToString();
+        beedleHealth.text = x_icon + beedle.defaultHealth.ToString();
+        beedleShield.text = x_icon + beedle.defaultShield.ToString();
+        beedleActionPoint.text = x_icon + beedle.startingActionPoint.ToString();
         beedleHeroCost.text = GameData.BeedleShopCost.ToString();
         #endregion
 

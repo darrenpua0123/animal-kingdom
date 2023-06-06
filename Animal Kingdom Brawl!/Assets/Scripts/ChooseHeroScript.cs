@@ -131,36 +131,36 @@ public class ChooseHeroScript : MonoBehaviour
         {
             #region Piggion
             piggionHeroName.text = Piggion.HERO_NAME.FirstCharacterToUpper();
-            piggionHealth.text = x_icon + piggion.initialHealth.ToString();
-            piggionShield.text = x_icon + piggion.initialShield.ToString();
-            piggionActionPoint.text = x_icon + piggion.initialActionPoint.ToString();
+            piggionHealth.text = x_icon + piggion.defaultHealth.ToString();
+            piggionShield.text = x_icon + piggion.defaultShield.ToString();
+            piggionActionPoint.text = x_icon + piggion.startingActionPoint.ToString();
             #endregion
         }
         else if (heroName.Equals(Catomic.HERO_NAME))
         { 
             #region Catomic
             catomicHeroName.text = Catomic.HERO_NAME.FirstCharacterToUpper();
-            catomicHealth.text = x_icon + catomic.initialHealth.ToString();
-            catomicShield.text = x_icon + catomic.initialShield.ToString();
-            catomicActionPoint.text = x_icon + catomic.initialActionPoint.ToString();
+            catomicHealth.text = x_icon + catomic.defaultHealth.ToString();
+            catomicShield.text = x_icon + catomic.defaultShield.ToString();
+            catomicActionPoint.text = x_icon + catomic.startingActionPoint.ToString();
             #endregion
         }
         else if (heroName.Equals(Pandragon.HERO_NAME))
         {
             #region Pandragon
             pandragonHeroName.text = Pandragon.HERO_NAME.FirstCharacterToUpper();
-            pandragonHealth.text = x_icon + pandragon.initialHealth.ToString();
-            pandragonShield.text = x_icon + pandragon.initialShield.ToString();
-            pandragonActionPoint.text = x_icon + pandragon.initialActionPoint.ToString();
+            pandragonHealth.text = x_icon + pandragon.defaultHealth.ToString();
+            pandragonShield.text = x_icon + pandragon.defaultShield.ToString();
+            pandragonActionPoint.text = x_icon + pandragon.startingActionPoint.ToString();
             #endregion
         }
         else if (heroName.Equals(Beedle.HERO_NAME))
         {
             #region Beedle
             beedleHeroName.text = Beedle.HERO_NAME.FirstCharacterToUpper();
-            beedleHealth.text = x_icon + beedle.initialHealth.ToString();
-            beedleShield.text = x_icon + beedle.initialShield.ToString();
-            beedleActionPoint.text = x_icon + beedle.initialActionPoint.ToString();
+            beedleHealth.text = x_icon + beedle.defaultHealth.ToString();
+            beedleShield.text = x_icon + beedle.defaultShield.ToString();
+            beedleActionPoint.text = x_icon + beedle.startingActionPoint.ToString();
             #endregion
         }
     }

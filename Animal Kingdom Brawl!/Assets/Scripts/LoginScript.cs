@@ -403,9 +403,9 @@ public class LoginScript : MonoBehaviour
                             // User is now registered with DisplayName and as FirebaseAuth.
                             // User Class is then being created and stored into the Database with it's additional credential
                             User user = new User(firebaseUser.DisplayName, registerAge, registerGender);
-                            string playerJSON = JsonUtility.ToJson(user);
+                            string userJSON = JsonUtility.ToJson(user);
 
-                            var insertUserToDbTask = firebaseDBReference.Child("users").Child(firebaseUser.UserId).SetRawJsonValueAsync(playerJSON);
+                            var insertUserToDbTask = firebaseDBReference.Child("users").Child(firebaseUser.UserId).SetRawJsonValueAsync(userJSON);
                             yield return new WaitUntil(() => insertUserToDbTask.IsCompleted);
 
                             if (insertUserToDbTask.Exception != null)

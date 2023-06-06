@@ -1,3 +1,6 @@
+using Firebase.Auth;
+using Firebase.Database;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,30 +13,51 @@ public class GameScript : MonoBehaviour
     int health;
     int shield;
     // REMOVE ^
-    
+
+    [Header("Firebase")]
+    public FirebaseAuth auth;
+    public DatabaseReference firebaseDBReference;
+
+    [Header("Player's Attribute")]
+    private string userID;
+
+    [Header("Game UI")]
+    public TMP_Text remainingCardText;
+    public GameObject remainingCardImage; 
+
     [Header("Chracter Life Hub")]
     public LifeHUB playerLifeHUB;
     public LifeHUB hornterrorLifeHUB;
-    public LifeHUB enemyOneHUB;
-    public LifeHUB enemyTwoHUB;
-    public LifeHUB enemyThreeHUB;
+    public LifeHUB enemyOneLifeHUB;
+    public LifeHUB enemyTwoLifeHUB;
+    public LifeHUB enemyThreeLifeHUB;
 
     [Header("Player GameObjects")]
     public GameObject cardHolder;
     public GameObject cardPrefab;
     // TODO: Game Area
 
-    // Start is called before the first frame update
+    void Awake()
+    {
+        InitialiseFirebase();
+
+        userID = auth.CurrentUser.UserId;
+    }
+
     void Start()
     {
-        health = bee.initialHealth;
+
+        // TODO: Complete CardRemainingUI Update
+        // As well as try to do CardHolde, refer to youtube is whether gameobject or canva.
+
+        health = bee.defaultHealth;
         shield = 3;
 
         playerLifeHUB.SetMaxHealth(health);
         playerLifeHUB.SetShield(shield);
 
         DrawCard(1);
-        CenterPlayableCard(); 
+        //CenterPlayableCard(); 
     }
 
     // Update is called once per frame
@@ -55,6 +79,7 @@ public class GameScript : MonoBehaviour
 
             playerLifeHUB.SetHealthBar(health);
             playerLifeHUB.SetShield(shield);
+
         }
         if (Input.GetKeyDown(KeyCode.R)) 
         {
@@ -67,10 +92,16 @@ public class GameScript : MonoBehaviour
         // REMOVE ^
     }
 
+    private void InitialiseFirebase()
+    {
+        auth = FirebaseAuth.DefaultInstance;
+        firebaseDBReference = FirebaseDatabase.DefaultInstance.RootReference;
+    }
+
     public void PlayerEndTurn() 
     {
         DrawCard(3);
-        CenterPlayableCard();
+        //CenterPlayableCard();
     }
 
     public void DrawCard(int numberOfDraw) 
@@ -82,48 +113,49 @@ public class GameScript : MonoBehaviour
         }   
     }
 
-    private void CenterPlayableCard()
-    {
-        int childCount = cardHolder.transform.childCount;
+    //private void CenterPlayableCard()
+    //{
+    //    // TODO: need check, maybe need to change
+    //    int childCount = cardHolder.transform.childCount;
 
-        if (childCount == 0)
-            return;
+    //    if (childCount == 0)
+    //        return;
 
-        float totalWidth = 0f;
-        float totalHeight = 0f;
+    //    float totalWidth = 0f;
+    //    float totalHeight = 0f;
 
-        // Calculate the total width and height of all child cards
-        for (int i = 0; i < childCount; i++)
-        {
-            Transform child = cardHolder.transform.GetChild(i);
-            Renderer childRenderer = child.GetComponent<Renderer>();
-            totalWidth += childRenderer.bounds.size.x;
-            totalHeight = Mathf.Max(totalHeight, childRenderer.bounds.size.y);
-        }
+    //    // Calculate the total width and height of all child cards
+    //    for (int i = 0; i < childCount; i++)
+    //    {
+    //        Transform child = cardHolder.transform.GetChild(i);
+    //        Renderer childRenderer = child.GetComponent<Renderer>();
+    //        totalWidth += childRenderer.bounds.size.x;
+    //        totalHeight = Mathf.Max(totalHeight, childRenderer.bounds.size.y);
+    //    }
 
-        // Calculate the center position of the cardHolder
-        Vector3 centerPos = cardHolder.transform.position;
+    //    // Calculate the center position of the cardHolder
+    //    Vector3 centerPos = cardHolder.transform.position;
 
-        // Calculate the starting position for the first card
-        float startX = centerPos.x - totalWidth / 2f;
-        float startY = centerPos.y + totalHeight / 2f;
+    //    // Calculate the starting position for the first card
+    //    float startX = centerPos.x - totalWidth / 2f;
+    //    float startY = centerPos.y + totalHeight / 2f;
 
-        // Position each child card relative to the starting position
-        for (int i = 0; i < childCount; i++)
-        {
-            Transform child = cardHolder.transform.GetChild(i);
-            Renderer childRenderer = child.GetComponent<Renderer>();
+    //    // Position each child card relative to the starting position
+    //    for (int i = 0; i < childCount; i++)
+    //    {
+    //        Transform child = cardHolder.transform.GetChild(i);
+    //        Renderer childRenderer = child.GetComponent<Renderer>();
 
-            float cardWidth = childRenderer.bounds.size.x;
-            float cardHeight = childRenderer.bounds.size.y;
+    //        float cardWidth = childRenderer.bounds.size.x;
+    //        float cardHeight = childRenderer.bounds.size.y;
 
-            float xPos = startX + (cardWidth / 2f);
-            float yPos = startY - (cardHeight / 2f);
+    //        float xPos = startX + (cardWidth / 2f);
+    //        float yPos = startY - (cardHeight / 2f);
 
-            Vector3 newPos = new Vector3(xPos, yPos, 0);
-            child.position = newPos;
+    //        Vector3 newPos = new Vector3(xPos, yPos, 0);
+    //        child.position = newPos;
 
-            startX += cardWidth;
-        }
-    }
+    //        startX += cardWidth;
+    //    }
+    //}
 }
