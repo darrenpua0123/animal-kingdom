@@ -3,8 +3,11 @@ using Firebase.Database;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameScript : MonoBehaviour
 {
@@ -12,7 +15,11 @@ public class GameScript : MonoBehaviour
     public Beedle bee = new Beedle();
     int health;
     int shield;
+    int cardRemain;
     // REMOVE ^
+
+    [Header("Variables")]
+    private float buttonImageAlphaThreshold = 0.1f;
 
     [Header("Firebase")]
     public FirebaseAuth auth;
@@ -23,7 +30,9 @@ public class GameScript : MonoBehaviour
 
     [Header("Game UI")]
     public TMP_Text remainingCardText;
-    public GameObject remainingCardImage; 
+    public GameObject remainingCardImage;
+    public TMP_Text actionPointLeftText;
+    public Button endTurnButton;
 
     [Header("Chracter Life Hub")]
     public LifeHUB playerLifeHUB;
@@ -33,8 +42,8 @@ public class GameScript : MonoBehaviour
     public LifeHUB enemyThreeLifeHUB;
 
     [Header("Player GameObjects")]
-    public GameObject cardHolder;
-    public GameObject cardPrefab;
+    public GameObject playerHand;
+    //public GameObject cardPrefab;
     // TODO: Game Area
 
     void Awake()
@@ -46,18 +55,21 @@ public class GameScript : MonoBehaviour
 
     void Start()
     {
+        // Make button clickable on full precision of the button image
+        endTurnButton.image.alphaHitTestMinimumThreshold = buttonImageAlphaThreshold;
 
-        // TODO: Complete CardRemainingUI Update
-        // As well as try to do CardHolde, refer to youtube is whether gameobject or canva.
+        // Instantiate Player.cs Class, for the Player based on choice, and other based on random
+        // Player player = new Player()...
 
         health = bee.defaultHealth;
         shield = 3;
+        cardRemain = 5;
 
         playerLifeHUB.SetMaxHealth(health);
         playerLifeHUB.SetShield(shield);
+        UpdateActionPointText(cardRemain);
 
         DrawCard(1);
-        //CenterPlayableCard(); 
     }
 
     // Update is called once per frame
@@ -72,7 +84,7 @@ public class GameScript : MonoBehaviour
         // left click anywhere to closed it.
 
         // DEV: Remove;
-        if (Input.GetKeyDown(KeyCode.Space)) 
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             health -= 2;
             shield--;
@@ -80,8 +92,10 @@ public class GameScript : MonoBehaviour
             playerLifeHUB.SetHealthBar(health);
             playerLifeHUB.SetShield(shield);
 
+            cardRemain--;
+            UpdateActionPointText(cardRemain);
         }
-        if (Input.GetKeyDown(KeyCode.R)) 
+        if (Input.GetKeyDown(KeyCode.R))
         {
             health++;
             shield++;
@@ -89,6 +103,7 @@ public class GameScript : MonoBehaviour
             playerLifeHUB.SetHealthBar(health);
             playerLifeHUB.SetShield(shield);
         }
+
         // REMOVE ^
     }
 
@@ -98,10 +113,23 @@ public class GameScript : MonoBehaviour
         firebaseDBReference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
-    public void PlayerEndTurn() 
+    public void PlayerEndTurnButton() 
     {
-        DrawCard(3);
-        //CenterPlayableCard();
+        // Check for AP
+        // Draw 2 cards from chest, put to player's hand
+        // Update 
+        //DrawCard(3);
+
+        if (ActionNotEndable())
+        {
+            Debug.Log($"Cannot end turn as you have {cardRemain} turns left!");
+            //return;
+        }
+        else
+        { 
+            cardRemain--;
+            UpdateActionPointText(cardRemain);
+        }
     }
 
     public void DrawCard(int numberOfDraw) 
@@ -109,53 +137,18 @@ public class GameScript : MonoBehaviour
         // TODO: Optimize this
         for (int i = 0; i < numberOfDraw; i++)
         {
-            GameObject newCard = Instantiate(cardPrefab, cardHolder.transform);
-        }   
+            //GameObject newCard = Instantiate(cardPrefab, playerHand.transform);
+        }
+    }
+    private bool ActionNotEndable()
+    {
+        return (cardRemain > 0);
     }
 
-    //private void CenterPlayableCard()
-    //{
-    //    // TODO: need check, maybe need to change
-    //    int childCount = cardHolder.transform.childCount;
-
-    //    if (childCount == 0)
-    //        return;
-
-    //    float totalWidth = 0f;
-    //    float totalHeight = 0f;
-
-    //    // Calculate the total width and height of all child cards
-    //    for (int i = 0; i < childCount; i++)
-    //    {
-    //        Transform child = cardHolder.transform.GetChild(i);
-    //        Renderer childRenderer = child.GetComponent<Renderer>();
-    //        totalWidth += childRenderer.bounds.size.x;
-    //        totalHeight = Mathf.Max(totalHeight, childRenderer.bounds.size.y);
-    //    }
-
-    //    // Calculate the center position of the cardHolder
-    //    Vector3 centerPos = cardHolder.transform.position;
-
-    //    // Calculate the starting position for the first card
-    //    float startX = centerPos.x - totalWidth / 2f;
-    //    float startY = centerPos.y + totalHeight / 2f;
-
-    //    // Position each child card relative to the starting position
-    //    for (int i = 0; i < childCount; i++)
-    //    {
-    //        Transform child = cardHolder.transform.GetChild(i);
-    //        Renderer childRenderer = child.GetComponent<Renderer>();
-
-    //        float cardWidth = childRenderer.bounds.size.x;
-    //        float cardHeight = childRenderer.bounds.size.y;
-
-    //        float xPos = startX + (cardWidth / 2f);
-    //        float yPos = startY - (cardHeight / 2f);
-
-    //        Vector3 newPos = new Vector3(xPos, yPos, 0);
-    //        child.position = newPos;
-
-    //        startX += cardWidth;
-    //    }
-    //}
+    private void UpdateActionPointText(int actionPoint) 
+    {
+        if (actionPoint >= 0) {
+            actionPointLeftText.text = actionPoint.ToString();
+        }
+    }
 }

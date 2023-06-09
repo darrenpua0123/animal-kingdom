@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1536
     height: 780.8
   m_ShowMode: 4
-  m_Title: Scene
+  m_Title: Game
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 85388
+  controlID: 32928
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 85343
+  controlID: 33006
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -169,7 +169,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 85292
+  controlID: 33007
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -269,8 +269,8 @@ MonoBehaviour:
     y: 0
     width: 398.40002
     height: 730.8
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 276, y: 71}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 17}
@@ -341,7 +341,7 @@ MonoBehaviour:
     m_HSlider: 0
     m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 1
+    m_EnableMouseInput: 0
     m_EnableSliderZoomHorizontal: 0
     m_EnableSliderZoomVertical: 0
     m_UniformScale: 1
@@ -653,9 +653,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -1.8453395, y: -0.18303189, z: -0.2516168}
+    m_Target: {x: -0.40485728, y: -0.034124866, z: 0.05021186}
     speed: 2
-    m_Value: {x: -1.8453395, y: -0.18303189, z: -0.2516168}
+    m_Value: {x: -0.40485728, y: -0.034124866, z: 0.05021186}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -706,9 +706,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 5.6882606
+    m_Target: 5.2627883
     speed: 2
-    m_Value: 5.6882606
+    m_Value: 5.2627883
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -765,23 +765,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 16f70000
-      m_LastClickedID: 63254
-      m_ExpandedIDs: 50eafeff4267ffff8667ffffe067ffff3268ffffa068fffff068ffff8069ffffc491ffff6894ffffdadfffff6ee8fffff8e8ffff52e9ffffa2e9ffff36eaffff9aeaffffeaeaffff34ebffffa0ebffff06ecffff3aeeffff66f0ffff2ef2fffffef4ffff26fbffff4e830000768300005e8400006e84000016a300001ea3000038a3000026a4000036a5000046a5000006a900004ca9000016f70000
+      m_SelectedIDs: 18a30100
+      m_LastClickedID: 0
+      m_ExpandedIDs: cc2fffff4a32ffffa432ffffc24affff9e4dffff504effffb04efffff24effff0a50ffff6650ffff8098ffff2ef7ffff74f7ffff26fbffffca5e00002c670000c6670000e8670000f00f01000011010010110100d4170100e4180100f4180100841a01001e1b0100d4470100fc470100e4480100f4480100c64e01006c4f0100
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: 
-        m_OriginalName: 
+        m_Name: Player Health Bar
+        m_OriginalName: Player Health Bar
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 0
+        m_UserData: 86158
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 11
+        m_OriginalEventType: 0
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 9}
       m_SearchString: 
@@ -833,37 +833,37 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Prefabs
+    - Assets/Resources/Cards/Chest/Relic
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Prefabs
+  - Assets/Resources/Cards/Chest/Relic
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\Darren Pua\Desktop\Personal Project\animal-kingdom-brawl\Animal
     Kingdom Brawl!
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 111.80002}
-    m_SelectedIDs: fa5f0000
-    m_LastClickedID: 24570
-    m_ExpandedIDs: 00000000d65f0000d85f0000da5f0000dc5f0000de5f0000f65f00000260000044660000
+    scrollPos: {x: 0, y: 60}
+    m_SelectedIDs: 58720100
+    m_LastClickedID: 94808
+    m_ExpandedIDs: 000000009460000096600000986000009a6000009c6000009e600000a0600000a2600000bc6f0100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: Catomic
-      m_OriginalName: Catomic
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 27930
+      m_UserData: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 10}
     m_SearchString: 
@@ -877,7 +877,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000d65f0000d85f0000da5f0000dc5f0000de5f0000f65f00000260000044660000
+    m_ExpandedIDs: 000000009460000096600000986000009a6000009c6000009e600000a0600000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -905,7 +905,7 @@ MonoBehaviour:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: c6230000f286000092740000ca5d00003ae70000000000008c620000ce5f0000345e0000405e0000887d0000a28b000062910000bc5e0000985f00007c5f00007e5f00009a5f00008e5f0000
+    m_ExpandedInstanceIDs: c6230000f286000092740000ca5d00003ae700008c620000ce5f0000345e0000405e0000887d0000a28b000062910000bc5e0000985f00007c5f00007e5f00009a5f00008e5f000000000000d47700003e60000014600000e46500005e720100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
