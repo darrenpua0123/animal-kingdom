@@ -7289,6 +7289,7 @@ MonoBehaviour:
   enemyTwoLifeHUB: {fileID: 578324525}
   enemyThreeLifeHUB: {fileID: 1370667623}
   playerHand: {fileID: 2052359613}
+  test: {fileID: 0}
 --- !u!1 &1903996169
 GameObject:
   m_ObjectHideFlags: 0

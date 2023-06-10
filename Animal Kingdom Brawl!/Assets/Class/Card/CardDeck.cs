@@ -12,6 +12,11 @@ public class CardDeck
         drawableCards = cards;
     }
 
+    public List<Card> GetDrawableCards() 
+    {  
+        return drawableCards; 
+    }
+
     // ShuffleDrawableCards, return List
 
     // ShuffleDiscardCards, return List
