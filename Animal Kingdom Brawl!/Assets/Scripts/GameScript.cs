@@ -18,7 +18,7 @@ public class GameScript : MonoBehaviour
     int cardRemain;
     // REMOVE ^
 
-    [Header("Variables")]
+    [Header("Setting Variables")]
     private float buttonImageAlphaThreshold = 0.1f;
 
     [Header("Firebase")]
@@ -42,19 +42,24 @@ public class GameScript : MonoBehaviour
     public LifeHUB enemyThreeLifeHUB;
 
     [Header("Player GameObjects")]
+    public GameObject playerCardPrefab;//test
     public GameObject playerHand;
-    //public GameObject cardPrefab;
-    // TODO: Game Area
+
+    [Header("Game Variables")]
+    private CardDeck chestCardDeck;//test
+
 
     void Awake()
     {
         InitialiseFirebase();
 
         userID = auth.CurrentUser.UserId;
+
     }
 
     void Start()
     {
+        chestCardDeck = CardDBSchema.defaultChestCardDeck;//test
         // Make button clickable on full precision of the button image
         endTurnButton.image.alphaHitTestMinimumThreshold = buttonImageAlphaThreshold;
 
@@ -68,8 +73,6 @@ public class GameScript : MonoBehaviour
         playerLifeHUB.SetMaxHealth(health);
         playerLifeHUB.SetShield(shield);
         UpdateActionPointText(cardRemain);
-
-        DrawCard(1);
     }
 
     // Update is called once per frame
@@ -126,9 +129,10 @@ public class GameScript : MonoBehaviour
             //return;
         }
         else
-        { 
+        {
             cardRemain--;
             UpdateActionPointText(cardRemain);
+            DrawCard(2);
         }
     }
 
@@ -137,9 +141,15 @@ public class GameScript : MonoBehaviour
         // TODO: Optimize this
         for (int i = 0; i < numberOfDraw; i++)
         {
-            //GameObject newCard = Instantiate(cardPrefab, playerHand.transform);
+            //yield return new WaitForSeconds(1); // Draw card second by second
+            GameObject newCard = Instantiate(playerCardPrefab, playerHand.transform);
+            newCard.GetComponent<Image>().sprite = chestCardDeck.GetDrawableCards()[i].CardFrontSprite;
         }
     }
+
+    // public IEnumerator DrawCardBySecond(int numberOfDraw, float seconds) 
+    // yield new return new WaitForSeconds(second)
+
     private bool ActionNotEndable()
     {
         return (cardRemain > 0);

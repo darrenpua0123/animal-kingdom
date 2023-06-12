@@ -90,7 +90,7 @@ MonoBehaviour:
     m_HSlider: 0
     m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 1
+    m_EnableMouseInput: 0
     m_EnableSliderZoomHorizontal: 0
     m_EnableSliderZoomVertical: 0
     m_UniformScale: 1
@@ -479,9 +479,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 5.2342005, y: -2.4712243, z: -0.37784937}
+    m_Target: {x: -0.8225132, y: -1.6912789, z: -0.0007519722}
     speed: 2
-    m_Value: {x: 5.0328403, y: -2.3875277, z: -0.37888464}
+    m_Value: {x: -0.8225132, y: -1.6912789, z: -0.0007519722}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -532,9 +532,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 2.1970835
+    m_Target: 4.6828284
     speed: 2
-    m_Value: 2.300611
+    m_Value: 4.6828284
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -617,9 +617,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: a871ffff
-      m_LastClickedID: -36440
-      m_ExpandedIDs: 8098ffff2ef7ffff74f7ffff26fbffffca5e00002c670000c6670000
+      m_SelectedIDs: 
+      m_LastClickedID: 0
+      m_ExpandedIDs: aef7ffff64f8ffff26fbffffd05e00000a600000f8690000326b0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -712,23 +712,23 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Image/UI
+    - Assets/Prefabs
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Image/UI
+  - Assets/Prefabs
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\Darren Pua\Desktop\Personal Project\animal-kingdom-brawl\Animal
     Kingdom Brawl!
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: c8600000
-    m_LastClickedID: 24776
-    m_ExpandedIDs: 000000009460000096600000986000009a6000009c6000009e600000a0600000
+    scrollPos: {x: 0, y: 60}
+    m_SelectedIDs: ae650000
+    m_LastClickedID: 26030
+    m_ExpandedIDs: 000000008465000086650000886500008a6500008c6500008e650000906500009265000094650000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -756,7 +756,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000009460000096600000986000009a6000009c6000009e600000a0600000a2600000
+    m_ExpandedIDs: 000000008465000086650000886500008a6500008c6500008e650000906500009265000094650000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -781,10 +781,10 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: a871ffff
-    m_LastClickedInstanceID: -36440
+    m_SelectedInstanceIDs: 
+    m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: c6230000f286000092740000ca5d00003ae700008c620000ce5f0000345e0000405e0000887d0000a28b000062910000bc5e0000985f00007c5f00007e5f00009a5f00008e5f000000000000d47700003e600000
+    m_ExpandedInstanceIDs: c6230000f286000092740000ca5d00003ae700008c620000ce5f0000345e0000405e0000887d0000a28b000062910000bc5e0000985f00007c5f00007e5f00009a5f00008e5f000000000000d47700003e60000014600000e46500005e72010074600000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -860,8 +860,8 @@ MonoBehaviour:
     y: 0
     width: 398.40002
     height: 730.8
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 13}
   m_Panes:
   - {fileID: 13}

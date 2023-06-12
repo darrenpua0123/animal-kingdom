@@ -7288,8 +7288,8 @@ MonoBehaviour:
   enemyOneLifeHUB: {fileID: 272873506}
   enemyTwoLifeHUB: {fileID: 578324525}
   enemyThreeLifeHUB: {fileID: 1370667623}
+  playerCardPrefab: {fileID: 4676049781856425583, guid: cff8abf3820a1e746ac4761affdb6d70, type: 3}
   playerHand: {fileID: 2052359613}
-  test: {fileID: 0}
 --- !u!1 &1903996169
 GameObject:
   m_ObjectHideFlags: 0
@@ -7723,7 +7723,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 150, y: 150}
+  m_SizeDelta: {x: 115, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2123297532
 MonoBehaviour:

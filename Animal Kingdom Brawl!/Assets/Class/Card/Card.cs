@@ -9,12 +9,14 @@ public class Card
 {
     public Sprite CardFrontSprite { get; set; }
     public Sprite CardBackSprite { get; set; }
+    public CardCategory CardCategory { get; set; }
     public CardType CardType { get; set; }
 
-    public Card(Sprite cardFrontSprite, Sprite cardBackSprite, CardType cardTypeEnum) 
+    public Card(Sprite cardFrontSprite, Sprite cardBackSprite, CardCategory cardCategoryEnum, CardType cardTypeEnum) 
     {
        this.CardFrontSprite = cardFrontSprite;
        this.CardBackSprite = cardBackSprite;
+       this.CardCategory = cardCategoryEnum;
        this.CardType = cardTypeEnum;
     }
 }

@@ -22,30 +22,38 @@ public class CardDBSchema
     // private constructor to prevent instantiation outside of the class
     private CardDBSchema() 
     {
-        // TODO: Move all artifact/trap card in. Try to make "DrawCard" and Prefab on the GameScene.
+        // TODO: THIS FIRST! Move all artifact/trap card in. Card Prefab is done, try to move DrawCard to cardDeck func.
         // AS EVERY PLAYER HAVE THEIR OWN DECK TO DRAW AND MAY CONTAIN DIFFERENT CARD. DOESN'T MAKE SENSE FOR
         // CATOMIC'S CARDDEC TO HOLD ARTIFACTCARD
+        #region Chest
         List<Card> chestCards = new List<Card>();
 
+        #region Relic
         chestCards.Add(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Relic)}AncientGold"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
+                CardCategory.Relic,
                 CardType.Relic_TheAncientGold
             ));
 
         chestCards.Add(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Relic)}ClawOfBanshee"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
+                CardCategory.Relic,
                 CardType.Relic_ClawOfBanshee
             ));
 
         chestCards.Add(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Relic)}QilinsFeather"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
+                CardCategory.Relic,
                 CardType.Relic_QilinsFeather
             ));
 
         defaultChestCardDeck = new CardDeck(chestCards);
+        #endregion
+
+        #endregion
     }
 
     public static CardDBSchema Instance

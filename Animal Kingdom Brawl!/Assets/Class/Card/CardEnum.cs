@@ -1,3 +1,15 @@
+public enum CardCategory
+{ 
+    Relic,
+    Artifact,
+    Trap,
+    Hornterror,
+    Catomic,
+    Piggion,
+    Pandragon,
+    Beedle
+}
+
 public enum CardType
 {
     #region Relic
