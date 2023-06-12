@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 public class ChooseHeroScript : MonoBehaviour
 {
-    private readonly string x_icon = "× ";
+    private readonly string x_icon = " × ";
 
     private string userID;
     private List<string> unlockedAnimalHeroes = new List<string>();

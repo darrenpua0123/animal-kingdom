@@ -312,10 +312,10 @@ TextureImporter:
       name: Icon (No Shadow)_8
       rect:
         serializedVersion: 2
-        x: 256
-        y: 835
-        width: 32
-        height: 32
+        x: 260
+        y: 838
+        width: 25
+        height: 26
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -375,10 +375,10 @@ TextureImporter:
       name: Icon (No Shadow)_11
       rect:
         serializedVersion: 2
-        x: 0
-        y: 803
-        width: 32
-        height: 32
+        x: 4
+        y: 807
+        width: 23
+        height: 24
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

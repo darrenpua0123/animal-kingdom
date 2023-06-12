@@ -20,7 +20,7 @@ public class ShopScript : MonoBehaviour
 
     [Header("Shop UI")]
     public TMP_Text coinText;
-    private readonly string x_icon = "× ";
+    private readonly string x_icon = " × ";
 
     [Header("Firebase")]
     public FirebaseAuth auth;

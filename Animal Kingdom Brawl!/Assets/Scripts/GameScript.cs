@@ -30,7 +30,7 @@ public class GameScript : MonoBehaviour
 
     [Header("Game UI")]
     public TMP_Text remainingCardText;
-    public GameObject remainingCardImage;
+    public Image remainingCardImage;
     public TMP_Text actionPointLeftText;
     public Button endTurnButton;
 

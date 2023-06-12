@@ -7280,7 +7280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   remainingCardText: {fileID: 102301902}
-  remainingCardImage: {fileID: 965556688}
+  remainingCardImage: {fileID: 965556690}
   actionPointLeftText: {fileID: 1857787062}
   endTurnButton: {fileID: 1544077083}
   playerLifeHUB: {fileID: 1903996172}

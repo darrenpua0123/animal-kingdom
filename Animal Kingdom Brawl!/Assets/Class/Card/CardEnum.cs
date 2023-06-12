@@ -32,7 +32,7 @@ public enum CardType
     Trap_BookOfCorruption,
     Trap_AncientContract,
     Trap_MaliciousRuby,
-    Trap_UnspeakableCurse
+    Trap_TheUnspeakableCurse
     #endregion
 
     // TODO: Add other hero card

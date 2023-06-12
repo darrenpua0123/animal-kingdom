@@ -30,7 +30,7 @@ public class CardDBSchema
 
         #region Relic
         chestCards.Add(new Card(
-                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Relic)}AncientGold"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Relic)}TheAncientGold"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Relic,
                 CardType.Relic_TheAncientGold
@@ -51,6 +51,52 @@ public class CardDBSchema
             ));
 
         defaultChestCardDeck = new CardDeck(chestCards);
+        #endregion
+
+        #region Artifact
+        chestCards.Add(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Artifact)}BookOfRevealing"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
+                CardCategory.Artifact,
+                CardType.Artifact_BookOfRevealing
+            ));
+
+        chestCards.Add(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Artifact)}Expresso"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
+                CardCategory.Artifact,
+                CardType.Artifact_Expresso
+            ));
+
+        chestCards.Add(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Artifact)}HealingPotion"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
+                CardCategory.Artifact,
+                CardType.Artifact_HealingPotion
+            ));
+
+        chestCards.Add(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Artifact)}TheMimicMirror"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
+                CardCategory.Artifact,
+                CardType.Artifact_TheMimicMirror
+            ));
+
+        chestCards.Add(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Artifact)}SwappingRope"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
+                CardCategory.Artifact,
+                CardType.Artifact_SwappingRope
+            ));
+        #endregion
+
+        #region Trap
+        chestCards.Add(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}?????????????????"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
+                CardCategory.Trap,
+                CardType.Trap_BearTrap // incomplete de, not beartrap
+            ));
         #endregion
 
         #endregion
