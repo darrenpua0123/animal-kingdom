@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Card 
+public class Card
 {
     public Sprite CardFrontSprite { get; set; }
     public Sprite CardBackSprite { get; set; }

@@ -8,13 +8,25 @@ public class CardDeck
 
     public CardDeck(List<Card> cards) 
     { 
-        // TODO: to be complete after Card.cs!
         drawableCards = cards;
     }
 
-    public List<Card> GetDrawableCards() 
-    {  
-        return drawableCards; 
+    public CardDeck() 
+    { 
+
+    }
+
+    public void AddDrawableCard(Card card, int numberOfCards = 1) 
+    {
+        for (int i = 0; i < numberOfCards; i++)
+        {
+            drawableCards.Add(card);
+        }
+    }
+
+    public List<Card> GetDrawableCards()
+    {
+        return drawableCards;
     }
 
     // ShuffleDrawableCards, return List

@@ -32,7 +32,13 @@ public enum CardType
     Trap_BookOfCorruption,
     Trap_AncientContract,
     Trap_MaliciousRuby,
-    Trap_TheUnspeakableCurse
+    Trap_TheUnspeakableCurse,
+    #endregion
+
+    #region Hornterror
+    Hornterror_HeatWave,
+    Hornterror_SinisterStare,
+    Hornterror_VenomousSplit
     #endregion
 
     // TODO: Add other hero card

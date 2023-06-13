@@ -34,6 +34,9 @@ public class GameScript : MonoBehaviour
     public TMP_Text actionPointLeftText;
     public Button endTurnButton;
 
+    public GameObject viewCardPanel;
+    public Image viewCardImage;
+
     [Header("Chracter Life Hub")]
     public LifeHUB playerLifeHUB;
     public LifeHUB hornterrorLifeHUB;
@@ -46,7 +49,11 @@ public class GameScript : MonoBehaviour
     public GameObject playerHand;
 
     [Header("Game Variables")]
-    private CardDeck chestCardDeck;//test
+    private CardDeck chestCardDeck;
+    private CardDeck hornterrorCardDeck;
+    // private Player player = new Player...
+    // private Player hornterrorPlayer = new Player...
+    // private Player player; (at Start, only declare new Player randomly for computers)
 
 
     void Awake()
@@ -59,13 +66,16 @@ public class GameScript : MonoBehaviour
 
     void Start()
     {
-        chestCardDeck = CardDBSchema.defaultChestCardDeck;//test
         // Make button clickable on full precision of the button image
         endTurnButton.image.alphaHitTestMinimumThreshold = buttonImageAlphaThreshold;
+        
+        chestCardDeck = CardDBSchema.defaultChestCardDeck;
+        hornterrorCardDeck = CardDBSchema.hornterrorDefaultCardDeck;
 
         // Instantiate Player.cs Class, for the Player based on choice, and other based on random
         // Player player = new Player()...
 
+        // REMOVE
         health = bee.defaultHealth;
         shield = 3;
         cardRemain = 5;
@@ -73,6 +83,7 @@ public class GameScript : MonoBehaviour
         playerLifeHUB.SetMaxHealth(health);
         playerLifeHUB.SetShield(shield);
         UpdateActionPointText(cardRemain);
+        // REMOVE
     }
 
     // Update is called once per frame
@@ -108,6 +119,14 @@ public class GameScript : MonoBehaviour
         }
 
         // REMOVE ^
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (viewCardPanel.activeSelf)
+            {
+                CloseViewCardPanel();
+            }
+        }
     }
 
     private void InitialiseFirebase()
@@ -133,12 +152,15 @@ public class GameScript : MonoBehaviour
             cardRemain--;
             UpdateActionPointText(cardRemain);
             DrawCard(2);
+            // TODO: playerHand
+            // playerHand.Add(cardDeck.DrawCard(2) <- List)
         }
     }
 
     public void DrawCard(int numberOfDraw) 
     {
-        // TODO: Optimize this
+        // TODO: Need to change this playerHand.Add(cardDeck.DrawCard) instead
+        // IF YOU SEE THIS, IT MEANS DO THIS FIRTST IMPORTANT!!!
         for (int i = 0; i < numberOfDraw; i++)
         {
             //yield return new WaitForSeconds(1); // Draw card second by second
@@ -160,5 +182,21 @@ public class GameScript : MonoBehaviour
         if (actionPoint >= 0) {
             actionPointLeftText.text = actionPoint.ToString();
         }
+    }
+
+    public void ShowViewCardPanel(int cardIndex) 
+    {
+        // TODO: Change to get from PlayerHand's List instead.
+        // Card card = playerHand[cardIndex];
+        Card card = chestCardDeck.GetDrawableCards()[cardIndex];
+        
+        viewCardImage.sprite = card.CardFrontSprite;
+        viewCardPanel.SetActive(true);
+    }
+
+    public void CloseViewCardPanel() 
+    {
+        viewCardImage.sprite = null;
+        viewCardPanel.SetActive(false);
     }
 }
