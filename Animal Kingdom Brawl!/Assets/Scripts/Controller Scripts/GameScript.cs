@@ -13,9 +13,7 @@ public class GameScript : MonoBehaviour
 {
     // TODO: Remove
     public Beedle bee = new Beedle();
-    int health;
-    int shield;
-    int cardRemain;
+    public Catomic catomic = new Catomic();
     // REMOVE ^
 
     [Header("Setting Variables")]
@@ -45,12 +43,13 @@ public class GameScript : MonoBehaviour
     public LifeHUB enemyThreeLifeHUB;
 
     [Header("Player GameObjects")]
-    public GameObject playerCardPrefab;//test
-    public GameObject playerHand;
+    public GameObject playerCardPrefab;
+    public GameObject playerHandPanel;
 
     [Header("Game Variables")]
     private CardDeck chestCardDeck;
     private CardDeck hornterrorCardDeck;
+    private Player player;
     // private Player player = new Player...
     // private Player hornterrorPlayer = new Player...
     // private Player player; (at Start, only declare new Player randomly for computers)
@@ -61,32 +60,34 @@ public class GameScript : MonoBehaviour
         InitialiseFirebase();
 
         userID = auth.CurrentUser.UserId;
-
     }
 
     void Start()
     {
         // Make button clickable on full precision of the button image
         endTurnButton.image.alphaHitTestMinimumThreshold = buttonImageAlphaThreshold;
-        
+
+        #region Game CardDeck
         chestCardDeck = CardDBSchema.defaultChestCardDeck;
+        chestCardDeck.ShuffleCards();
+
         hornterrorCardDeck = CardDBSchema.hornterrorDefaultCardDeck;
+        hornterrorCardDeck.ShuffleCards();
+        #endregion
 
-        // Instantiate Player.cs Class, for the Player based on choice, and other based on random
-        // Player player = new Player()...
+        #region Player
+        // TODO: Need to get AnimalHero from Choice in ChooseHeroScene
 
-        // REMOVE
-        health = bee.defaultHealth;
-        shield = 3;
-        cardRemain = 5;
+        player = new Player(catomic, CardDBSchema.catomicDefaultCardDeck);
+        player.cardDeck.ShuffleCards();
+        playerLifeHUB.SetMaxHealth(player.health);
+        playerLifeHUB.SetShield(player.shield);
+        UpdateActionPointText(player.actionPoint);
+        #endregion
 
-        playerLifeHUB.SetMaxHealth(health);
-        playerLifeHUB.SetShield(shield);
-        UpdateActionPointText(cardRemain);
-        // REMOVE
+        UpdateRemainingCardText(player.cardDeck.GetAllCards().Count);
     }
 
-    // Update is called once per frame
     void Update()
     {
         // Left click: Can drag card to MIDDLE to play it.
@@ -98,26 +99,28 @@ public class GameScript : MonoBehaviour
         // left click anywhere to closed it.
 
         // DEV: Remove;
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space)) // Action
         {
-            health -= 2;
-            shield--;
+            player.health--;
+            playerLifeHUB.SetHealthBar(player.health);
 
-            playerLifeHUB.SetHealthBar(health);
-            playerLifeHUB.SetShield(shield);
+            player.shield--;
+            playerLifeHUB.SetShield(player.shield);
 
-            cardRemain--;
-            UpdateActionPointText(cardRemain);
+            player.actionPoint--;
+            UpdateActionPointText(player.actionPoint);
         }
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R)) // Start turn
         {
-            health++;
-            shield++;
+            player.health++;
+            playerLifeHUB.SetHealthBar(player.health);
 
-            playerLifeHUB.SetHealthBar(health);
-            playerLifeHUB.SetShield(shield);
+            player.actionPoint = player.animalHero.startingActionPoint;
+            UpdateActionPointText(player.actionPoint);
+
+            player.AddCardsToHand(player.cardDeck.DrawCards(2));
+            UpdateCardsInPlayerHandPanel(player.playerHand);
         }
-
         // REMOVE ^
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -127,6 +130,8 @@ public class GameScript : MonoBehaviour
                 CloseViewCardPanel();
             }
         }
+
+        UpdateRemainingCardText(player.cardDeck.GetAllCards().Count);
     }
 
     private void InitialiseFirebase()
@@ -135,46 +140,52 @@ public class GameScript : MonoBehaviour
         firebaseDBReference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
-    public void PlayerEndTurnButton() 
+    private void UpdateRemainingCardText(int remainingCards) 
     {
-        // Check for AP
-        // Draw 2 cards from chest, put to player's hand
-        // Update 
-        //DrawCard(3);
+        remainingCardText.text = $"Remaining:\n{remainingCards}";
+    }
 
-        if (ActionNotEndable())
+    public void ClearCardsInPlayerHandPanel()
+    {
+        for (int i = playerHandPanel.transform.childCount - 1; i >= 0; i--)
         {
-            Debug.Log($"Cannot end turn as you have {cardRemain} turns left!");
+            GameObject childObject = playerHandPanel.transform.GetChild(i).gameObject;
+            Destroy(childObject);
+        }
+    }
+
+    public void UpdateCardsInPlayerHandPanel(List<Card> playerHandCards) 
+    {
+        ClearCardsInPlayerHandPanel();
+
+        foreach (Card card in playerHandCards)
+        {
+            GameObject cardPrefab = Instantiate(playerCardPrefab, playerHandPanel.transform);
+            cardPrefab.GetComponent<Image>().sprite = card.CardFrontSprite;
+        }
+    }
+    // public IEnumerator DrawCardBySecond(int numberOfDraw, float seconds) 
+    // yield new return new WaitForSeconds(second)
+
+    public void PlayerEndTurnButton()
+    {
+        if (ActionNotEndable(player.actionPoint))
+        {
+            Debug.Log($"Cannot end turn as you have {player.actionPoint} turns left!");
             //return;
         }
         else
         {
-            cardRemain--;
-            UpdateActionPointText(cardRemain);
-            DrawCard(2);
-            // TODO: playerHand
-            // playerHand.Add(cardDeck.DrawCard(2) <- List)
+            List<Card> drawnCards = chestCardDeck.DrawCards(1);
+
+            player.AddCardsToHand(drawnCards);
+            UpdateCardsInPlayerHandPanel(player.playerHand);
         }
     }
 
-    public void DrawCard(int numberOfDraw) 
+    private bool ActionNotEndable(int actionPoint)
     {
-        // TODO: Need to change this playerHand.Add(cardDeck.DrawCard) instead
-        // IF YOU SEE THIS, IT MEANS DO THIS FIRTST IMPORTANT!!!
-        for (int i = 0; i < numberOfDraw; i++)
-        {
-            //yield return new WaitForSeconds(1); // Draw card second by second
-            GameObject newCard = Instantiate(playerCardPrefab, playerHand.transform);
-            newCard.GetComponent<Image>().sprite = chestCardDeck.GetDrawableCards()[i].CardFrontSprite;
-        }
-    }
-
-    // public IEnumerator DrawCardBySecond(int numberOfDraw, float seconds) 
-    // yield new return new WaitForSeconds(second)
-
-    private bool ActionNotEndable()
-    {
-        return (cardRemain > 0);
+        return (actionPoint > 0);
     }
 
     private void UpdateActionPointText(int actionPoint) 
@@ -186,11 +197,9 @@ public class GameScript : MonoBehaviour
 
     public void ShowViewCardPanel(int cardIndex) 
     {
-        // TODO: Change to get from PlayerHand's List instead.
-        // Card card = playerHand[cardIndex];
-        Card card = chestCardDeck.GetDrawableCards()[cardIndex];
+        Card viewCard = player.playerHand[cardIndex];
         
-        viewCardImage.sprite = card.CardFrontSprite;
+        viewCardImage.sprite = viewCard.CardFrontSprite;
         viewCardPanel.SetActive(true);
     }
 

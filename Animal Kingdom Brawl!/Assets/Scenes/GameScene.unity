@@ -7459,7 +7459,7 @@ MonoBehaviour:
   enemyTwoLifeHUB: {fileID: 578324525}
   enemyThreeLifeHUB: {fileID: 1370667623}
   playerCardPrefab: {fileID: 4676049781856425583, guid: cff8abf3820a1e746ac4761affdb6d70, type: 3}
-  playerHand: {fileID: 2052359613}
+  playerHandPanel: {fileID: 2052359613}
 --- !u!1 &1903996169
 GameObject:
   m_ObjectHideFlags: 0

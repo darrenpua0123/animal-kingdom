@@ -1,22 +1,25 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using UnityEngine.Timeline;
 
 public class Player
 {
+    public AnimalHero animalHero;
     public int health;
     public int shield;
     public int actionPoint;
+    public int knockoutCounter = 0;
+    public int relicCounter = 0;
 
-    public int knockoutCounter;
-    public int relicCounter;
+    public CardDeck cardDeck;
+    public List<Card> playerHand = new List<Card>();
 
-    public List<string> activeEffects;
+    public List<string> activeEffects = new List<string>(); // TODO: active effect need refactor
 
-    public Player()
+    public Player(AnimalHero chosenAnimalHero, CardDeck animalHeroCardDeck) 
     {
-        // TODO: Use this for Game's player uses. coins, game card, and win record etc
-        
         // animalhero, AnimalHero
         // health, int -> from animlahero.defaulthealth
         // shield, int -> from animalhero.deffaultShield
@@ -26,11 +29,20 @@ public class Player
         // knockout counter, int
         // relic counter, int
         // ActiveEffect, ? maybe enum effects? new List<>(ActiveEffect.Stunned), then no move;
+
+        animalHero = chosenAnimalHero;
+        health = chosenAnimalHero.defaultHealth;
+        shield = chosenAnimalHero.defaultShield;
+        actionPoint = chosenAnimalHero.startingActionPoint;
+
+        cardDeck = animalHeroCardDeck;
     }
 
-    public Player(AnimalHero animalHero, CardDeck animalHeroCardDeck, List<Card> cardHandDeck) 
+    public void AddCardsToHand(List<Card> cards) 
     {
-        
-    
+        foreach (var card in cards)
+        {
+            playerHand.Add(card);
+        }
     }
 }

@@ -2,12 +2,12 @@
 public class Beedle : AnimalHero
 {
     public static string HERO_NAME = "beedle";
-    public int defaultHealth = 15;
-    public int defaultShield = 0;
-    public int startingActionPoint = 2;
+    public override int defaultHealth { get; set; } = 15;
+    public override int defaultShield { get; set; } = 0;
+    public override int startingActionPoint { get; set; } = 2;    
 
     public Beedle() : base()
-    { 
+    {
 
     }
 }

@@ -2,9 +2,10 @@
 public class Piggion : AnimalHero
 {
     public static string HERO_NAME = "piggion";
-    public int defaultHealth = 20;
-    public int defaultShield = 3;
-    public int startingActionPoint = 1;
+    public override int defaultHealth { get; set; } = 20;
+    public override int defaultShield { get; set; } = 3;
+    public override int startingActionPoint { get; set; } = 1;
+
 
     public Piggion() : base()
     { 

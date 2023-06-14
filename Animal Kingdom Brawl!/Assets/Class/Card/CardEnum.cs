@@ -38,8 +38,18 @@ public enum CardType
     #region Hornterror
     Hornterror_HeatWave,
     Hornterror_SinisterStare,
-    Hornterror_VenomousSplit
+    Hornterror_VenomousSplit,
     #endregion
 
+    #region Catomic
+    Catomic_BestCatFood,
+    Catomic_CatArmor,
+    Catomic_CatcatSlash,
+    Catomic_CatDoWhatCatWant,
+    Catomic_CatPawPunch,
+    Catomic_PiercingClawOfPaw,
+    Catomic_ThiefInformation,
+    Catomic_TreasuresRight
+    #endregion
     // TODO: Add other hero card
 }
