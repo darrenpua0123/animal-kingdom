@@ -14,7 +14,8 @@ public class Player
     public int relicCounter = 0;
 
     public CardDeck cardDeck;
-    public List<Card> playerHand = new List<Card>();
+    public CardDeck discardDeck = new CardDeck();
+    public List<Card> playerHand = new List<Card>(); // TODO: Refactor: Maybe change to CardDeck also?
 
     public List<string> activeEffects = new List<string>(); // TODO: active effect need refactor
 
@@ -46,8 +47,11 @@ public class Player
         }
     }
 
-    public void ReorderCardsInPlayerHand(int cardIndex) 
-    { 
-        
+    public void RemoveCardsFromHand(List<Card> cards) 
+    {
+        foreach (var card in cards) 
+        { 
+            playerHand.Remove(card);
+        }
     }
 }

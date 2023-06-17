@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class Card
 {
-    // TODO: Consider need to mergfe with ClickHandler? : Monobehaviour, IDrag etc..
     public Sprite CardFrontSprite { get; set; }
     public Sprite CardBackSprite { get; set; }
     public CardCategory CardCategory { get; set; }

@@ -87,6 +87,7 @@ public class GameScript : MonoBehaviour
         #endregion
 
         UpdateRemainingCardText(player.cardDeck.GetAllCards().Count);
+        UpdateRemainingCardBackImage(player.cardDeck.GetAllCards()[0].CardBackSprite);
     }
 
     void Update()
@@ -141,11 +142,16 @@ public class GameScript : MonoBehaviour
         firebaseDBReference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
-    private void UpdateRemainingCardText(int remainingCards) 
+    private void UpdateRemainingCardText(int remainingCards)
     {
         remainingCardText.text = $"Remaining:\n{remainingCards}";
     }
 
+    private void UpdateRemainingCardBackImage(Sprite cardBackImage)
+    {
+        remainingCardImage.sprite = cardBackImage;
+    }
+        
     public void ClearCardsInPlayerHandPanel()
     {
         for (int i = playerHandPanel.transform.childCount - 1; i >= 0; i--)
@@ -154,8 +160,8 @@ public class GameScript : MonoBehaviour
             Destroy(childObject);
         }
     }
-        
-    public void UpdateCardsInPlayerHandPanel(List<Card> playerHandCards) 
+
+    public void UpdateCardsInPlayerHandPanel(List<Card> playerHandCards)
     {
         ClearCardsInPlayerHandPanel();
 
@@ -204,11 +210,24 @@ public class GameScript : MonoBehaviour
         return (actionPoint > 0);
     }
 
-    private void UpdateActionPointText(int actionPoint) 
+    private void UpdateActionPointText(int actionPoint)
     {
         if (actionPoint >= 0) {
             actionPointLeftText.text = actionPoint.ToString();
         }
+    }
+
+    public void ActivateCard(int cardIndex) 
+    {
+        Debug.Log($"{player.playerHand[cardIndex].CardFrontSprite} is activated.");
+
+        Card activatedCard = player.playerHand[cardIndex];
+
+        List<Card> activatedCards = new List<Card>();
+        activatedCards.Add(activatedCard);
+
+        player.RemoveCardsFromHand(activatedCards);
+        // TODO: Continue here Try to prompt Attack Selector when use CatCat Slash etc.
     }
 
     public void ShowViewCardPanel(int cardIndex) 

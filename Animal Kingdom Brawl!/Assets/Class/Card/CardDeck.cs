@@ -22,6 +22,10 @@ public class CardDeck
         return cards;
     }
 
+    // TODO: Refactor: Might need to add RemoveCard, paramter maybe use List<Card> to follow all practice.
+    // AddCard maybe need change also
+    // TODO: InsertCardAt(Card card, index); For Trap Card, cuz need reinsert back.
+
     public void AddCard(Card card, int numberOfCards = 1) 
     {
         for (int i = 0; i < numberOfCards; i++)

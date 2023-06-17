@@ -8,9 +8,9 @@ using UnityEngine.UI;
 
 public class CardMovementHandlerScript : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+    [HideInInspector] public static bool CardIsDragging = false;
+    [HideInInspector] public static int DraggedCardIndex;
     private GameScript gameScript;
-    private int draggedCardIndex;
-    private bool isDragging = false;
 
     void Awake() 
     {
@@ -35,7 +35,7 @@ public class CardMovementHandlerScript : MonoBehaviour, IPointerClickHandler, IB
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Right && !isDragging)
+        if (eventData.button == PointerEventData.InputButton.Right && !CardIsDragging)
         {
             int cardIndex = transform.GetSiblingIndex();
             gameScript.ShowViewCardPanel(cardIndex);   
@@ -44,11 +44,11 @@ public class CardMovementHandlerScript : MonoBehaviour, IPointerClickHandler, IB
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        isDragging = true;
+        CardIsDragging = true;
         GetComponent<Image>().raycastTarget = false;
 
-        draggedCardIndex = transform.GetSiblingIndex();
-        gameScript.CreateCardPlaceholder(draggedCardIndex);
+        DraggedCardIndex = transform.GetSiblingIndex();
+        gameScript.CreateCardPlaceholder(DraggedCardIndex);
 
         this.transform.SetParent(gameScript.canvas.transform);
     }
@@ -68,16 +68,12 @@ public class CardMovementHandlerScript : MonoBehaviour, IPointerClickHandler, IB
 
     public void OnEndDrag(PointerEventData eventData)
     { 
-        isDragging = false;
+        CardIsDragging = false;
         GetComponent<Image>().raycastTarget = true;
 
-        gameScript.DestroyCardPlacholder(draggedCardIndex);
+        gameScript.DestroyCardPlacholder(DraggedCardIndex);
 
         this.transform.SetParent(gameScript.playerHandPanel.transform);
-        this.transform.SetSiblingIndex(draggedCardIndex);
-
-        draggedCardIndex = -1;
+        this.transform.SetSiblingIndex(DraggedCardIndex);
     }
-
-    // TODO: When Drag to middle collision panel, then activate things.
 }
