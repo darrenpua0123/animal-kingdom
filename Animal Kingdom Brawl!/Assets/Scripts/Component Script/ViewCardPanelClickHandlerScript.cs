@@ -5,6 +5,19 @@ using UnityEngine.EventSystems;
 
 public class ViewCardPanelClickHandlerScript : MonoBehaviour, IPointerClickHandler
 {
+    private GameScript gameScript;
+
+    void Awake() 
+    { 
+        gameScript = FindObjectOfType<GameScript>();
+
+        if (gameScript == null)
+        {
+            Debug.Log($"Error: GameScript is null in {this}");
+            return;
+        }
+    }
+
     void Start()
     {
         
@@ -19,12 +32,7 @@ public class ViewCardPanelClickHandlerScript : MonoBehaviour, IPointerClickHandl
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            GameScript gameScript = FindObjectOfType<GameScript>();
-
-            if (gameScript != null)
-            {
-                gameScript.CloseViewCardPanel();
-            }
+            gameScript.CloseViewCardPanel();
         }
     }
 }

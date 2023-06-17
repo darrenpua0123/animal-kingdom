@@ -45,4 +45,9 @@ public class Player
             playerHand.Add(card);
         }
     }
+
+    public void ReorderCardsInPlayerHand(int cardIndex) 
+    { 
+        
+    }
 }

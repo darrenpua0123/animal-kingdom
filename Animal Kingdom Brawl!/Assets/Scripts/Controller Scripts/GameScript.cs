@@ -26,7 +26,8 @@ public class GameScript : MonoBehaviour
     [Header("Player's Attribute")]
     private string userID;
 
-    [Header("Game UI")]
+    [Header("UI")]
+    public Canvas canvas; // DEV: Remove
     public TMP_Text remainingCardText;
     public Image remainingCardImage;
     public TMP_Text actionPointLeftText;
@@ -153,7 +154,7 @@ public class GameScript : MonoBehaviour
             Destroy(childObject);
         }
     }
-
+        
     public void UpdateCardsInPlayerHandPanel(List<Card> playerHandCards) 
     {
         ClearCardsInPlayerHandPanel();
@@ -166,6 +167,21 @@ public class GameScript : MonoBehaviour
     }
     // public IEnumerator DrawCardBySecond(int numberOfDraw, float seconds) 
     // yield new return new WaitForSeconds(second)
+
+    public void CreateCardPlaceholder(int cardIndex)
+    {
+        GameObject cardPlaceholderPrefab = Instantiate(playerCardPrefab, playerHandPanel.transform);
+        Sprite sprite = Resources.Load<Sprite>("Cards/Cardback/Empty Card Placeholder");
+        cardPlaceholderPrefab.GetComponent<Image>().sprite = sprite;
+
+        cardPlaceholderPrefab.transform.SetSiblingIndex(cardIndex);
+    }
+
+    public void DestroyCardPlacholder(int cardIndex)
+    {
+        GameObject cardPlaceholder = playerHandPanel.transform.GetChild(cardIndex).gameObject;
+        Destroy(cardPlaceholder);
+    }
 
     public void PlayerEndTurnButton()
     {
