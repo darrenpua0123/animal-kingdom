@@ -23,16 +23,6 @@ public class CardMovementHandlerScript : MonoBehaviour, IPointerClickHandler, IB
         }
     }
 
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-        
-    }
-
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Right && !CardIsDragging)

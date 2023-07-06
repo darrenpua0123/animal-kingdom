@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using UnityEngine.Timeline;
 
@@ -15,7 +16,7 @@ public class Player
 
     public CardDeck cardDeck;
     public CardDeck discardDeck = new CardDeck();
-    public List<Card> playerHand = new List<Card>(); // TODO: Refactor: Maybe change to CardDeck also?
+    public CardDeck playerHandDeck = new CardDeck();
 
     public List<string> activeEffects = new List<string>(); // TODO: active effect need refactor
 
@@ -39,19 +40,19 @@ public class Player
         cardDeck = animalHeroCardDeck;
     }
 
-    public void AddCardsToHand(List<Card> cards) 
+    public void TakeDamage(int damage) 
     {
-        foreach (var card in cards)
-        {
-            playerHand.Add(card);
-        }
-    }
+        int actualDamage = damage - shield;
 
-    public void RemoveCardsFromHand(List<Card> cards) 
-    {
-        foreach (var card in cards) 
-        { 
-            playerHand.Remove(card);
+        if (actualDamage > 0) // Damage value is HIGHER than shield
+        {
+            shield = 0;
+            health -= actualDamage;
         }
+        else // Damage value is LOWER than shield
+        {
+            shield -= damage;
+        }
+        
     }
 }

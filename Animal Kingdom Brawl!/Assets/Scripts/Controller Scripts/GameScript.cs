@@ -11,11 +11,6 @@ using UnityEngine.UI;
 
 public class GameScript : MonoBehaviour
 {
-    // TODO: Remove
-    public Beedle bee = new Beedle();
-    public Catomic catomic = new Catomic();
-    // REMOVE ^
-
     [Header("Setting Variables")]
     private float buttonImageAlphaThreshold = 0.1f;
 
@@ -27,33 +22,39 @@ public class GameScript : MonoBehaviour
     private string userID;
 
     [Header("UI")]
-    public Canvas canvas; // DEV: Remove
+    public Canvas canvas;
     public TMP_Text remainingCardText;
     public Image remainingCardImage;
     public TMP_Text actionPointLeftText;
     public Button endTurnButton;
 
+    public Image hornterrorHeroImage;
+    public Image enemyOneHeroImage;
+    public Image enemyTwoHeroImage;
+    public Image enemyThreeHeroImage;
+
     public GameObject viewCardPanel;
     public Image viewCardImage;
 
-    [Header("Chracter Life Hub")]
+    [Header("Player GameObjects")]
+    public GameObject playerCardPrefab;
+    public GameObject playerHandPanel;
+
+    [Header("Character Life Hub")]
     public LifeHUB playerLifeHUB;
     public LifeHUB hornterrorLifeHUB;
     public LifeHUB enemyOneLifeHUB;
     public LifeHUB enemyTwoLifeHUB;
     public LifeHUB enemyThreeLifeHUB;
 
-    [Header("Player GameObjects")]
-    public GameObject playerCardPrefab;
-    public GameObject playerHandPanel;
-
     [Header("Game Variables")]
     private CardDeck chestCardDeck;
-    private CardDeck hornterrorCardDeck;
+    private Player currentTurnPlayer;
     private Player player;
-    // private Player player = new Player...
-    // private Player hornterrorPlayer = new Player...
-    // private Player player; (at Start, only declare new Player randomly for computers)
+    private Player hornterrorNPC;
+    private Player enemyOneNPC;
+    private Player enemyTwoNPC;
+    private Player enemyThreeNPC;
 
 
     void Awake()
@@ -68,26 +69,51 @@ public class GameScript : MonoBehaviour
         // Make button clickable on full precision of the button image
         endTurnButton.image.alphaHitTestMinimumThreshold = buttonImageAlphaThreshold;
 
-        #region Game CardDeck
+        #region Match Setting
         chestCardDeck = CardDBSchema.defaultChestCardDeck;
         chestCardDeck.ShuffleCards();
-
-        hornterrorCardDeck = CardDBSchema.hornterrorDefaultCardDeck;
-        hornterrorCardDeck.ShuffleCards();
         #endregion
 
         #region Player
         // TODO: Need to get AnimalHero from Choice in ChooseHeroScene
-
-        player = new Player(catomic, CardDBSchema.catomicDefaultCardDeck);
+        player = new Player(new Catomic(), CardDBSchema.catomicDefaultCardDeck);
         player.cardDeck.ShuffleCards();
         playerLifeHUB.SetMaxHealth(player.health);
         playerLifeHUB.SetShield(player.shield);
         UpdateActionPointText(player.actionPoint);
-        #endregion
 
         UpdateRemainingCardText(player.cardDeck.GetAllCards().Count);
         UpdateRemainingCardBackImage(player.cardDeck.GetAllCards()[0].CardBackSprite);
+        #endregion
+
+        #region Computer AI
+        hornterrorNPC = new Player(new Hornterror(), CardDBSchema.hornterrorDefaultCardDeck);
+        hornterrorNPC.cardDeck.ShuffleCards();
+        hornterrorHeroImage.sprite = hornterrorNPC.animalHero.animalHeroImage;
+        hornterrorLifeHUB.SetMaxHealth(hornterrorNPC.health);
+        hornterrorLifeHUB.SetShield(hornterrorNPC.shield);
+
+        // TODO: Make enemy 1 2 3 all random (make sure is unique and no repeat)
+        enemyOneNPC = new Player(new Catomic(), CardDBSchema.catomicDefaultCardDeck);
+        enemyOneNPC.cardDeck.ShuffleCards();
+        enemyOneHeroImage.sprite = enemyOneNPC.animalHero.animalHeroImage;
+        enemyOneLifeHUB.SetMaxHealth(enemyOneNPC.health);
+        enemyOneLifeHUB.SetShield(enemyOneNPC.shield);
+
+        enemyTwoNPC = new Player(new Catomic(), CardDBSchema.catomicDefaultCardDeck);
+        enemyTwoNPC.cardDeck.ShuffleCards();
+        enemyTwoHeroImage.sprite = enemyTwoNPC.animalHero.animalHeroImage;
+        enemyTwoLifeHUB.SetMaxHealth(enemyTwoNPC.health);
+        enemyTwoLifeHUB.SetShield(enemyTwoNPC.shield);
+
+        enemyThreeNPC = new Player(new Catomic(), CardDBSchema.catomicDefaultCardDeck);
+        enemyThreeNPC.cardDeck.ShuffleCards();
+        enemyThreeHeroImage.sprite = enemyThreeNPC.animalHero.animalHeroImage;
+        enemyThreeLifeHUB.SetMaxHealth(enemyThreeNPC.health);
+        enemyThreeLifeHUB.SetShield(enemyThreeNPC.shield);
+        #endregion
+
+        currentTurnPlayer = player;
     }
 
     void Update()
@@ -120,8 +146,8 @@ public class GameScript : MonoBehaviour
             player.actionPoint = player.animalHero.startingActionPoint;
             UpdateActionPointText(player.actionPoint);
 
-            player.AddCardsToHand(player.cardDeck.DrawCards(2));
-            UpdateCardsInPlayerHandPanel(player.playerHand);
+            player.playerHandDeck.AddCards(player.cardDeck.DrawCards(2));
+            UpdateCardsInPlayerHandPanel(player.playerHandDeck.GetAllCards());
         }
         // REMOVE ^
 
@@ -134,6 +160,7 @@ public class GameScript : MonoBehaviour
         }
 
         UpdateRemainingCardText(player.cardDeck.GetAllCards().Count);
+        // TODO: Update every lifehub
     }
 
     private void InitialiseFirebase()
@@ -171,7 +198,7 @@ public class GameScript : MonoBehaviour
             cardPrefab.GetComponent<Image>().sprite = card.CardFrontSprite;
         }
     }
-    // public IEnumerator DrawCardBySecond(int numberOfDraw, float seconds) 
+    // TODO: public IEnumerator DrawCardBySecond(int numberOfDraw, float seconds) 
     // yield new return new WaitForSeconds(second)
 
     public void CreateCardPlaceholder(int cardIndex)
@@ -200,8 +227,8 @@ public class GameScript : MonoBehaviour
         {
             List<Card> drawnCards = chestCardDeck.DrawCards(1);
 
-            player.AddCardsToHand(drawnCards);
-            UpdateCardsInPlayerHandPanel(player.playerHand);
+            player.playerHandDeck.AddCards(drawnCards);
+            UpdateCardsInPlayerHandPanel(player.playerHandDeck.GetAllCards());
         }
     }
 
@@ -219,20 +246,32 @@ public class GameScript : MonoBehaviour
 
     public void ActivateCard(int cardIndex) 
     {
-        Debug.Log($"{player.playerHand[cardIndex].CardFrontSprite} is activated.");
+        List<Player> targetPlayers = new List<Player>();
+        Card playedCard = currentTurnPlayer.playerHandDeck.GetAllCards()[cardIndex];
 
-        Card activatedCard = player.playerHand[cardIndex];
+        foreach (var abilityType in playedCard.CardAbility.abilityType)
+        {
+            switch (abilityType)
+            {
+                case AbilityType.SingleTargetable:
+                    // Prompt Panel, set player.
+                    break;
 
-        List<Card> activatedCards = new List<Card>();
-        activatedCards.Add(activatedCard);
+                default: break;
+            }
+        }
 
-        player.RemoveCardsFromHand(activatedCards);
-        // TODO: Continue here Try to prompt Attack Selector when use CatCat Slash etc.
+        playedCard.CardAbility.ActivateAbility(currentTurnPlayer, targetPlayers);
+        
+        currentTurnPlayer.playerHandDeck.RemoveSingleCard(playedCard);
+        currentTurnPlayer.discardDeck.AddSingleCard(playedCard);
     }
+
+    // TODO: Continue here to implement ShowSelectPlayerPanel
 
     public void ShowViewCardPanel(int cardIndex) 
     {
-        Card viewCard = player.playerHand[cardIndex];
+        Card viewCard = player.playerHandDeck.GetAllCards()[cardIndex];
         
         viewCardImage.sprite = viewCard.CardFrontSprite;
         viewCardPanel.SetActive(true);

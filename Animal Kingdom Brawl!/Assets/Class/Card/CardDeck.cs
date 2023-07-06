@@ -22,15 +22,35 @@ public class CardDeck
         return cards;
     }
 
-    // TODO: Refactor: Might need to add RemoveCard, paramter maybe use List<Card> to follow all practice.
-    // AddCard maybe need change also
-    // TODO: InsertCardAt(Card card, index); For Trap Card, cuz need reinsert back.
-
-    public void AddCard(Card card, int numberOfCards = 1) 
+    public void AddSingleCard(Card card, int insertAmount = 1) 
     {
-        for (int i = 0; i < numberOfCards; i++)
+        for (int i = 0; i < insertAmount; i++)
         {
             cards.Add(card);
+        }
+    }
+
+    public void AddCards(List<Card> addedCards)
+    {
+        foreach (var card in addedCards)
+        {
+            cards.Add(card);
+        }
+    }
+
+    public void RemoveSingleCard(Card card, int removeAmount = 1)
+    {
+        for (int i = 0; i < removeAmount; i++)
+        {
+            cards.Remove(card);
+        }
+    }
+
+    public void RemoveCards(List<Card> removedCards)
+    {
+        foreach (var card in removedCards)
+        {
+            cards.Remove(card);
         }
     }
 
@@ -46,6 +66,11 @@ public class CardDeck
         }
 
         return drawnCards;
+    }
+
+    public void InsertCardAt(Card card, int index) 
+    {
+        cards.Insert(index, card);
     }
 
     public void ShuffleCards()

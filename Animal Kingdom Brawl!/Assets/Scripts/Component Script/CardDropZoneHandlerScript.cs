@@ -18,16 +18,6 @@ public class CardDropZoneHandlerScript : MonoBehaviour, IDropHandler
         }
     }
 
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
-
     public void OnDrop(PointerEventData eventData)
     {
         CardMovementHandlerScript.CardIsDragging = false;
@@ -37,6 +27,6 @@ public class CardDropZoneHandlerScript : MonoBehaviour, IDropHandler
         gameScript.DestroyCardPlacholder(droppedCardIndex);
         Destroy(eventData.pointerDrag);
 
-        gameScript.ActivateCard(droppedCardIndex);// TODO: Continue here
+        gameScript.ActivateCard(droppedCardIndex);
     }
 }

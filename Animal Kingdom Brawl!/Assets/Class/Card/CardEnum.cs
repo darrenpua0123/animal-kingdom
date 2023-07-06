@@ -11,7 +11,7 @@ public enum CardCategory
 }
 
 public enum CardType
-{
+{// TODO: Remove once all ability is done
     #region Relic
     Relic_TheAncientGold,
     Relic_ClawOfBanshee,

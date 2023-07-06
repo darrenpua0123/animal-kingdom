@@ -31,21 +31,21 @@ public class CardDBSchema
         defaultChestCardDeck = new CardDeck();
 
         #region Relic
-        defaultChestCardDeck.AddCard(new Card(
+        defaultChestCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Relic)}TheAncientGold"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Relic,
                 CardType.Relic_TheAncientGold)
             );
 
-        defaultChestCardDeck.AddCard(new Card(
+        defaultChestCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Relic)}ClawOfBanshee"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Relic,
                 CardType.Relic_ClawOfBanshee)
             );
 
-        defaultChestCardDeck.AddCard(new Card(
+        defaultChestCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Relic)}QilinsFeather"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Relic,
@@ -54,7 +54,7 @@ public class CardDBSchema
         #endregion
 
         #region Artifact
-        defaultChestCardDeck.AddCard(new Card(
+        defaultChestCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Artifact)}BookOfRevealing"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Artifact,
@@ -62,7 +62,7 @@ public class CardDBSchema
                 3
             );
 
-        defaultChestCardDeck.AddCard(new Card(
+        defaultChestCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Artifact)}Expresso"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Artifact,
@@ -70,7 +70,7 @@ public class CardDBSchema
                 3
             );
 
-        defaultChestCardDeck.AddCard(new Card(
+        defaultChestCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Artifact)}HealingPotion"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Artifact,
@@ -78,7 +78,7 @@ public class CardDBSchema
                 3
             );
 
-        defaultChestCardDeck.AddCard(new Card(
+        defaultChestCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Artifact)}TheMimicMirror"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Artifact,
@@ -86,7 +86,7 @@ public class CardDBSchema
                 3
             );
 
-        defaultChestCardDeck.AddCard(new Card(
+        defaultChestCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Artifact)}SwappingRope"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Artifact,
@@ -96,7 +96,7 @@ public class CardDBSchema
         #endregion
 
         #region Trap
-        defaultChestCardDeck.AddCard(new Card(
+        defaultChestCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}AncientContract"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Trap,
@@ -104,7 +104,7 @@ public class CardDBSchema
                 3
             );
 
-        defaultChestCardDeck.AddCard(new Card(
+        defaultChestCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}BearTrap"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Trap,
@@ -112,7 +112,7 @@ public class CardDBSchema
                 3
             );
 
-        defaultChestCardDeck.AddCard(new Card(
+        defaultChestCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}BookOfCorruption"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Trap,
@@ -120,7 +120,7 @@ public class CardDBSchema
                 3
             );
 
-        defaultChestCardDeck.AddCard(new Card(
+        defaultChestCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}CalamityBomb"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Trap,
@@ -128,7 +128,7 @@ public class CardDBSchema
                 3
             );
 
-        defaultChestCardDeck.AddCard(new Card(
+        defaultChestCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}MaliciousRuby"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Trap,
@@ -136,7 +136,7 @@ public class CardDBSchema
                 2
             );
 
-        defaultChestCardDeck.AddCard(new Card(
+        defaultChestCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}UnspeakableCurse"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Trap,
@@ -148,7 +148,7 @@ public class CardDBSchema
         #region Hornterror
         hornterrorDefaultCardDeck = new CardDeck();
 
-        hornterrorDefaultCardDeck.AddCard(new Card(
+        hornterrorDefaultCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Hornterror)}HeatWave"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Hornterror_Cardback"),
                 CardCategory.Hornterror,
@@ -156,7 +156,7 @@ public class CardDBSchema
                 3
             );
 
-        hornterrorDefaultCardDeck.AddCard(new Card(
+        hornterrorDefaultCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Hornterror)}SinisterStare"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Hornterror_Cardback"),
                 CardCategory.Hornterror,
@@ -164,7 +164,7 @@ public class CardDBSchema
                 4
             );
 
-        hornterrorDefaultCardDeck.AddCard(new Card(
+        hornterrorDefaultCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Hornterror)}VenomousSplit"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Hornterror_Cardback"),
                 CardCategory.Hornterror,
@@ -185,7 +185,7 @@ public class CardDBSchema
         #region Catomic
         catomicDefaultCardDeck = new CardDeck();
 
-        catomicDefaultCardDeck.AddCard(new Card(
+        catomicDefaultCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Catomic)}BestCatFood"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Catomic_Cardback"),
                 CardCategory.Catomic,
@@ -193,7 +193,7 @@ public class CardDBSchema
                 2
             );
 
-        catomicDefaultCardDeck.AddCard(new Card(
+        catomicDefaultCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Catomic)}CatArmor"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Catomic_Cardback"),
                 CardCategory.Catomic,
@@ -201,15 +201,15 @@ public class CardDBSchema
                 2
             );
 
-        catomicDefaultCardDeck.AddCard(new Card(
+        catomicDefaultCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Catomic)}CatcatSlash"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Catomic_Cardback"),
                 CardCategory.Catomic,
-                CardType.Catomic_CatcatSlash),
+                new CatcatSlash()),
                 3
             );
 
-        catomicDefaultCardDeck.AddCard(new Card(
+        catomicDefaultCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Catomic)}CatDoWhatCatWant"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Catomic_Cardback"),
                 CardCategory.Catomic,
@@ -217,7 +217,7 @@ public class CardDBSchema
                 2
             );
 
-        catomicDefaultCardDeck.AddCard(new Card(
+        catomicDefaultCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Catomic)}CatPawPunch"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Catomic_Cardback"),
                 CardCategory.Catomic,
@@ -225,7 +225,7 @@ public class CardDBSchema
                 4
             );
 
-        catomicDefaultCardDeck.AddCard(new Card(
+        catomicDefaultCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Catomic)}PiercingClawOfPaw"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Catomic_Cardback"),
                 CardCategory.Catomic,
@@ -233,7 +233,7 @@ public class CardDBSchema
                 2
             );
 
-        catomicDefaultCardDeck.AddCard(new Card(
+        catomicDefaultCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Catomic)}ThiefInformation"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Catomic_Cardback"),
                 CardCategory.Catomic,
@@ -241,7 +241,7 @@ public class CardDBSchema
                 3
             );
 
-        catomicDefaultCardDeck.AddCard(new Card(
+        catomicDefaultCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Catomic)}TreasuresRight"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Catomic_Cardback"),
                 CardCategory.Catomic,
