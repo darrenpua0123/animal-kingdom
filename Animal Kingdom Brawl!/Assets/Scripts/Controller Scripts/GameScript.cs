@@ -5,7 +5,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.Experimental.RestService;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,13 +30,20 @@ public class GameScript : MonoBehaviour
     public TMP_Text actionPointLeftText;
     public Button endTurnButton;
 
-    public Image hornterrorHeroImage;
     public Image enemyOneHeroImage;
+    public Button enemyOneSelectionButton;
     public Image enemyTwoHeroImage;
+    public Button enemyTwoSelectionButton;
     public Image enemyThreeHeroImage;
+    public Button enemyThreeSelectionButton;
+    public Image hornterrorHeroImage;
+    public Button hornterrorSelectionButton;
 
     public GameObject viewCardPanel;
     public Image viewCardImage;
+    public GameObject viewCardAbilityPanel;
+    public TMP_Text viewCardAbilityDescriptionText;
+    public GameObject singlePlayerSelectionPanel;
 
     [Header("Player GameObjects")]
     public GameObject playerCardPrefab;
@@ -42,19 +51,21 @@ public class GameScript : MonoBehaviour
 
     [Header("Character Life Hub")]
     public LifeHUB playerLifeHUB;
-    public LifeHUB hornterrorLifeHUB;
     public LifeHUB enemyOneLifeHUB;
     public LifeHUB enemyTwoLifeHUB;
     public LifeHUB enemyThreeLifeHUB;
+    public LifeHUB hornterrorLifeHUB;
 
     [Header("Game Variables")]
+    private int currentTurn = 0;
     private CardDeck chestCardDeck;
     private Player currentTurnPlayer;
     private Player player;
-    private Player hornterrorNPC;
     private Player enemyOneNPC;
     private Player enemyTwoNPC;
     private Player enemyThreeNPC;
+    private Player hornterrorNPC;
+    private List<Player> allCharacters;
 
 
     void Awake()
@@ -92,6 +103,7 @@ public class GameScript : MonoBehaviour
         hornterrorHeroImage.sprite = hornterrorNPC.animalHero.animalHeroImage;
         hornterrorLifeHUB.SetMaxHealth(hornterrorNPC.health);
         hornterrorLifeHUB.SetShield(hornterrorNPC.shield);
+        hornterrorSelectionButton.image.sprite = hornterrorNPC.animalHero.animalHeroImage;
 
         // TODO: Make enemy 1 2 3 all random (make sure is unique and no repeat)
         enemyOneNPC = new Player(new Catomic(), CardDBSchema.catomicDefaultCardDeck);
@@ -99,21 +111,31 @@ public class GameScript : MonoBehaviour
         enemyOneHeroImage.sprite = enemyOneNPC.animalHero.animalHeroImage;
         enemyOneLifeHUB.SetMaxHealth(enemyOneNPC.health);
         enemyOneLifeHUB.SetShield(enemyOneNPC.shield);
+        enemyOneSelectionButton.image.sprite = enemyOneNPC.animalHero.animalHeroImage;
+
+        //testing
+        enemyOneNPC.activeEffects.Add(ActiveEffect.Piggion_ThickSkin);
+        enemyOneNPC.shield++;
+        enemyOneLifeHUB.SetShield(enemyOneNPC.shield);
 
         enemyTwoNPC = new Player(new Catomic(), CardDBSchema.catomicDefaultCardDeck);
         enemyTwoNPC.cardDeck.ShuffleCards();
         enemyTwoHeroImage.sprite = enemyTwoNPC.animalHero.animalHeroImage;
         enemyTwoLifeHUB.SetMaxHealth(enemyTwoNPC.health);
         enemyTwoLifeHUB.SetShield(enemyTwoNPC.shield);
+        enemyTwoSelectionButton.image.sprite = enemyTwoNPC.animalHero.animalHeroImage;
 
         enemyThreeNPC = new Player(new Catomic(), CardDBSchema.catomicDefaultCardDeck);
         enemyThreeNPC.cardDeck.ShuffleCards();
         enemyThreeHeroImage.sprite = enemyThreeNPC.animalHero.animalHeroImage;
         enemyThreeLifeHUB.SetMaxHealth(enemyThreeNPC.health);
         enemyThreeLifeHUB.SetShield(enemyThreeNPC.shield);
+        enemyThreeSelectionButton.image.sprite = enemyThreeNPC.animalHero.animalHeroImage;
         #endregion
 
-        currentTurnPlayer = player;
+        allCharacters = new List<Player>() { player, enemyOneNPC, enemyTwoNPC, enemyThreeNPC, hornterrorNPC }; 
+
+        currentTurnPlayer = allCharacters[0];
     }
 
     void Update()
@@ -159,14 +181,33 @@ public class GameScript : MonoBehaviour
             }
         }
 
-        UpdateRemainingCardText(player.cardDeck.GetAllCards().Count);
-        // TODO: Update every lifehub
+        UpdateUI();
     }
 
     private void InitialiseFirebase()
     {
         auth = FirebaseAuth.DefaultInstance;
         firebaseDBReference = FirebaseDatabase.DefaultInstance.RootReference;
+    }
+
+    private void UpdateUI() // TODO: Optimise this
+    {
+        UpdateRemainingCardText(player.cardDeck.GetAllCards().Count);
+        UpdateActionPointText(player.actionPoint);
+        playerLifeHUB.SetHealthBar(player.health);
+        playerLifeHUB.SetShield(player.shield);
+
+        enemyOneLifeHUB.SetHealthBar(enemyOneNPC.health);
+        enemyOneLifeHUB.SetShield(enemyOneNPC.shield);
+
+        enemyTwoLifeHUB.SetHealthBar(enemyTwoNPC.health);
+        enemyTwoLifeHUB.SetShield(enemyTwoNPC.shield);
+
+        enemyThreeLifeHUB.SetHealthBar(enemyThreeNPC.health);
+        enemyThreeLifeHUB.SetShield(enemyThreeNPC.shield);
+
+        hornterrorLifeHUB.SetHealthBar(hornterrorNPC.health);
+        hornterrorLifeHUB.SetShield(hornterrorNPC.shield);
     }
 
     private void UpdateRemainingCardText(int remainingCards)
@@ -244,30 +285,82 @@ public class GameScript : MonoBehaviour
         }
     }
 
-    public void ActivateCard(int cardIndex) 
+    public void ActivateCard(int cardIndex)
     {
-        List<Player> targetPlayers = new List<Player>();
+        currentTurnPlayer.actionPoint--;
+
         Card playedCard = currentTurnPlayer.playerHandDeck.GetAllCards()[cardIndex];
 
         foreach (var abilityType in playedCard.CardAbility.abilityType)
         {
             switch (abilityType)
             {
+                case AbilityType.NonTargetable:
+                    playedCard.CardAbility.ActivateAbility(currentTurnPlayer, null);
+                    break;
+
                 case AbilityType.SingleTargetable:
-                    // Prompt Panel, set player.
+                    ShowSinglePlayerSelectionPanel();
+                    StartCoroutine(WaitForPlayerSelection(playedCard, currentTurnPlayer, 1));
+                    break;
+
+                case AbilityType.TargetAllCharacters:
+                    playedCard.CardAbility.ActivateAbility(currentTurnPlayer, allCharacters);
+                    break;
+
+                case AbilityType.TargetAllPlayers:
+                    List<Player> allPlayers = new List<Player>() { enemyOneNPC, enemyTwoNPC, enemyThreeNPC };
+                    playedCard.CardAbility.ActivateAbility(currentTurnPlayer, allPlayers);
                     break;
 
                 default: break;
             }
         }
 
-        playedCard.CardAbility.ActivateAbility(currentTurnPlayer, targetPlayers);
-        
         currentTurnPlayer.playerHandDeck.RemoveSingleCard(playedCard);
         currentTurnPlayer.discardDeck.AddSingleCard(playedCard);
+
+        UpdateCardsInPlayerHandPanel(player.playerHandDeck.GetAllCards());
     }
 
-    // TODO: Continue here to implement ShowSelectPlayerPanel
+    private IEnumerator WaitForPlayerSelection(Card playedCard, Player caster, int targetCount)
+    {
+        List<Player> selectedPlayers = new List<Player>();
+
+        hornterrorSelectionButton.onClick.AddListener(() => OnPlayerSelectionButton(0));
+        enemyOneSelectionButton.onClick.AddListener(() => OnPlayerSelectionButton(1));
+        enemyTwoSelectionButton.onClick.AddListener(() => OnPlayerSelectionButton(2));
+        enemyThreeSelectionButton.onClick.AddListener(() => OnPlayerSelectionButton(3));
+
+        yield return new WaitUntil(() => selectedPlayers.Count == targetCount);
+        
+        playedCard.CardAbility.ActivateAbility(caster, selectedPlayers);
+        CloseSinglePlayerSelectionPanel();
+        UpdateCardsInPlayerHandPanel(player.playerHandDeck.GetAllCards());
+
+        // Internal function
+        void OnPlayerSelectionButton(int index) 
+        {
+            switch (index)
+            {
+                case 0: selectedPlayers.Add(hornterrorNPC); break;
+                case 1: selectedPlayers.Add(enemyOneNPC); break;
+                case 2: selectedPlayers.Add(enemyTwoNPC); break;
+                case 3: selectedPlayers.Add(enemyThreeNPC); break;
+                default: break;
+            }
+        }
+    }
+
+    public void ShowSinglePlayerSelectionPanel()
+    {
+        singlePlayerSelectionPanel.SetActive(true);
+    }
+
+    public void CloseSinglePlayerSelectionPanel()
+    {
+        singlePlayerSelectionPanel.SetActive(false);
+    }
 
     public void ShowViewCardPanel(int cardIndex) 
     {
@@ -275,11 +368,20 @@ public class GameScript : MonoBehaviour
         
         viewCardImage.sprite = viewCard.CardFrontSprite;
         viewCardPanel.SetActive(true);
+
+        if (viewCard.CardCategory == CardCategory.HeroAbility) 
+        { 
+            viewCardAbilityDescriptionText.text = viewCard.CardAbility.description;
+            viewCardAbilityPanel.SetActive(true);
+        }
     }
 
     public void CloseViewCardPanel() 
     {
         viewCardImage.sprite = null;
         viewCardPanel.SetActive(false);
+
+        viewCardAbilityPanel.SetActive(false);
+        viewCardAbilityDescriptionText.text = null;
     }
 }

@@ -1,18 +1,21 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 public enum AbilityType 
 { 
-    SingleTargetable,
-    MultiTargetable,
     NonTargetable,
+    SingleTargetable,
+    TargetAllCharacters,
+    TargetAllPlayers,
     CardViewable,
     CardSelectable,
     Reinsertable
 }
 
-public abstract class Ability 
+public abstract class Ability
 {
     public abstract List<AbilityType> abilityType { get; set; }
+    public abstract string description { get; set; }
 
     protected Ability() 
     {
@@ -25,5 +28,5 @@ public abstract class Ability
         //    3) update player effect again
     }
 
-    public abstract void ActivateAbility(Player caster, List<Player> targets);
+    public abstract void ActivateAbility(Player caster, List<Player> targetPlayers);
 }

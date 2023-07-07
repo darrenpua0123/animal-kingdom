@@ -7,7 +7,8 @@ public enum CardCategory
     Catomic,
     Piggion,
     Pandragon,
-    Beedle
+    Beedle,
+    HeroAbility
 }
 
 public enum CardType

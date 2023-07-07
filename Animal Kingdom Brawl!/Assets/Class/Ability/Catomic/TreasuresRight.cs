@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
-public class CatcatSlash : Ability
+public class TreasuresRight : Ability
 {
     public override List<AbilityType> abilityType { get; set; } = new List<AbilityType>() { AbilityType.SingleTargetable };
-    public override string description { get; set; } = "";
+    public override string description { get; set; } = "For each relic you collected, attack a character for 3* that amount. Attack for 1 damage if no relic is collected.";
 
     public override void ActivateAbility(Player caster, List<Player> targetPlayers)
     {
-        int damage = 3;
+        caster.shield += 2;
+        caster.health += 2;
+
+        int damage = (caster.relicCounter > 0) ? (caster.relicCounter * 3) : 1;
 
         if (caster.activeEffects.Contains(ActiveEffect.Artifact_Expresso))
         {

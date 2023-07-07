@@ -8,6 +8,7 @@ using UnityEngine.Timeline;
 public class Player
 {
     public AnimalHero animalHero;
+    public bool isKnockedOut = false;
     public int health;
     public int shield;
     public int actionPoint;
@@ -18,8 +19,8 @@ public class Player
     public CardDeck discardDeck = new CardDeck();
     public CardDeck playerHandDeck = new CardDeck();
 
-    public List<string> activeEffects = new List<string>(); // TODO: active effect need refactor
-
+    public List<ActiveEffect> activeEffects = new List<ActiveEffect>();
+    
     public Player(AnimalHero chosenAnimalHero, CardDeck animalHeroCardDeck) 
     {
         // animalhero, AnimalHero
@@ -53,6 +54,5 @@ public class Player
         {
             shield -= damage;
         }
-        
     }
 }

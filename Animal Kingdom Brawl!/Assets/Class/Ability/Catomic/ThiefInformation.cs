@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
-public class CatcatSlash : Ability
+public class ThiefInformation : Ability
 {
     public override List<AbilityType> abilityType { get; set; } = new List<AbilityType>() { AbilityType.SingleTargetable };
     public override string description { get; set; } = "";
 
     public override void ActivateAbility(Player caster, List<Player> targetPlayers)
     {
-        int damage = 3;
+        caster.playerHandDeck.AddCards(caster.cardDeck.DrawCards(3));
+
+        int damage = 1;
 
         if (caster.activeEffects.Contains(ActiveEffect.Artifact_Expresso))
         {

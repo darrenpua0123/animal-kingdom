@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
-public class CatcatSlash : Ability
+public class CatPawPunch : Ability
 {
     public override List<AbilityType> abilityType { get; set; } = new List<AbilityType>() { AbilityType.SingleTargetable };
     public override string description { get; set; } = "";
 
     public override void ActivateAbility(Player caster, List<Player> targetPlayers)
     {
-        int damage = 3;
+        int damage = 2;
 
         if (caster.activeEffects.Contains(ActiveEffect.Artifact_Expresso))
         {

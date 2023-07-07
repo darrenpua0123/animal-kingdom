@@ -189,7 +189,7 @@ public class CardDBSchema
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Catomic)}BestCatFood"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Catomic_Cardback"),
                 CardCategory.Catomic,
-                CardType.Catomic_BestCatFood),
+                new BestCatFood()),
                 2
             );
 
@@ -197,7 +197,7 @@ public class CardDBSchema
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Catomic)}CatArmor"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Catomic_Cardback"),
                 CardCategory.Catomic,
-                CardType.Catomic_CatArmor),
+                new CatArmor()),
                 2
             );
 
@@ -212,8 +212,8 @@ public class CardDBSchema
         catomicDefaultCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Catomic)}CatDoWhatCatWant"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Catomic_Cardback"),
-                CardCategory.Catomic,
-                CardType.Catomic_CatDoWhatCatWant),
+                CardCategory.HeroAbility,
+                new CatDoWhatCatWant()),
                 2
             );
 
@@ -221,15 +221,15 @@ public class CardDBSchema
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Catomic)}CatPawPunch"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Catomic_Cardback"),
                 CardCategory.Catomic,
-                CardType.Catomic_CatPawPunch),
+                new CatPawPunch()),
                 4
             );
 
         catomicDefaultCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Catomic)}PiercingClawOfPaw"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Catomic_Cardback"),
-                CardCategory.Catomic,
-                CardType.Catomic_PiercingClawOfPaw),
+                CardCategory.HeroAbility,
+                new PiercingClawOfPaw()),
                 2
             );
 
@@ -237,15 +237,15 @@ public class CardDBSchema
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Catomic)}ThiefInformation"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Catomic_Cardback"),
                 CardCategory.Catomic,
-                CardType.Catomic_ThiefInformation),
+                new ThiefInformation()),
                 3
             );
 
         catomicDefaultCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Catomic)}TreasuresRight"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Catomic_Cardback"),
-                CardCategory.Catomic,
-                CardType.Catomic_TreasuresRight),
+                CardCategory.HeroAbility,
+                new TreasuresRight()),
                 2
             );
         #endregion
