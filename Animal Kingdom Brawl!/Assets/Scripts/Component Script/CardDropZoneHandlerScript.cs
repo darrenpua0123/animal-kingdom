@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -23,6 +24,15 @@ public class CardDropZoneHandlerScript : MonoBehaviour, IDropHandler
         CardMovementHandlerScript.CardIsDragging = false;
 
         int droppedCardIndex = CardMovementHandlerScript.DraggedCardIndex;
+
+        if (gameScript.currentTurnPlayer != gameScript.startingPlayer) { return; }
+
+        if (gameScript.currentTurnPlayer.actionPoint <= 0) 
+        {
+            Debug.Log("You have no action point left!");
+            // TODO: Prompt No Action Point left text in gameScript.ShowNoActionPointLeft with animation floating up
+            return;
+        }
 
         gameScript.DestroyCardPlacholder(droppedCardIndex);
         Destroy(eventData.pointerDrag);

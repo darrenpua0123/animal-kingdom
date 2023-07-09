@@ -37,7 +37,14 @@ public class TreasuresRight : Ability
             }
             else
             {
-                targetPlayer.TakeDamage(damage);
+                if (caster.activeEffects.Contains(ActiveEffect.Catomic_PiercingClawOfPaw))
+                {
+                    targetPlayer.health -= damage;
+                }
+                else
+                {
+                    targetPlayer.TakeDamage(damage);
+                }
             }
 
             if (targetPlayer.health <= 0)

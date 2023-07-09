@@ -17,18 +17,20 @@ public class CardDBSchema
 {
     private static readonly CardDBSchema instance = new CardDBSchema();
     
-    public static CardDeck defaultChestCardDeck;
-    public static CardDeck hornterrorDefaultCardDeck;
-    public static CardDeck beedleDefaultCardDeck;
-    public static CardDeck catomicDefaultCardDeck;
-    public static CardDeck pandragonDefaultCardDeck;
-    public static CardDeck piggionDefaultCardDeck;
-
     // private constructor to prevent instantiation outside of the class
     private CardDBSchema() 
     {
-        #region Chest
-        defaultChestCardDeck = new CardDeck();
+        // TODO: Add other Hero Card Function
+    }
+
+    public static CardDBSchema Instance
+    {
+        get { return instance; }
+    }
+
+    public static CardDeck GetDefaultChestDeck() 
+    {
+        CardDeck defaultChestCardDeck = new CardDeck();
 
         #region Relic
         defaultChestCardDeck.AddSingleCard(new Card(
@@ -143,47 +145,15 @@ public class CardDBSchema
                 CardType.Trap_TheUnspeakableCurse)
             );
         #endregion
-        #endregion
 
-        #region Hornterror
-        hornterrorDefaultCardDeck = new CardDeck();
+        return defaultChestCardDeck;
+    }
 
-        hornterrorDefaultCardDeck.AddSingleCard(new Card(
-                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Hornterror)}HeatWave"),
-                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Hornterror_Cardback"),
-                CardCategory.Hornterror,
-                CardType.Hornterror_HeatWave),
-                3
-            );
+    // public static CardDeck GetPiggionDefaultCardDeck()
 
-        hornterrorDefaultCardDeck.AddSingleCard(new Card(
-                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Hornterror)}SinisterStare"),
-                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Hornterror_Cardback"),
-                CardCategory.Hornterror,
-                CardType.Hornterror_SinisterStare),
-                4
-            );
-
-        hornterrorDefaultCardDeck.AddSingleCard(new Card(
-                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Hornterror)}VenomousSplit"),
-                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Hornterror_Cardback"),
-                CardCategory.Hornterror,
-                CardType.Hornterror_VenomousSplit),
-                3
-            );
-        #endregion
-
-        #region Animal Hero
-
-        // TODO: Add other Hero Card
-        #region Beedle
-        beedleDefaultCardDeck = new CardDeck();
-        // Beedle Card
-
-        #endregion
-
-        #region Catomic
-        catomicDefaultCardDeck = new CardDeck();
+    public static CardDeck GetCatomicDefaultCardDeck() 
+    {
+        CardDeck catomicDefaultCardDeck = new CardDeck();
 
         catomicDefaultCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Catomic)}BestCatFood"),
@@ -248,29 +218,46 @@ public class CardDBSchema
                 new TreasuresRight()),
                 2
             );
-        #endregion
 
-        #region Pandragon
-        pandragonDefaultCardDeck = new CardDeck();
-        // Pandragon card
-
-        #endregion
-
-        #region Piggion
-        piggionDefaultCardDeck = new CardDeck();
-        // Piggion card
-
-        #endregion
-
-        #endregion
+        return catomicDefaultCardDeck;
     }
 
-    public static CardDBSchema Instance
+    // public static CardDeck GetPandragonDefaultCardDeck()
+
+    // public static CardDeck GetBeedleDefaultCardDeck()
+
+    public static CardDeck GetHornterrorDefaultCardDeck() 
     {
-        get { return instance; }
+        CardDeck hornterrorDefaultCardDeck = new CardDeck();
+
+        hornterrorDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Hornterror)}HeatWave"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Hornterror_Cardback"),
+                CardCategory.Hornterror,
+                CardType.Hornterror_HeatWave),
+                3
+            );
+
+        hornterrorDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Hornterror)}SinisterStare"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Hornterror_Cardback"),
+                CardCategory.Hornterror,
+                CardType.Hornterror_SinisterStare),
+                4
+            );
+
+        hornterrorDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Hornterror)}VenomousSplit"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Hornterror_Cardback"),
+                CardCategory.Hornterror,
+                CardType.Hornterror_VenomousSplit),
+                3
+            );
+
+        return hornterrorDefaultCardDeck;
     }
 
-    private string GetSpritePath(SpritePath path) 
+    private static string GetSpritePath(SpritePath path) 
     {
         string spritePathURL;
 
