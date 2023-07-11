@@ -7,6 +7,8 @@ public enum AbilityType
     SingleTargetable,
     TargetAllCharacters,
     TargetAllPlayers,
+    TargetAllOpponents,
+    // unused
     CardViewable,
     CardSelectable,
     Reinsertable
@@ -14,8 +16,7 @@ public enum AbilityType
 
 public abstract class Ability
 {
-    // TODO: Refactor to not a list
-    public abstract List<AbilityType> abilityType { get; set; }
+    public abstract AbilityType abilityType { get; set; }
     public abstract string description { get; set; }
 
     protected Ability() 

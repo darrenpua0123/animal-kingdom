@@ -33,21 +33,29 @@ public class GameScript : MonoBehaviour
     public TMP_Text remainingCardText;
     public Image remainingCardImage;
     public LifeHUB playerLifeHUB;
+    public TMP_Text playerKnockoutCounterText;
+    public TMP_Text playerRelicCounterText;
     public GameObject playerHandPanel;
     public TMP_Text actionPointLeftText;
     public Button endTurnButton;
 
     // Enemy 1
     public Image enemyOneHeroImage;
-    public LifeHUB enemyOneLifeHUB;
+    public LifeHUB enemyOneLifeHUB; 
+    public TMP_Text enemyOneKnockoutCounterText;
+    public TMP_Text enemyOneRelicCounterText;
 
     // Enemy 2
     public Image enemyTwoHeroImage;
     public LifeHUB enemyTwoLifeHUB;
+    public TMP_Text enemyTwoKnockoutCounterText;
+    public TMP_Text enemyTwoRelicCounterText;
 
     // Enemy 3
     public Image enemyThreeHeroImage;
     public LifeHUB enemyThreeLifeHUB;
+    public TMP_Text enemyThreeKnockoutCounterText;
+    public TMP_Text enemyThreeRelicCounterText;
 
     // Hornterror
     public Image hornterrorHeroImage;
@@ -60,15 +68,25 @@ public class GameScript : MonoBehaviour
     public GameObject viewCardAbilityPanel;
     public TMP_Text viewCardAbilityDescriptionText;
     public GameObject singlePlayerSelectionPanel;
+    public GameObject showChestDrawnCardPanel;
+    public TMP_Text showChestDrawnCardText;
+    public Image showChestDrawnCardImage;
+    public GameObject reinsertTrapCardPanel;
+    public ScrollRect reinsertTrapScrollView;
+    public GameObject revealCardsPanel;
+    public GameObject revealCardsZone;
 
     [Header("Prefabs")]
     public GameObject playerCardPrefab;
+    public GameObject reinsertItemPrefab;
+    public GameObject revealCardPrefab;
 
     [Header("Game Variables")]
     private int gameTurn = 0;
     public Player startingPlayer;
     private int currentPlayerIndex = 0;
     private CardDeck chestCardDeck;
+    private CardDeck discardChestCardDeck;
     public Player currentTurnPlayer;
     private Player player;
     private Player enemyOneNPC;
@@ -93,6 +111,7 @@ public class GameScript : MonoBehaviour
         #region Match Setting
         chestCardDeck = CardDBSchema.GetDefaultChestDeck();
         chestCardDeck.ShuffleCards();
+        discardChestCardDeck = new CardDeck();
         #endregion
 
         #region Player
@@ -115,6 +134,7 @@ public class GameScript : MonoBehaviour
         enemyOneLifeHUB.SetShield(enemyOneNPC.shield);
 
         enemyTwoNPC = new Player(new Catomic(), CardDBSchema.GetCatomicDefaultCardDeck());
+        enemyTwoHeroImage.sprite = enemyTwoNPC.animalHero.animalHeroImage;
         enemyTwoLifeHUB.SetMaxHealth(enemyTwoNPC.health);
         enemyTwoLifeHUB.SetShield(enemyTwoNPC.shield);
 
@@ -132,9 +152,7 @@ public class GameScript : MonoBehaviour
         //testing TODO: Remove after testing
         enemyOneNPC.shield++;
         enemyOneLifeHUB.SetShield(enemyOneNPC.shield);
-
-        enemyTwoNPC.isKnockedOut = true;
-        // TODO: testing area
+        // testing area
 
         // Function to call when game first started, before variable setting
         allCharacters = new List<Player>() { player, enemyOneNPC, enemyTwoNPC, enemyThreeNPC, hornterrorNPC };
@@ -155,8 +173,8 @@ public class GameScript : MonoBehaviour
 
         startingPlayer = allCharacters[0];
         currentTurnPlayer = allCharacters[currentPlayerIndex];
-        // TODO: Update turn should only happen when EndButton is clickable and turn endable
-        // Haven't implement AI endturn function to call UpdateGameTurn();
+
+        // TODO: Haven't implement AI endturn function to call UpdateGameTurn();
         UpdateGameTurn();
         UpdateCardsInPlayerHandPanel(player.playerHandDeck.GetAllCards());
     }
@@ -172,28 +190,17 @@ public class GameScript : MonoBehaviour
         // left click anywhere to closed it.
 
         // DEV: Remove;
-        if (Input.GetKeyDown(KeyCode.G)) 
+        if (Input.GetKeyDown(KeyCode.T)) // Move to next turn
         {
             NextPlayerTurn();
-            UpdateGameTurn();
         }
-
-        if (Input.GetKeyDown(KeyCode.Space)) // Action
+        if (Input.GetKeyDown(KeyCode.Space)) // Reduce AP
         {
-            player.health--;
-            playerLifeHUB.SetHealthBar(player.health);
-
-            player.shield--;
-            playerLifeHUB.SetShield(player.shield);
-
             player.actionPoint--;
             UpdateActionPointText(player.actionPoint);
         }
-        if (Input.GetKeyDown(KeyCode.R)) // Start turn
+        if (Input.GetKeyDown(KeyCode.R)) // Draw animal hero card
         {
-            player.health++;
-            playerLifeHUB.SetHealthBar(player.health);
-
             player.actionPoint = player.animalHero.startingActionPoint;
             UpdateActionPointText(player.actionPoint);
 
@@ -225,15 +232,23 @@ public class GameScript : MonoBehaviour
         UpdateActionPointText(player.actionPoint);
         playerLifeHUB.SetHealthBar(player.health);
         playerLifeHUB.SetShield(player.shield);
+        playerKnockoutCounterText.text = player.knockoutCounter.ToString();
+        playerRelicCounterText.text = player.relicCounter.ToString();
 
         enemyOneLifeHUB.SetHealthBar(enemyOneNPC.health);
         enemyOneLifeHUB.SetShield(enemyOneNPC.shield);
+        enemyOneKnockoutCounterText.text = enemyOneNPC.knockoutCounter.ToString();
+        enemyOneRelicCounterText.text = enemyOneNPC.relicCounter.ToString();
 
         enemyTwoLifeHUB.SetHealthBar(enemyTwoNPC.health);
         enemyTwoLifeHUB.SetShield(enemyTwoNPC.shield);
+        enemyTwoKnockoutCounterText.text = enemyTwoNPC.knockoutCounter.ToString();
+        enemyTwoRelicCounterText.text = enemyTwoNPC.relicCounter.ToString();
 
         enemyThreeLifeHUB.SetHealthBar(enemyThreeNPC.health);
         enemyThreeLifeHUB.SetShield(enemyThreeNPC.shield);
+        enemyThreeKnockoutCounterText.text = enemyThreeNPC.knockoutCounter.ToString();
+        enemyThreeRelicCounterText.text = enemyThreeNPC.relicCounter.ToString();
 
         hornterrorLifeHUB.SetHealthBar(hornterrorNPC.health);
         hornterrorLifeHUB.SetShield(hornterrorNPC.shield);
@@ -243,10 +258,31 @@ public class GameScript : MonoBehaviour
 
     private void NextPlayerTurn()
     {
+        // Take the previous player index, iterate to the next one
         currentPlayerIndex = (currentPlayerIndex + 1) % allCharacters.Count;
-        currentTurnPlayer = allCharacters[currentPlayerIndex];
+        currentTurnPlayer = allCharacters[currentPlayerIndex]; // Already switch to next player
 
+        UpdateGameTurn();
+
+        // Check whether the next player has been knocked out
+        if (currentTurnPlayer.isKnockedOut) 
+        {
+            currentTurnPlayer.isKnockedOut = false;
+            // TODO: currentTurnPlayer.OnRevive();
+
+            Debug.Log($"Player {currentPlayerIndex} is knocked out");
+            NextPlayerTurn();
+            return;
+        }
+
+        // Starting turn action for the next player
         currentTurnPlayer.actionPoint = currentTurnPlayer.animalHero.startingActionPoint;
+
+        // Draw starting turn's card
+        currentTurnPlayer.playerHandDeck.AddCards(currentTurnPlayer.cardDeck.DrawCards(1));
+
+        // Update player card hand if current turn's player is player
+        UpdateCardsInPlayerHandPanel(player.playerHandDeck.GetAllCards());
     }
 
     private void UpdateGameTurn() 
@@ -335,18 +371,31 @@ public class GameScript : MonoBehaviour
         }
         else
         {
-            // TODO: Update logic that happened after EndTurn, i.e. change currentTurnPlayer, increase turn etc
             List<Card> drawnCards = chestCardDeck.DrawCards(1);
 
-            // TODO: Continue here: Implement if draw trap/relic card should StartCoroutine and WaitUntil card reinserted
-
+            // Draw Relic Card
+            if (drawnCards[0].CardCategory == CardCategory.Relic)
+            {
+                StartCoroutine(ShowChestDrawnCardPanel(drawnCards[0]));
+                ActivateCard(drawnCards[0]);
+            }
+            // Draw Trap Card
+            else if (drawnCards[0].CardCategory == CardCategory.Trap) 
+            {
+                StartCoroutine(ShowChestDrawnCardPanel(drawnCards[0]));
+                StartCoroutine(ShowReinsertTrapCardPanel(drawnCards[0]));
+                ActivateCard(drawnCards[0]);
+            }
             // If Trap Done / Not trap, do the normal action here
-            player.playerHandDeck.AddCards(drawnCards);
-            UpdateCardsInPlayerHandPanel(player.playerHandDeck.GetAllCards());
-            
+            else
+            {
+                player.playerHandDeck.AddCards(drawnCards);
+            } 
+    
             NextPlayerTurn();
-            UpdateGameTurn();
         }
+
+        UpdateCardsInPlayerHandPanel(player.playerHandDeck.GetAllCards());
     }
 
     private bool ActionNotEndable(int actionPoint)
@@ -384,68 +433,114 @@ public class GameScript : MonoBehaviour
         viewCardAbilityDescriptionText.text = null;
     }
 
-    public void ActivateCard(int cardIndex)
+    public void CardOnDrop(int cardIndex)
     {
-        currentTurnPlayer.actionPoint--;
-
         Card playedCard = currentTurnPlayer.playerHandDeck.GetAllCards()[cardIndex];
 
-        foreach (var abilityType in playedCard.CardAbility.abilityType)
-        {
-            List<Player> targetAllPlayers = new List<Player>(allCharacters);
-            targetAllPlayers.Remove(currentTurnPlayer);
-            targetAllPlayers.Remove(hornterrorNPC);
-
-            switch (abilityType)
-            {
-                case AbilityType.NonTargetable:
-                    playedCard.CardAbility.ActivateAbility(currentTurnPlayer, null);
-                    break;
-
-                case AbilityType.SingleTargetable:
-                    ShowSinglePlayerSelectionPanel();
-                    StartCoroutine(WaitForPlayerSelection(playedCard, currentTurnPlayer, 1));
-                    break;
-
-                case AbilityType.TargetAllPlayers:
-                    playedCard.CardAbility.ActivateAbility(currentTurnPlayer, targetAllPlayers);
-                    break;
-
-                // unused yet
-                case AbilityType.TargetAllCharacters:
-                    playedCard.CardAbility.ActivateAbility(currentTurnPlayer, allCharacters);
-                    break;
-
-                default: break;
-            }
-        }
-
+        ActivateCard(playedCard);
+        
         currentTurnPlayer.playerHandDeck.RemoveSingleCard(playedCard);
         currentTurnPlayer.discardDeck.AddSingleCard(playedCard);
 
         UpdateCardsInPlayerHandPanel(player.playerHandDeck.GetAllCards());
+
+        // Played card is the same category with the current turn's player her categgory.
+        // Search every players and see whose player does this card falls into the same category with.
+        // TODO: Wait until AI implemented first, then only add to discard pile based on the card category.
+        //foreach (Player character in allCharacters)
+        //{
+        //    if (playedCard.CardCategory == character.heroCardCategory) 
+        //    {
+        //        Debug.Log($"used {playedCard.CardFrontSprite} and catergory is {character.heroCardCategory}");
+        //        character.discardDeck.AddSingleCard(playedCard);
+        //    }
+        //}
+
+        //if (playedCard.CardCategory == CardCategory.Artifact) 
+        //{
+        //    discardChestCardDeck.AddSingleCard(playedCard);
+        //}
     }
 
-    private IEnumerator WaitForPlayerSelection(Card playedCard, Player caster, int targetCount)
-    {
-        List<Player> selectedPlayers = new List<Player>();
+    private void ActivateCard(Card playedCard) 
+    { 
+        // exclusive of Hornterror, but inclusive of Current Turn Player
+        List<Player> targetAllPlayers = new List<Player>(allCharacters);
+        targetAllPlayers.Remove(hornterrorNPC);
         
-        for (int i = 0; i < enemySelectionButton.Count; i++)
+        // exclusive of Hornterror and Current Turn Player
+        List<Player> targetAllOpponents = new List<Player>(allCharacters);
+        targetAllOpponents.Remove(currentTurnPlayer);
+        targetAllOpponents.Remove(hornterrorNPC);
+
+        if (playedCard.CardCategory != CardCategory.Relic || playedCard.CardCategory != CardCategory.Trap) 
+        {
+            currentTurnPlayer.actionPoint--;
+        }
+
+        switch (playedCard.CardAbility.abilityType)
+        {
+            case AbilityType.NonTargetable:
+                playedCard.CardAbility.ActivateAbility(currentTurnPlayer, null);
+                break;
+
+            case AbilityType.SingleTargetable:
+                StartCoroutine(ShowSinglePlayerSelectionPanel(currentTurnPlayer, playedCard, 1));
+                break;
+
+            case AbilityType.TargetAllOpponents:
+                playedCard.CardAbility.ActivateAbility(currentTurnPlayer, targetAllOpponents);
+                break;
+
+            case AbilityType.TargetAllPlayers:
+                playedCard.CardAbility.ActivateAbility(currentTurnPlayer, targetAllPlayers);
+                break; 
+
+            case AbilityType.TargetAllCharacters:
+                playedCard.CardAbility.ActivateAbility(currentTurnPlayer, allCharacters);
+                break;
+
+            case AbilityType.CardViewable:
+                ShowRevealCardsPanel(chestCardDeck, 5);
+                break;
+
+            default: break;
+        }
+
+        Debug.Log(currentTurnPlayer.health + " current turn");
+        Debug.Log(player.health + " player health");
+    }
+
+    public IEnumerator ShowSinglePlayerSelectionPanel(Player caster, Card playedCard, int targetCount)
+    {
+        singlePlayerSelectionPanel.SetActive(true);
+
+        List<Player> selectedPlayers = new List<Player>();
+        List<Player> allEnemies = new List<Player>(allCharacters);
+        allEnemies.Remove(currentTurnPlayer);
+
+        for (int i = 0; i < allEnemies.Count; i++)
         {
             int buttonValue = i;
+            enemySelectionButton[i].image.sprite = allEnemies[i].animalHero.animalHeroImage;
             enemySelectionButton[i].onClick.AddListener(() => OnPlayerSelectionButton(buttonValue));
+
+            if (allEnemies[i].isKnockedOut)
+            {
+                enemySelectionButton[i].interactable = false;
+            }
         }
-        
+
+        // Wait until the selected player count has met the expected selected amount
         yield return new WaitUntil(() => selectedPlayers.Count == targetCount);
-        
+
         playedCard.CardAbility.ActivateAbility(caster, selectedPlayers);
         CloseSinglePlayerSelectionPanel();
         UpdateCardsInPlayerHandPanel(player.playerHandDeck.GetAllCards());
 
-        // Internal function
+        // internal function
         void OnPlayerSelectionButton(int index) 
         {
-
             switch (index)
             {
                 case 0: selectedPlayers.Add(enemyOneNPC); break;
@@ -453,24 +548,6 @@ public class GameScript : MonoBehaviour
                 case 2: selectedPlayers.Add(enemyThreeNPC); break;
                 case 3: selectedPlayers.Add(hornterrorNPC); break;
                 default: break;
-            }
-        }
-    }
-
-    public void ShowSinglePlayerSelectionPanel()
-    {
-        singlePlayerSelectionPanel.SetActive(true);
-
-        List<Player> allEnemies = new List<Player>(allCharacters);
-        allEnemies.Remove(currentTurnPlayer);
-
-        for (int i = 0; i < allEnemies.Count; i++)
-        {
-            enemySelectionButton[i].image.sprite = allEnemies[i].animalHero.animalHeroImage;
-          
-            if (allEnemies[i].isKnockedOut) 
-            {
-                enemySelectionButton[i].interactable = false;
             }
         }
     }
@@ -485,4 +562,97 @@ public class GameScript : MonoBehaviour
         }
     }
 
+    private IEnumerator ShowChestDrawnCardPanel(Card card)
+    {
+        string[] currentPlayerString = { "You", "Enemy 1", "Enemy 2", "Enemy 3", "Hornterror" };
+        int index = allCharacters.IndexOf(currentTurnPlayer);
+
+        string relicMessage = $"{currentPlayerString[index]} collected a relic card!";
+        string trapMessage = $"{currentPlayerString[index]} triggered a trap card!";
+
+        showChestDrawnCardPanel.SetActive(true);
+
+        if (card.CardCategory == CardCategory.Relic)
+        {
+            showChestDrawnCardText.text = relicMessage;
+            showChestDrawnCardImage.sprite = card.CardFrontSprite;
+        } 
+        else if (card.CardCategory == CardCategory.Trap) 
+        {
+            showChestDrawnCardText.text = trapMessage;
+            showChestDrawnCardImage.sprite = card.CardFrontSprite;
+        }
+       
+        yield return new WaitForSeconds(3);
+
+        if (showChestDrawnCardPanel.activeSelf) 
+        { 
+            CloseChestDrawnCardPanel();
+        }
+    }
+
+    public void CloseChestDrawnCardPanel() 
+    {
+        showChestDrawnCardPanel.SetActive(false);
+        showChestDrawnCardText.text = "";
+        showChestDrawnCardImage.sprite = null;
+    }
+
+    private IEnumerator ShowReinsertTrapCardPanel(Card trapCard) 
+    {
+        yield return new WaitUntil(() => !showChestDrawnCardPanel.activeSelf);
+
+        reinsertTrapCardPanel.SetActive(true);
+
+        for (int i = 0; i < chestCardDeck.GetAllCards().Count; i++)
+        {
+            int buttonValue = i;
+            GameObject prefab = Instantiate(reinsertItemPrefab, reinsertTrapScrollView.content);
+            prefab.GetComponentInChildren<Button>().onClick.AddListener(() => ReinsertLocation(buttonValue));
+        }
+
+        // Internal function
+        void ReinsertLocation(int index)
+        {
+            chestCardDeck.InsertCardAt(trapCard, index);
+            CloseReinsertTrapCardPanel();
+        }
+    }
+
+    public void CloseReinsertTrapCardPanel() 
+    {
+        reinsertTrapCardPanel.SetActive(false);
+
+        foreach (Transform child in reinsertTrapScrollView.content.transform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
+    public void ShowRevealCardsPanel(CardDeck cardDeck, int numberOfCards) 
+    { 
+        revealCardsPanel.SetActive(true);
+
+        if (cardDeck.GetAllCards().Count < numberOfCards) 
+        {
+            numberOfCards = cardDeck.GetAllCards().Count;
+        }
+
+        for (int i = 0; i < numberOfCards; i++)
+        {
+            GameObject cardPrefab = Instantiate(revealCardPrefab, revealCardsZone.transform);
+
+            cardPrefab.GetComponent<Image>().sprite = cardDeck.GetAllCards()[i].CardFrontSprite;
+        }
+    }
+
+    public void CloseRevealCardsPanel() 
+    {
+        revealCardsPanel.SetActive(false);
+
+        foreach (Transform child in revealCardsZone.transform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
 }

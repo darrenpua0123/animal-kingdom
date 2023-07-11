@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 public class CatDoWhatCatWant : Ability
 {
-    public override List<AbilityType> abilityType { get; set; } = new List<AbilityType>() { AbilityType.TargetAllPlayers };
+    public override AbilityType abilityType { get; set; } = AbilityType.TargetAllOpponents;
     public override string description { get; set; } = "You randomly steal 1 card from each opponent’s hand.";
     
     public override void ActivateAbility(Player caster, List<Player> targetPlayers)

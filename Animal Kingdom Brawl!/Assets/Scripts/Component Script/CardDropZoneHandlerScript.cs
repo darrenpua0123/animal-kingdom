@@ -37,6 +37,6 @@ public class CardDropZoneHandlerScript : MonoBehaviour, IDropHandler
         gameScript.DestroyCardPlacholder(droppedCardIndex);
         Destroy(eventData.pointerDrag);
 
-        gameScript.ActivateCard(droppedCardIndex);
+        gameScript.CardOnDrop(droppedCardIndex);
     }
 }

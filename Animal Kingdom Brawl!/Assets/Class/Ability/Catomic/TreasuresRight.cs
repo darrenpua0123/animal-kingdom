@@ -2,7 +2,7 @@
 
 public class TreasuresRight : Ability
 {
-    public override List<AbilityType> abilityType { get; set; } = new List<AbilityType>() { AbilityType.SingleTargetable };
+    public override AbilityType abilityType { get; set; } = AbilityType.SingleTargetable;
     public override string description { get; set; } = "For each relic you collected, attack a character for 3* that amount. Attack for 1 damage if no relic is collected.";
 
     public override void ActivateAbility(Player caster, List<Player> targetPlayers)
@@ -51,6 +51,12 @@ public class TreasuresRight : Ability
             {
                 targetPlayer.isKnockedOut = true;
                 caster.knockoutCounter++;
+
+                if (targetPlayer.relicCounter > 0)
+                {
+                    caster.relicCounter++;
+                    targetPlayer.relicCounter--;
+                }
             }
         }
     }

@@ -37,21 +37,21 @@ public class CardDBSchema
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Relic)}TheAncientGold"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Relic,
-                CardType.Relic_TheAncientGold)
+                new TheAncientGold())
             );
 
         defaultChestCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Relic)}ClawOfBanshee"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Relic,
-                CardType.Relic_ClawOfBanshee)
+                new ClawOfBanshee())
             );
 
         defaultChestCardDeck.AddSingleCard(new Card(
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Relic)}QilinsFeather"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Relic,
-                CardType.Relic_QilinsFeather)
+                new QilinsFeather())
             );
         #endregion
 
@@ -60,7 +60,7 @@ public class CardDBSchema
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Artifact)}BookOfRevealing"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Artifact,
-                CardType.Artifact_BookOfRevealing),
+                new BookOfRevealing()),
                 3
             );
 
@@ -68,7 +68,7 @@ public class CardDBSchema
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Artifact)}Expresso"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Artifact,
-                CardType.Artifact_Expresso),
+                new Expresso()),
                 3
             );
 
@@ -76,7 +76,7 @@ public class CardDBSchema
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Artifact)}HealingPotion"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Artifact,
-                CardType.Artifact_HealingPotion),
+                new HealingPotion()),
                 3
             );
 
@@ -84,7 +84,7 @@ public class CardDBSchema
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Artifact)}TheMimicMirror"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Artifact,
-                CardType.Artifact_TheMimicMirror),
+                new TheMimicMirror()),
                 3
             );
 
@@ -92,7 +92,7 @@ public class CardDBSchema
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Artifact)}SwappingRope"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Artifact,
-                CardType.Artifact_SwappingRope),
+                new SwappingRope()),
                 3
             );
         #endregion
@@ -102,7 +102,7 @@ public class CardDBSchema
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}AncientContract"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Trap,
-                CardType.Trap_AncientContract),
+                new AncientContract()),
                 3
             );
 
@@ -110,7 +110,7 @@ public class CardDBSchema
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}BearTrap"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Trap,
-                CardType.Trap_BearTrap),
+                new BearTrap()),
                 3
             );
 
@@ -118,7 +118,7 @@ public class CardDBSchema
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}BookOfCorruption"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Trap,
-                CardType.Trap_BookOfCorruption),
+                new BookOfCorruption()),
                 3
             );
 
@@ -126,7 +126,7 @@ public class CardDBSchema
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}CalamityBomb"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Trap,
-                CardType.Trap_CalamityBomb),
+                new CalamityBomb()),
                 3
             );
 
@@ -134,7 +134,7 @@ public class CardDBSchema
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}MaliciousRuby"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Trap,
-                CardType.Trap_MaliciousRuby),
+                new MaliciousRuby()),
                 2
             );
 
@@ -142,7 +142,7 @@ public class CardDBSchema
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}UnspeakableCurse"),
                 Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
                 CardCategory.Trap,
-                CardType.Trap_TheUnspeakableCurse)
+                new UnspeakableCurse())
             );
         #endregion
 

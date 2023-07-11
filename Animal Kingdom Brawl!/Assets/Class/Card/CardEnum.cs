@@ -33,7 +33,7 @@ public enum CardType
     Trap_BookOfCorruption,
     Trap_AncientContract,
     Trap_MaliciousRuby,
-    Trap_TheUnspeakableCurse,
+    Trap_UnspeakableCurse,
     #endregion
 
     #region Hornterror

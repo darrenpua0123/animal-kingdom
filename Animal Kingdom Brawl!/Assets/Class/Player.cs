@@ -15,6 +15,7 @@ public class Player
     public int knockoutCounter = 0;
     public int relicCounter = 0;
 
+    public CardCategory heroCardCategory;
     public CardDeck cardDeck;
     public CardDeck discardDeck = new CardDeck();
     public CardDeck playerHandDeck = new CardDeck();
@@ -34,11 +35,36 @@ public class Player
         // ActiveEffect, ? maybe enum effects? new List<>(ActiveEffect.Stunned), then no move;
 
         animalHero = chosenAnimalHero;
+        SetHeroCardCategory();
         health = chosenAnimalHero.defaultHealth;
         shield = chosenAnimalHero.defaultShield;
         actionPoint = chosenAnimalHero.startingActionPoint;
 
         cardDeck = animalHeroCardDeck;
+    }
+
+    private void SetHeroCardCategory() 
+    {
+        if (animalHero is Beedle)
+        {
+            heroCardCategory = CardCategory.Beedle;
+        }
+        else if (animalHero is Catomic)
+        {
+            heroCardCategory = CardCategory.Catomic;
+        }
+        else if (animalHero is Pandragon)
+        {
+            heroCardCategory = CardCategory.Pandragon;
+        }
+        else if (animalHero is Piggion)
+        {
+            heroCardCategory = CardCategory.Piggion;
+        }
+        else if (animalHero is Hornterror) 
+        { 
+            heroCardCategory = CardCategory.Hornterror;
+        }
     }
 
     public void TakeDamage(int damage) 
@@ -54,5 +80,10 @@ public class Player
         {
             shield -= damage;
         }
+    }
+
+    public void OnRevive() 
+    { 
+        //TODO: CONTINUE HERE: Reset all cards in hand, discard all cards in hand, redraw all cards
     }
 }

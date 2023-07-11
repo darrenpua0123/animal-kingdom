@@ -2,7 +2,7 @@
 
 public class CatPawPunch : Ability
 {
-    public override List<AbilityType> abilityType { get; set; } = new List<AbilityType>() { AbilityType.SingleTargetable };
+    public override AbilityType abilityType { get; set; } = AbilityType.SingleTargetable;
     public override string description { get; set; } = "";
 
     public override void ActivateAbility(Player caster, List<Player> targetPlayers)
@@ -48,6 +48,12 @@ public class CatPawPunch : Ability
             {
                 targetPlayer.isKnockedOut = true;
                 caster.knockoutCounter++;
+
+                if (targetPlayer.relicCounter > 0)
+                {
+                    caster.relicCounter++;
+                    targetPlayer.relicCounter--;
+                }
             }
         }
     }

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ViewCardPanelClickHandlerScript : MonoBehaviour, IPointerClickHandler
+public class ShowChestDrawnCardPanelClickHandlerScript : MonoBehaviour, IPointerClickHandler
 {
     private GameScript gameScript;
 
-    void Awake() 
-    { 
+    void Awake()
+    {
         gameScript = FindObjectOfType<GameScript>();
 
         if (gameScript == null)
@@ -20,9 +20,9 @@ public class ViewCardPanelClickHandlerScript : MonoBehaviour, IPointerClickHandl
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left)
+        if (eventData.button == PointerEventData.InputButton.Left || eventData.button == PointerEventData.InputButton.Right)
         {
-            gameScript.CloseViewCardPanel();
+            gameScript.CloseChestDrawnCardPanel();
         }
     }
 }
