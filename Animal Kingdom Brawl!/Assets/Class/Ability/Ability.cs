@@ -4,14 +4,14 @@ using UnityEngine;
 public enum AbilityType 
 { 
     NonTargetable,
-    SingleTargetable,
     TargetAllCharacters,
     TargetAllPlayers,
     TargetAllOpponents,
-    // unused
+    AllCharacterSingleTargetable,
+    AllOpponentSingleTargetable,
     CardViewable,
-    CardSelectable,
-    Reinsertable
+    // unused
+    CardSelectable
 }
 
 public abstract class Ability

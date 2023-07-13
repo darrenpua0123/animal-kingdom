@@ -2,7 +2,7 @@
 
 public class TreasuresRight : Ability
 {
-    public override AbilityType abilityType { get; set; } = AbilityType.SingleTargetable;
+    public override AbilityType abilityType { get; set; } = AbilityType.AllCharacterSingleTargetable;
     public override string description { get; set; } = "For each relic you collected, attack a character for 3* that amount. Attack for 1 damage if no relic is collected.";
 
     public override void ActivateAbility(Player caster, List<Player> targetPlayers)

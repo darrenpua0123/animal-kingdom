@@ -23,7 +23,7 @@ public class CatDoWhatCatWant : Ability
                 continue;
             }
 
-            int randNo = rand.Next(1, handCards.Count);
+            int randNo = rand.Next(0, handCards.Count);
             
             stolenCards.Add(handCards[randNo]);
             player.playerHandDeck.RemoveSingleCard(handCards[randNo]);

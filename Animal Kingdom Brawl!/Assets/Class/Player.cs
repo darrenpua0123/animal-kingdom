@@ -56,7 +56,7 @@ public class Player
         else if (animalHero is Pandragon)
         {
             heroCardCategory = CardCategory.Pandragon;
-        }
+        }   
         else if (animalHero is Piggion)
         {
             heroCardCategory = CardCategory.Piggion;
@@ -80,10 +80,24 @@ public class Player
         {
             shield -= damage;
         }
+
+        if (health <= 0) 
+        {
+            health = 0;
+            isKnockedOut = true;
+        }
     }
 
     public void OnRevive() 
-    { 
-        //TODO: CONTINUE HERE: Reset all cards in hand, discard all cards in hand, redraw all cards
+    {
+        isKnockedOut = false;
+        activeEffects.Clear();
+        health = animalHero.defaultHealth;
+        shield = animalHero.defaultShield;
+
+        cardDeck.ShuffleCards();
+        discardDeck = new CardDeck();
+
+        playerHandDeck.AddCards(cardDeck.DrawCards(3));
     }
 }
