@@ -10,7 +10,8 @@ public enum SpritePath
     Artifact,
     Trap,
     Hornterror,
-    Catomic
+    Catomic,
+    Piggion
 }
 
 public class CardDBSchema
@@ -163,7 +164,84 @@ public class CardDBSchema
         return defaultChestCardDeck;
     }
 
-    // public static CardDeck GetPiggionDefaultCardDeck()
+    public static CardDeck GetPiggionDefaultCardDeck()
+    {
+        CardDeck piggionDefaultCardDeck = new CardDeck();
+
+        piggionDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Piggion)}PiggyPunch"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Piggion_Cardback"),
+                CardCategory.Piggion,
+                CardType.Piggion,
+                new PiggyPunch()),
+                3
+            );
+
+        piggionDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Piggion)}SuitUp"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Piggion_Cardback"),
+                CardCategory.Piggion,
+                CardType.Piggion,
+                new SuitUp()),
+                3
+            );
+
+        piggionDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Piggion)}LateNoonNap"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Piggion_Cardback"),
+                CardCategory.Piggion,
+                CardType.Piggion,
+                new LateNoonNap()),
+                2
+            );
+
+        piggionDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Piggion)}WarriorsShield"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Piggion_Cardback"),
+                CardCategory.Piggion,
+                CardType.Piggion,
+                new WarriorsShield()),
+                2
+            );
+
+        piggionDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Piggion)}CounterPhalanx"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Piggion_Cardback"),
+                CardCategory.Piggion,
+                CardType.Piggion,
+                new CounterPhalanx()),
+                4
+            );
+
+        piggionDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Piggion)}ThickSkin"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Piggion_Cardback"),
+                CardCategory.Piggion,
+                CardType.HeroAbility,
+                new ThickSkin()),
+                2
+            );
+
+        piggionDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Piggion)}Retaliation"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Piggion_Cardback"),
+                CardCategory.Piggion,
+                CardType.HeroAbility,
+                new Retaliation()),
+                2
+            );
+
+        piggionDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Piggion)}PainAndGain"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Piggion_Cardback"),
+                CardCategory.Piggion,
+                CardType.HeroAbility,
+                new PainAndGain()),
+                2
+            );
+
+        return piggionDefaultCardDeck;
+    }
 
     public static CardDeck GetCatomicDefaultCardDeck() 
     {
@@ -310,6 +388,10 @@ public class CardDBSchema
 
             case SpritePath.Catomic:
                 spritePathURL = "Cards/Catomic/";
+                break;
+
+            case SpritePath.Piggion:
+                spritePathURL = "Cards/Piggion/";
                 break;
 
             default:

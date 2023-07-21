@@ -28,6 +28,8 @@ public class CalamityBomb : Ability
         }
 
         // Check other character
+        targetPlayers.Remove(caster);
+
         foreach (Player target in targetPlayers) 
         {
             if (target.isKnockedOut) 

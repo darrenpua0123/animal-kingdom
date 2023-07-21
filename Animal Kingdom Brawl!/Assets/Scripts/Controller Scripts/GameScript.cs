@@ -122,7 +122,7 @@ public class GameScript : MonoBehaviour
         #region Player
         // TODO: Need to get AnimalHero from Choice in ChooseHeroScene
 
-        player = new Player(new Catomic(), CardDBSchema.GetCatomicDefaultCardDeck());
+        player = new Player(new Piggion(), CardDBSchema.GetPiggionDefaultCardDeck());
         playerLifeHUB.SetMaxHealth(player.health);
         playerLifeHUB.SetShield(player.shield);
         UpdateActionPointText(player.actionPoint);
@@ -553,6 +553,11 @@ public class GameScript : MonoBehaviour
 
         foreach (Player targetPlayer in targetAllOpponents)
         {
+            if (targetPlayer.isKnockedOut) 
+            {
+                continue;            
+            }
+
             if (targetPlayer.relicCounter == 1)
             {
                 prioritisedTarget.Add(targetPlayer);
@@ -574,7 +579,10 @@ public class GameScript : MonoBehaviour
         {
             int playerIndex = rand.Next(0, targetAllEnemies.Count);
 
-            prioritisedTarget.Add(targetAllEnemies[playerIndex]);
+            if (!targetAllEnemies[playerIndex].isKnockedOut) 
+            { 
+                prioritisedTarget.Add(targetAllEnemies[playerIndex]);
+            }
         }
 
         // activate the card
@@ -656,14 +664,14 @@ public class GameScript : MonoBehaviour
 
         List<Card> drawnCards = chestCardDeck.DrawCards(1);
 
-        // Draw Relic Card
+        // Drew Relic Card
         if (drawnCards[0].CardType == CardType.Relic)
         {
             yield return StartCoroutine(ShowCardPlayedByAIPanel(drawnCards[0]));
             ActivateCardForAI(drawnCards[0]);
             NextPlayerTurn();
         }
-        // Draw Trap Card
+        // Drew Trap Card
         else if (drawnCards[0].CardType == CardType.Trap)
         {
             yield return StartCoroutine(ShowCardPlayedByAIPanel(drawnCards[0]));
@@ -671,7 +679,7 @@ public class GameScript : MonoBehaviour
             chestCardDeck.InsertCardAt(drawnCards[0], rand.Next(0, chestCardDeck.GetAllCards().Count));
             NextPlayerTurn();
         }
-        // Draw Artifact, do the normal action here
+        // Drew Artifact, do the normal action here
         else
         {
             currentTurnPlayer.playerHandDeck.AddCards(drawnCards);
@@ -858,13 +866,16 @@ public class GameScript : MonoBehaviour
 
     private IEnumerator ShowCardPlayedByAIPanel(Card card)
     {
-        // TODO: CONTINUE: Target text not done
-        // TODO: When handDeck = 0 / cardDeck = 0, must draw 3 more / reinsert discard deck
+        // TODO: CONTINUEHERE: When handDeck = 0 / cardDeck = 0, must draw 3 more / reinsert discard deck
         // TODO: topright click to show tooltip (left click to dismiss, right click to reveal)
         // TODO: Add audio
         // TODO: After card ability, add random computer selection
+        
+
         cardPlayedByAIPanel.SetActive(true);
         cardPlayedByAIImage.sprite = card.CardFrontSprite;
+
+        SetCardPlayedByAIText(card);
 
         yield return new WaitForSeconds(4);
         CloseCardPlayedByAIPanel();
@@ -874,5 +885,25 @@ public class GameScript : MonoBehaviour
     {
         cardPlayedByAIPanel.SetActive(false);
         cardPlayedByAIImage.sprite = null;
+    }
+
+    private void SetCardPlayedByAIText(Card card) 
+    { 
+        string[] currentPlayerString = { "You", "Enemy 1", "Enemy 2", "Enemy 3", "Hornterror" };
+        int index = allCharacters.IndexOf(currentTurnPlayer);
+
+        if (card.CardType == CardType.Relic)
+        {
+            cardPlayedByAIText.text = $"{currentPlayerString[index]} collected a relic card!";
+        }
+        else if (card.CardType == CardType.Trap)
+        {
+            cardPlayedByAIText.text = $"{currentPlayerString[index]} triggered this trap card!";
+        }
+        else 
+        {
+            cardPlayedByAIText.text = $"{currentPlayerString[index]} played this card!";
+        }
+
     }
 }
