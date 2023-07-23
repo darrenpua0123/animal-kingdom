@@ -122,7 +122,7 @@ public class GameScript : MonoBehaviour
         #region Player
         // TODO: Need to get AnimalHero from Choice in ChooseHeroScene
 
-        player = new Player(new Piggion(), CardDBSchema.GetPiggionDefaultCardDeck());
+        player = new Player(new Beedle(), CardDBSchema.GetBeedleDefaultCardDeck());
         playerLifeHUB.SetMaxHealth(player.health);
         playerLifeHUB.SetShield(player.shield);
         UpdateActionPointText(player.actionPoint);
@@ -133,17 +133,17 @@ public class GameScript : MonoBehaviour
 
         #region Computer AI
         // TODO: Make enemy 1 2 3 all random (make sure is unique and no repeat)
-        enemyOneNPC = new Player(new Pandragon(), CardDBSchema.GetCatomicDefaultCardDeck());
+        enemyOneNPC = new Player(new Catomic(), CardDBSchema.GetCatomicDefaultCardDeck());
         enemyOneHeroImage.sprite = enemyOneNPC.animalHero.animalHeroImage;
         enemyOneLifeHUB.SetMaxHealth(enemyOneNPC.health);
         enemyOneLifeHUB.SetShield(enemyOneNPC.shield);
 
-        enemyTwoNPC = new Player(new Piggion(), CardDBSchema.GetCatomicDefaultCardDeck());
+        enemyTwoNPC = new Player(new Piggion(), CardDBSchema.GetPiggionDefaultCardDeck());
         enemyTwoHeroImage.sprite = enemyTwoNPC.animalHero.animalHeroImage;
         enemyTwoLifeHUB.SetMaxHealth(enemyTwoNPC.health);
         enemyTwoLifeHUB.SetShield(enemyTwoNPC.shield);
 
-        enemyThreeNPC = new Player(new Beedle(), CardDBSchema.GetCatomicDefaultCardDeck());
+        enemyThreeNPC = new Player(new Pandragon(), CardDBSchema.GetPandragonDefaultCardDeck());
         enemyThreeHeroImage.sprite = enemyThreeNPC.animalHero.animalHeroImage;
         enemyThreeLifeHUB.SetMaxHealth(enemyThreeNPC.health);
         enemyThreeLifeHUB.SetShield(enemyThreeNPC.shield);
@@ -156,6 +156,10 @@ public class GameScript : MonoBehaviour
 
         //testing TODO: Remove after testing
         enemyThreeNPC.health = 3;
+        player.knockoutCounter = 2;
+
+        enemyTwoNPC.isKnockedOut = true;
+        enemyTwoNPC.health = 0;
 
         // testing area
 
@@ -180,7 +184,6 @@ public class GameScript : MonoBehaviour
         startingPlayer = allCharacters[0];
         currentTurnPlayer = allCharacters[currentPlayerIndex];
 
-        // TODO: Haven't implement AI endturn function to call UpdateGameTurn();
         UpdateGameTurn();
         UpdateCardsInPlayerHandPanel(player.playerHandDeck.GetAllCards());
     }
@@ -383,6 +386,25 @@ public class GameScript : MonoBehaviour
         return (actionPoint > 0);
     }
 
+    private void CheckCurrentPlayerCondition() 
+    {
+        // Check if is knocked out
+        if (currentTurnPlayer.isKnockedOut) 
+        {
+            NextPlayerTurn();
+        }
+
+        if (currentTurnPlayer.playerHandDeck.GetAllCards().Count <= 0) 
+        {
+            currentTurnPlayer.playerHandDeck.AddCards(currentTurnPlayer.cardDeck.DrawCards(2));
+
+            if (currentTurnPlayer == player) 
+            { 
+                UpdateCardsInPlayerHandPanel(player.playerHandDeck.GetAllCards());
+            }
+        }
+    }
+
     private void NextPlayerTurn()
     {
         // Take the previous player index, iterate to the next one
@@ -426,7 +448,7 @@ public class GameScript : MonoBehaviour
             StartCoroutine(PlayerAI(currentTurnPlayer));
         }
 
-        // Update player card hand if current turn's player is player
+        // Update player card hand 
         UpdateCardsInPlayerHandPanel(player.playerHandDeck.GetAllCards());
     }
 
@@ -454,9 +476,17 @@ public class GameScript : MonoBehaviour
     {
         Card playedCard = currentTurnPlayer.playerHandDeck.GetAllCards()[cardIndex];
 
+        // Used and activate the card
         ActivateCard(playedCard);
+        
+        // Remove the played card
         currentTurnPlayer.playerHandDeck.RemoveSingleCard(playedCard);
+
+        // Discard the played card
         HandleDiscardCard(playedCard);
+        
+        // Check if player coondition
+        CheckCurrentPlayerCondition();
 
         UpdateCardsInPlayerHandPanel(player.playerHandDeck.GetAllCards());
     }
@@ -523,8 +553,12 @@ public class GameScript : MonoBehaviour
                 StartCoroutine(ShowSinglePlayerSelectionPanel(currentTurnPlayer, true, playedCard, 1));
                 break;
 
-            case AbilityType.CardViewable:
+            case AbilityType.FiveCardViewable:
                 ShowRevealCardsPanel(chestCardDeck, 5);
+                break;
+
+            case AbilityType.ThreeCardViewable:
+                ShowRevealCardsPanel(chestCardDeck, 3);
                 break;
 
             default: break;
@@ -575,20 +609,21 @@ public class GameScript : MonoBehaviour
         }
 
         // If no prioritse target, then random select
-        if (prioritisedTarget.Count == 0)
+        while (prioritisedTarget.Count == 0)
         {
             int playerIndex = rand.Next(0, targetAllEnemies.Count);
 
             if (!targetAllEnemies[playerIndex].isKnockedOut) 
             { 
                 prioritisedTarget.Add(targetAllEnemies[playerIndex]);
+                break;
             }
         }
 
         // activate the card
         switch (playedCard.CardAbility.abilityType)
         {
-            // TODO: Add in rest of the target system
+            // TODO: Double check the target system
             case AbilityType.NonTargetable:
                 playedCard.CardAbility.ActivateAbility(currentTurnPlayer, null);
                 break;
@@ -610,11 +645,14 @@ public class GameScript : MonoBehaviour
                 break;
 
             case AbilityType.AllOpponentSingleTargetable:
+                playedCard.CardAbility.ActivateAbility(currentTurnPlayer, prioritisedTarget);
                 break;
-            case AbilityType.CardViewable:
-                break;
-            default:
-                break;
+
+            // unused
+            case AbilityType.FiveCardViewable: break;
+            case AbilityType.ThreeCardViewable: break;
+
+            default: break;
         }
     }
 
@@ -636,6 +674,7 @@ public class GameScript : MonoBehaviour
                 currentTurnPlayer.actionPoint--;
             }
 
+            // play cards
             ActivateCardForAI(playedCard);
 
             // remove from hand
@@ -643,6 +682,9 @@ public class GameScript : MonoBehaviour
 
             // discard the card
             HandleDiscardCard(playedCard);
+
+            // check if current turn player's hand is empty
+            CheckCurrentPlayerCondition();
 
             // after show
             yield return StartCoroutine(ShowCardPlayedByAIPanel(playedCard));
@@ -652,7 +694,7 @@ public class GameScript : MonoBehaviour
             yield return new WaitForSeconds(1);
         }
 
-        Debug.Log($"Now have total of {currentTurnPlayer.playerHandDeck.GetAllCards().Count} cards");
+        Debug.Log($"Enemy {allCharacters.IndexOf(currentTurnPlayer)} now have total of {currentTurnPlayer.playerHandDeck.GetAllCards().Count} cards");
 
         // After action point finish, draw a card from chest card deck
         // Horn terror is not required
@@ -866,12 +908,10 @@ public class GameScript : MonoBehaviour
 
     private IEnumerator ShowCardPlayedByAIPanel(Card card)
     {
-        // TODO: CONTINUEHERE: When handDeck = 0 / cardDeck = 0, must draw 3 more / reinsert discard deck
         // TODO: topright click to show tooltip (left click to dismiss, right click to reveal)
         // TODO: Add audio
         // TODO: After card ability, add random computer selection
         
-
         cardPlayedByAIPanel.SetActive(true);
         cardPlayedByAIImage.sprite = card.CardFrontSprite;
 

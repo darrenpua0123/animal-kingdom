@@ -9,9 +9,8 @@ public enum AbilityType
     TargetAllOpponents,
     AllCharacterSingleTargetable,
     AllOpponentSingleTargetable,
-    CardViewable,
-    // unused
-    CardSelectable
+    ThreeCardViewable,
+    FiveCardViewable
 }
 
 public abstract class Ability

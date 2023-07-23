@@ -5,7 +5,7 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class MaliciousRuby : Ability
 {
-    public override AbilityType abilityType { get; set; } = AbilityType.TargetAllPlayers;
+    public override AbilityType abilityType { get; set; } = AbilityType.TargetAllCharacters;
     public override string description { get; set; } = "";
 
     public override void ActivateAbility(Player caster, List<Player> targetPlayers)
@@ -27,11 +27,6 @@ public class MaliciousRuby : Ability
                 validPlayers.Remove(targetPlayers[i]);
                 continue;
             }
-        }
-
-        foreach (Player player in validPlayers)
-        {
-            //player.health = 10;
         }
 
         // Iterate all valid player to swap health

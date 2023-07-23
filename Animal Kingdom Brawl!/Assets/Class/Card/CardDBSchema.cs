@@ -11,7 +11,9 @@ public enum SpritePath
     Trap,
     Hornterror,
     Catomic,
-    Piggion
+    Piggion,
+    Pandragon,
+    Beedle
 }
 
 public class CardDBSchema
@@ -322,9 +324,163 @@ public class CardDBSchema
         return catomicDefaultCardDeck;
     }
 
-    // public static CardDeck GetPandragonDefaultCardDeck()
+    public static CardDeck GetPandragonDefaultCardDeck() 
+    {
+        CardDeck pandragonDefaultCardDeck = new CardDeck();
 
-    // public static CardDeck GetBeedleDefaultCardDeck()
+        pandragonDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Pandragon)}DragonClaw"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Pandragon_Cardback"),
+                CardCategory.Pandragon,
+                CardType.Pandragon,
+                new DragonClaw()),
+                4
+            );
+
+        pandragonDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Pandragon)}MeatFeast"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Pandragon_Cardback"),
+                CardCategory.Pandragon,
+                CardType.Pandragon,
+                new MeatFeast()),
+                2
+            );
+
+        pandragonDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Pandragon)}SharpenClaw"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Pandragon_Cardback"),
+                CardCategory.Pandragon,
+                CardType.Pandragon,
+                new SharpenClaw()),
+                2
+            );
+
+        pandragonDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Pandragon)}WindGustAttack"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Pandragon_Cardback"),
+                CardCategory.Pandragon,
+                CardType.Pandragon,
+                new WindGustAttack()),
+                3
+            );
+
+        pandragonDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Pandragon)}FlightAndFight"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Pandragon_Cardback"),
+                CardCategory.Pandragon,
+                CardType.Pandragon,
+                new FlightAndFight()),
+                3
+            );
+
+        pandragonDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Pandragon)}DragonsScale"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Pandragon_Cardback"),
+                CardCategory.Pandragon,
+                CardType.HeroAbility,
+                new DragonsScale()),
+                2
+            );
+
+        pandragonDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Pandragon)}DragonsRoar"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Pandragon_Cardback"),
+                CardCategory.Pandragon,
+                CardType.HeroAbility,
+                new DragonsRoar()),
+                2
+            );
+
+        pandragonDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Pandragon)}DracosMight"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Pandragon_Cardback"),
+                CardCategory.Pandragon,
+                CardType.HeroAbility,
+                new DracosMight()),
+                2
+            );
+
+        return pandragonDefaultCardDeck;
+    }
+
+    public static CardDeck GetBeedleDefaultCardDeck() 
+    {
+        CardDeck beedleDefaultCardDeck = new CardDeck();
+
+        beedleDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Beedle)}HoneyUp"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Beedle_Cardback"),
+                CardCategory.Beedle,
+                CardType.Beedle,
+                new HoneyUp()),
+                2
+            );
+
+        beedleDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Beedle)}StingerPoke"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Beedle_Cardback"),
+                CardCategory.Beedle,
+                CardType.Beedle,
+                new StingerPoke()),
+                4
+            );
+
+        beedleDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Beedle)}HoneyEssence"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Beedle_Cardback"),
+                CardCategory.Beedle,
+                CardType.Beedle,
+                new HoneyEssence()),
+                2
+            );
+
+        beedleDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Beedle)}BeeSwarm"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Beedle_Cardback"),
+                CardCategory.Beedle,
+                CardType.Beedle,
+                new BeeSwarm()),
+                2
+            );
+
+        beedleDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Beedle)}Rejuvenate"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Beedle_Cardback"),
+                CardCategory.Beedle,
+                CardType.Beedle,
+                new Rejuvenate()),
+                2
+            );
+
+        beedleDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Beedle)}Levitation"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Beedle_Cardback"),
+                CardCategory.Beedle,
+                CardType.HeroAbility,
+                new Levitation()),
+                2
+            );
+
+        beedleDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Beedle)}Surveillance"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Beedle_Cardback"),
+                CardCategory.Beedle,
+                CardType.HeroAbility,
+                new Surveillance()),
+                3
+            );
+
+        beedleDefaultCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Beedle)}LastResort"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Beedle_Cardback"),
+                CardCategory.Beedle,
+                CardType.HeroAbility,
+                new LastResort()),
+                3
+            );
+
+        return beedleDefaultCardDeck;
+    }
 
     public static CardDeck GetHornterrorDefaultCardDeck() 
     {
@@ -392,6 +548,14 @@ public class CardDBSchema
 
             case SpritePath.Piggion:
                 spritePathURL = "Cards/Piggion/";
+                break;
+
+            case SpritePath.Pandragon:
+                spritePathURL = "Cards/Pandragon/";
+                break;
+
+            case SpritePath.Beedle:
+                spritePathURL = "Cards/Beedle/";
                 break;
 
             default:

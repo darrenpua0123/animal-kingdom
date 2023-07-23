@@ -11,6 +11,7 @@ public class SwappingRope : Ability
     {
         if (caster.playerHandDeck.GetAllCards().Count <= 0 || targetPlayers[0].playerHandDeck.GetAllCards().Count <= 0) 
         {
+            // Do not execute if either of the player's hand doesn't contain any cards
             return;
         }
 
