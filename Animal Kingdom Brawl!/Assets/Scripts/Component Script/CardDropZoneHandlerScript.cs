@@ -34,6 +34,8 @@ public class CardDropZoneHandlerScript : MonoBehaviour, IDropHandler
             return;
         }
 
+        AudioManagerScript.instance.Play(SoundName.PlayCard);
+
         gameScript.DestroyCardPlacholder(droppedCardIndex);
         Destroy(eventData.pointerDrag);
 

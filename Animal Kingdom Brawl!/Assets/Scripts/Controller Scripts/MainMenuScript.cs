@@ -1,5 +1,6 @@
 using Firebase.Auth;
 using Firebase.Database;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,13 @@ public class MainMenuScript : MonoBehaviour
 
     void Start()
     {
+        Sound mainMenuSound = AudioManagerScript.instance.GetSound(SoundName.MainMenu);
+
+        if (!mainMenuSound.isPlaying)
+        {
+            AudioManagerScript.instance.Play(SoundName.MainMenu);     
+        }
+
         UpdateWelcomeText(username);
     }
 
@@ -42,8 +50,9 @@ public class MainMenuScript : MonoBehaviour
         welcomeText.text = $"Welcome back, <br><b>{username}</b>";
     }
 
-    public void PlayGame() 
+    public void PlayGame()
     {
+        AudioManagerScript.instance.Play(SoundName.ButtonPressed);
         // TODO: transition animation tutorial
         // https://www.youtube.com/watch?v=CE9VOZivb3I
         SceneManager.LoadScene("ChooseHeroScene");
@@ -51,18 +60,24 @@ public class MainMenuScript : MonoBehaviour
 
     public void ViewTutorial()
     {
+        AudioManagerScript.instance.Play(SoundName.ButtonPressed);
+
         Debug.Log("Tutorial Page");
     }
 
     public void ViewShop()
     {
+        AudioManagerScript.instance.Play(SoundName.ButtonPressed);
         SceneManager.LoadScene("ShopScene");
     }
 
-    public void QuitGame() 
+    public void QuitGame()
     {
         Debug.Log("Quit");
-        //auth.SignOut();
+
+        AudioManagerScript.instance.Play(SoundName.ButtonPressed);
+
+        auth.SignOut();
 
         Application.Quit();
     }

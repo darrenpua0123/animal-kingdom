@@ -30,6 +30,8 @@ public class GameScript : MonoBehaviour
     public Canvas canvas;
     public TMP_Text currentTurnText;
     public TMP_Text currentPlayerTurnText;
+    public TMP_Text popupText;
+    //TODO: CONTINUE HERE: Animate for float up
 
     // Player
     public TMP_Text remainingCardText;
@@ -43,7 +45,7 @@ public class GameScript : MonoBehaviour
 
     // Enemy 1
     public Image enemyOneHeroImage;
-    public LifeHUB enemyOneLifeHUB; 
+    public LifeHUB enemyOneLifeHUB;
     public TMP_Text enemyOneKnockoutCounterText;
     public TMP_Text enemyOneRelicCounterText;
 
@@ -65,6 +67,7 @@ public class GameScript : MonoBehaviour
     public List<GameObject> characterGlowImages;
     public List<Button> enemySelectionButton;
 
+    // Panels
     public GameObject viewCardPanel;
     public Image viewCardImage;
     public GameObject viewCardAbilityPanel;
@@ -114,15 +117,18 @@ public class GameScript : MonoBehaviour
         endTurnButton.image.alphaHitTestMinimumThreshold = buttonImageAlphaThreshold;
 
         #region Match Setting
+        AudioManagerScript.instance.Stop(SoundName.MainMenu);
+        AudioManagerScript.instance.Play(SoundName.GameMatch);
+
         chestCardDeck = CardDBSchema.GetDefaultChestDeck();
         chestCardDeck.ShuffleCards();
         discardChestCardDeck = new CardDeck();
         #endregion
 
         #region Player
-        // TODO: Need to get AnimalHero from Choice in ChooseHeroScene
+        string chosenHero = PlayerPrefs.GetString("ChosenHero");
 
-        player = new Player(new Beedle(), CardDBSchema.GetBeedleDefaultCardDeck());
+        player = GetPlayerAnimalHero(chosenHero);
         playerLifeHUB.SetMaxHealth(player.health);
         playerLifeHUB.SetShield(player.shield);
         UpdateActionPointText(player.actionPoint);
@@ -132,18 +138,17 @@ public class GameScript : MonoBehaviour
         #endregion
 
         #region Computer AI
-        // TODO: Make enemy 1 2 3 all random (make sure is unique and no repeat)
-        enemyOneNPC = new Player(new Catomic(), CardDBSchema.GetCatomicDefaultCardDeck());
+        // Set all enemy NPC animal hero
+        SetPlayerAIsAnimalHero(chosenHero);
+
         enemyOneHeroImage.sprite = enemyOneNPC.animalHero.animalHeroImage;
         enemyOneLifeHUB.SetMaxHealth(enemyOneNPC.health);
         enemyOneLifeHUB.SetShield(enemyOneNPC.shield);
 
-        enemyTwoNPC = new Player(new Piggion(), CardDBSchema.GetPiggionDefaultCardDeck());
         enemyTwoHeroImage.sprite = enemyTwoNPC.animalHero.animalHeroImage;
         enemyTwoLifeHUB.SetMaxHealth(enemyTwoNPC.health);
         enemyTwoLifeHUB.SetShield(enemyTwoNPC.shield);
 
-        enemyThreeNPC = new Player(new Pandragon(), CardDBSchema.GetPandragonDefaultCardDeck());
         enemyThreeHeroImage.sprite = enemyThreeNPC.animalHero.animalHeroImage;
         enemyThreeLifeHUB.SetMaxHealth(enemyThreeNPC.health);
         enemyThreeLifeHUB.SetShield(enemyThreeNPC.shield);
@@ -160,14 +165,13 @@ public class GameScript : MonoBehaviour
 
         enemyTwoNPC.isKnockedOut = true;
         enemyTwoNPC.health = 0;
-
         // testing area
 
         // Function to call when game first started, before variable setting
         allCharacters = new List<Player>() { player, enemyOneNPC, enemyTwoNPC, enemyThreeNPC, hornterrorNPC };
 
         // Starting draw cards
-        foreach (Player character in allCharacters) 
+        foreach (Player character in allCharacters)
         {
             character.cardDeck.ShuffleCards();
 
@@ -175,8 +179,8 @@ public class GameScript : MonoBehaviour
             {
                 character.playerHandDeck.AddCards(character.cardDeck.DrawCards(2));
             }
-            else 
-            { 
+            else
+            {
                 character.playerHandDeck.AddCards(character.cardDeck.DrawCards(3));
             }
         }
@@ -206,7 +210,7 @@ public class GameScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E)) // Kill player
         {
             player.health = 0;
-            player.isKnockedOut = true;    
+            player.isKnockedOut = true;
         }
         if (Input.GetKeyDown(KeyCode.Space)) // Reduce AP
         {
@@ -221,7 +225,7 @@ public class GameScript : MonoBehaviour
             player.playerHandDeck.AddCards(player.cardDeck.DrawCards(2));
             UpdateCardsInPlayerHandPanel(player.playerHandDeck.GetAllCards());
         }
-        if (Input.GetKeyDown(KeyCode.Q)) 
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             player.playerHandDeck.GetAllCards().Clear();
             UpdateCardsInPlayerHandPanel(player.playerHandDeck.GetAllCards());
@@ -236,6 +240,7 @@ public class GameScript : MonoBehaviour
             }
         }
 
+        CheckCurrentPlayerIsKnockedOut();
         UpdateUI();
     }
 
@@ -275,6 +280,56 @@ public class GameScript : MonoBehaviour
         UpdatePlayerEndTurnButton();
     }
 
+    private Player GetPlayerAnimalHero(string chosenHero)
+    {
+        Player player;
+
+        switch (chosenHero)
+        {
+            case "beedle":
+                player = new Player(new Beedle(), CardDBSchema.GetBeedleDefaultCardDeck());
+                break;
+
+            case "catomic":
+                player = new Player(new Catomic(), CardDBSchema.GetCatomicDefaultCardDeck());
+                break;
+
+            case "pandragon":
+                player = new Player(new Pandragon(), CardDBSchema.GetPandragonDefaultCardDeck());
+                break;
+
+            case "piggion":
+                player = new Player(new Piggion(), CardDBSchema.GetPiggionDefaultCardDeck());
+                break;
+
+            default:
+                player = new Player(new Piggion(), CardDBSchema.GetPiggionDefaultCardDeck());
+                break;
+        }
+
+        return player;
+    }
+
+    private void SetPlayerAIsAnimalHero(string playerChosenHero)
+    {
+        System.Random rand = new System.Random();
+
+        List<string> heroPools = new List<string>() { Catomic.HERO_NAME, Piggion.HERO_NAME, Beedle.HERO_NAME, Pandragon.HERO_NAME };
+        heroPools.Remove(playerChosenHero);
+
+        int indexOne = rand.Next(0, heroPools.Count);
+        enemyOneNPC = GetPlayerAnimalHero(heroPools[indexOne]);
+        heroPools.RemoveAt(indexOne);
+
+        int indexTwo = rand.Next(0, heroPools.Count);
+        enemyTwoNPC = GetPlayerAnimalHero(heroPools[indexTwo]);
+        heroPools.RemoveAt(indexTwo);
+
+        int indexThree = rand.Next(0, heroPools.Count);
+        enemyThreeNPC = GetPlayerAnimalHero(heroPools[indexThree]);
+        heroPools.RemoveAt(indexThree);
+    }
+
     private void UpdateRemainingCardText(int remainingCards)
     {
         remainingCardText.text = $"Remaining:\n{remainingCards}";
@@ -284,7 +339,7 @@ public class GameScript : MonoBehaviour
     {
         remainingCardImage.sprite = cardBackImage;
     }
-        
+
     public void ClearCardsInPlayerHandPanel()
     {
         for (int i = playerHandPanel.transform.childCount - 1; i >= 0; i--)
@@ -322,11 +377,11 @@ public class GameScript : MonoBehaviour
         Destroy(cardPlaceholder);
     }
 
-    private void UpdatePlayerEndTurnButton() 
-    { 
+    private void UpdatePlayerEndTurnButton()
+    {
         endTurnButton.interactable = false;
 
-        if (currentTurnPlayer == startingPlayer) 
+        if (currentTurnPlayer == startingPlayer)
         {
             endTurnButton.interactable = true;
         }
@@ -336,28 +391,43 @@ public class GameScript : MonoBehaviour
     {
         if (ActionNotEndable(player.actionPoint))
         {
+            Sound actionNotEndableSound = AudioManagerScript.instance.GetSound(SoundName.ActionNotEndable);
+
+            if (!actionNotEndableSound.isPlaying)
+            {
+                AudioManagerScript.instance.Play(SoundName.ActionNotEndable);
+            }
+
             Debug.Log($"Cannot end turn as you have {player.actionPoint} turns left!");
-            //return;
+
+            //TODO: Add actin cannot end text
         }
         else
         {
+            AudioManagerScript.instance.Play(SoundName.EndTurnButton);
             List<Card> drawnCards = chestCardDeck.DrawCards(1);
 
             // Draw Relic Card
             if (drawnCards[0].CardType == CardType.Relic)
             {
-                StartCoroutine(ShowChestDrawnCardPanel(drawnCards[0], () => 
-                { 
+                AudioManagerScript.instance.Play(SoundName.CollectRelicCard);
+
+                StartCoroutine(ShowChestDrawnCardPanel(drawnCards[0], () =>
+                {
+                    // Stop relic sound
+                    AudioManagerScript.instance.Stop(SoundName.CollectRelicCard);
+
+                    // Resume action
                     ActivateCard(drawnCards[0]);
                     NextPlayerTurn();
                 }));
             }
             // Draw Trap Card
-            else if (drawnCards[0].CardType == CardType.Trap) 
+            else if (drawnCards[0].CardType == CardType.Trap)
             {
-                StartCoroutine(ShowChestDrawnCardPanel(drawnCards[0], () => {}));
-                StartCoroutine(ShowReinsertTrapCardPanel(drawnCards[0], () => 
-                { 
+                StartCoroutine(ShowChestDrawnCardPanel(drawnCards[0], () => { }));
+                StartCoroutine(ShowReinsertTrapCardPanel(drawnCards[0], () =>
+                {
                     ActivateCard(drawnCards[0]);
                     NextPlayerTurn();
                 }));
@@ -367,7 +437,7 @@ public class GameScript : MonoBehaviour
             {
                 player.playerHandDeck.AddCards(drawnCards);
                 NextPlayerTurn();
-            } 
+            }
         }
 
         UpdateCardsInPlayerHandPanel(player.playerHandDeck.GetAllCards());
@@ -386,14 +456,18 @@ public class GameScript : MonoBehaviour
         return (actionPoint > 0);
     }
 
-    private void CheckCurrentPlayerCondition() 
+    private void CheckCurrentPlayerIsKnockedOut() 
     {
-        // Check if is knocked out
-        if (currentTurnPlayer.isKnockedOut) 
+        // Check if current player is knocked out
+        if (currentTurnPlayer.isKnockedOut)
         {
             NextPlayerTurn();
         }
+    }
 
+    private void CheckCurrentPlayerHandIsEmpty() 
+    {
+        // Check if hands are empty
         if (currentTurnPlayer.playerHandDeck.GetAllCards().Count <= 0) 
         {
             currentTurnPlayer.playerHandDeck.AddCards(currentTurnPlayer.cardDeck.DrawCards(2));
@@ -460,6 +534,11 @@ public class GameScript : MonoBehaviour
         if (currentTurnPlayer == startingPlayer)
         {
             gameTurn++;
+
+            if (!currentTurnPlayer.isKnockedOut) 
+            { 
+                AudioManagerScript.instance.Play(SoundName.EndTurnButton);
+            }
         }
 
         currentTurnText.text = $"Turn: {gameTurn}";
@@ -485,8 +564,8 @@ public class GameScript : MonoBehaviour
         // Discard the played card
         HandleDiscardCard(playedCard);
         
-        // Check if player coondition
-        CheckCurrentPlayerCondition();
+        // Check if player's hand is empty or not
+        CheckCurrentPlayerHandIsEmpty();
 
         UpdateCardsInPlayerHandPanel(player.playerHandDeck.GetAllCards());
     }
@@ -676,6 +755,7 @@ public class GameScript : MonoBehaviour
 
             // play cards
             ActivateCardForAI(playedCard);
+            AudioManagerScript.instance.Play(SoundName.PlayCard);
 
             // remove from hand
             currentTurnPlayer.playerHandDeck.RemoveSingleCard(playedCard);
@@ -684,7 +764,7 @@ public class GameScript : MonoBehaviour
             HandleDiscardCard(playedCard);
 
             // check if current turn player's hand is empty
-            CheckCurrentPlayerCondition();
+            CheckCurrentPlayerHandIsEmpty();
 
             // after show
             yield return StartCoroutine(ShowCardPlayedByAIPanel(playedCard));
@@ -709,6 +789,7 @@ public class GameScript : MonoBehaviour
         // Drew Relic Card
         if (drawnCards[0].CardType == CardType.Relic)
         {
+            AudioManagerScript.instance.Play(SoundName.CollectRelicCard);
             yield return StartCoroutine(ShowCardPlayedByAIPanel(drawnCards[0]));
             ActivateCardForAI(drawnCards[0]);
             NextPlayerTurn();
@@ -731,6 +812,8 @@ public class GameScript : MonoBehaviour
 
     public void ShowViewCardPanel(int cardIndex)
     {
+        AudioManagerScript.instance.Play(SoundName.ViewCard);
+
         Card viewCard = player.playerHandDeck.GetAllCards()[cardIndex];
 
         viewCardImage.sprite = viewCard.CardFrontSprite;
@@ -832,7 +915,6 @@ public class GameScript : MonoBehaviour
 
         yield return new WaitUntil(() => !showChestDrawnCardPanel.activeSelf);
 
-        //CloseChestDrawnCardPanel();
         onComplete?.Invoke();
     }
 
@@ -909,9 +991,7 @@ public class GameScript : MonoBehaviour
     private IEnumerator ShowCardPlayedByAIPanel(Card card)
     {
         // TODO: topright click to show tooltip (left click to dismiss, right click to reveal)
-        // TODO: Add audio
-        // TODO: After card ability, add random computer selection
-        
+       
         cardPlayedByAIPanel.SetActive(true);
         cardPlayedByAIImage.sprite = card.CardFrontSprite;
 

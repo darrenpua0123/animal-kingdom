@@ -20,6 +20,5 @@ public class Card
        this.CardCategory = cardCategoryEnum;
        this.CardType = cardTypeEnum;
        this.CardAbility = cardAbility;
-        // Newest
     }
 }

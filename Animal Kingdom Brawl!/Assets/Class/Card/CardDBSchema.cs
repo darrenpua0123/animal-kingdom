@@ -20,10 +20,9 @@ public class CardDBSchema
 {
     private static readonly CardDBSchema instance = new CardDBSchema();
     
-    // private constructor to prevent instantiation outside of the class
     private CardDBSchema() 
     {
-        // TODO: Add other Hero Card Function
+        // private constructor to prevent instantiation outside of the class
     }
 
     public static CardDBSchema Instance

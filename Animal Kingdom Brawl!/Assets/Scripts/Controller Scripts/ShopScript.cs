@@ -170,10 +170,14 @@ public class ShopScript : MonoBehaviour
 
     public void PurchasePiggionButton()
     {
+        AudioManagerScript.instance.Play(SoundName.ButtonPressed);
+
         int piggionCost = GameData.PiggionShopCost;
 
         if (playerCurrency >= piggionCost)
         {
+            AudioManagerScript.instance.Play(SoundName.SufficientPurchased);
+
             playerCurrency -= piggionCost; 
             unlockedAnimalHeroes.Add(Piggion.HERO_NAME);
 
@@ -181,8 +185,10 @@ public class ShopScript : MonoBehaviour
 
             SetPurchasePanelText("sufficient");
         }
-        else 
+        else
         {
+            AudioManagerScript.instance.Play(SoundName.InsufficientPurchase);
+
             SetPurchasePanelText("insufficient");
         }
 
@@ -192,10 +198,14 @@ public class ShopScript : MonoBehaviour
 
     public void PurchaseCatomicButton() 
     {
+        AudioManagerScript.instance.Play(SoundName.ButtonPressed);
+
         int catomicCost = GameData.CatomicShopCost;
 
         if (playerCurrency >= catomicCost)
         {
+            AudioManagerScript.instance.Play(SoundName.SufficientPurchased);
+
             playerCurrency -= catomicCost;
             unlockedAnimalHeroes.Add(Catomic.HERO_NAME);
 
@@ -205,6 +215,8 @@ public class ShopScript : MonoBehaviour
         }
         else
         {
+            AudioManagerScript.instance.Play(SoundName.InsufficientPurchase);
+
             SetPurchasePanelText("insufficient");
         }
 
@@ -212,12 +224,16 @@ public class ShopScript : MonoBehaviour
         ShowPurchasePanel();
     }
 
-    public void PurchasePandragonButton() 
+    public void PurchasePandragonButton()
     {
+        AudioManagerScript.instance.Play(SoundName.ButtonPressed);
+        
         int pandragonCost = GameData.PandragonShopCost;
 
         if (playerCurrency >= pandragonCost)
         {
+            AudioManagerScript.instance.Play(SoundName.SufficientPurchased);
+
             playerCurrency -= pandragonCost;
             unlockedAnimalHeroes.Add(Pandragon.HERO_NAME);
 
@@ -227,6 +243,8 @@ public class ShopScript : MonoBehaviour
         }
         else
         {
+            AudioManagerScript.instance.Play(SoundName.InsufficientPurchase);
+
             SetPurchasePanelText("insufficient");
         }
 
@@ -236,10 +254,14 @@ public class ShopScript : MonoBehaviour
 
     public void PurchaseBeedleButton()
     {
+        AudioManagerScript.instance.Play(SoundName.ButtonPressed);
+
         int beedleCost = GameData.BeedleShopCost;
 
         if (playerCurrency >= beedleCost)
         {
+            AudioManagerScript.instance.Play(SoundName.SufficientPurchased);
+
             playerCurrency -= beedleCost;
             unlockedAnimalHeroes.Add(Beedle.HERO_NAME);
 
@@ -249,6 +271,8 @@ public class ShopScript : MonoBehaviour
         }
         else
         {
+            AudioManagerScript.instance.Play(SoundName.InsufficientPurchase);
+
             SetPurchasePanelText("insufficient");
         }
 
@@ -264,6 +288,8 @@ public class ShopScript : MonoBehaviour
 
     public void BackToMainMenu()
     {
+        AudioManagerScript.instance.Play(SoundName.ButtonPressed);
+
         SceneManager.LoadScene("MainMenuScene");
     }
 
@@ -294,8 +320,17 @@ public class ShopScript : MonoBehaviour
         }
     }
 
-    public void ClosePurchasePanel() 
+    public void ClosePurchasePanel()
     {
+        Sound purchaseSound = AudioManagerScript.instance.GetSound(SoundName.SufficientPurchased);
+
+        if (purchaseSound.isPlaying)
+        {
+            AudioManagerScript.instance.Stop(SoundName.SufficientPurchased);
+        }
+
+        AudioManagerScript.instance.Play(SoundName.ButtonPressed);
+
         purchasePanel.SetActive(false);
     }
 }

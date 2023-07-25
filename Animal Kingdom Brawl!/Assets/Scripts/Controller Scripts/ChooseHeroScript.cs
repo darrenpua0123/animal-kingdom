@@ -167,6 +167,8 @@ public class ChooseHeroScript : MonoBehaviour
 
     public void ChooseHero(string heroName) 
     {
+        AudioManagerScript.instance.Play(SoundName.ButtonPressed);
+
         string chosenHero = null;
 
         if (heroName.Equals(Piggion.HERO_NAME))
@@ -185,9 +187,9 @@ public class ChooseHeroScript : MonoBehaviour
         {
             chosenHero = Beedle.HERO_NAME;
         }
+        
+        PlayerPrefs.SetString("ChosenHero", chosenHero);
 
-        // TODO: DO THIS FIRST! Once chosen, pass the data to Game Scene and start the mayhem
-        Debug.Log($"Player chosen {chosenHero}");
         LoadGameScene();
     }
 
@@ -198,6 +200,7 @@ public class ChooseHeroScript : MonoBehaviour
 
     public void BackToMainMenu()
     {
+        AudioManagerScript.instance.Play(SoundName.ButtonPressed);
         SceneManager.LoadScene("MainMenuScene");
     }
 }
