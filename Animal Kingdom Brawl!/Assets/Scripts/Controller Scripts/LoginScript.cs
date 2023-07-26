@@ -12,6 +12,7 @@ using System.Linq.Expressions;
 using System.Security.Cryptography;
 using System;
 using UnityEngine.UI;
+using UnityEditor.VersionControl;
 
 public class LoginScript : MonoBehaviour
 {
@@ -163,7 +164,7 @@ public class LoginScript : MonoBehaviour
         SetPromptMessage(registerString);
 
         loginPanel.SetActive(false);
-        registerPanel.SetActive(true);
+        registerPanel.SetActive(true);  
     }
 
     public void LoginButton()
@@ -226,7 +227,8 @@ public class LoginScript : MonoBehaviour
         {
             firebaseUser = loginTask.Result;
 
-            SceneManager.LoadScene("MainMenuScene");
+            SceneManager.LoadScene("MainMenuScene");        
+
             Debug.Log($"User logged in with ID:{firebaseUser.UserId}, username: {firebaseUser.DisplayName}, and email: {firebaseUser.Email}");
         }
 

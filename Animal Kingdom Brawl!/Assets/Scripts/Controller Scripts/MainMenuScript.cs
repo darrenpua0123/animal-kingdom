@@ -62,25 +62,22 @@ public class MainMenuScript : MonoBehaviour
     {
         AudioManagerScript.instance.Play(SoundName.ButtonPressed);
 
-        Debug.Log("Tutorial Page");
+        SceneManager.LoadScene("TutorialScene");
     }
 
     public void ViewShop()
     {
         AudioManagerScript.instance.Play(SoundName.ButtonPressed);
+
         SceneManager.LoadScene("ShopScene");
     }
 
     public void QuitGame()
     {
-        Debug.Log("Quit");
-
         AudioManagerScript.instance.Play(SoundName.ButtonPressed);
 
         auth.SignOut();
 
         Application.Quit();
     }
-
-
 }

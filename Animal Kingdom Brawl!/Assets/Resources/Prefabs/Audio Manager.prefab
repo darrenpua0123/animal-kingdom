@@ -125,3 +125,27 @@ MonoBehaviour:
     loop: 0
     source: {fileID: 0}
     isPlaying: 0
+  - name: 10
+    clip: {fileID: 8300000, guid: cade18923d7250f4e9ef8f6acf074b53, type: 3}
+    volume: 0.2
+    pitch: 1
+    autoPlay: 0
+    loop: 0
+    source: {fileID: 0}
+    isPlaying: 0
+  - name: 11
+    clip: {fileID: 8300000, guid: b17657abcd47f754db214ca37c6534ae, type: 3}
+    volume: 0.2
+    pitch: 1
+    autoPlay: 0
+    loop: 0
+    source: {fileID: 0}
+    isPlaying: 0
+  - name: 12
+    clip: {fileID: 8300000, guid: 2eb12e963fb3a5f4cab62acba099fe85, type: 3}
+    volume: 0.2
+    pitch: 1
+    autoPlay: 0
+    loop: 0
+    source: {fileID: 0}
+    isPlaying: 0

@@ -29,8 +29,7 @@ public class CardDropZoneHandlerScript : MonoBehaviour, IDropHandler
 
         if (gameScript.currentTurnPlayer.actionPoint <= 0) 
         {
-            Debug.Log("You have no action point left!");
-            // TODO: Prompt No Action Point left text in gameScript.ShowNoActionPointLeft with animation floating up
+            gameScript.ShowPopupText("You have no action point left!");
             return;
         }
 

@@ -14,7 +14,10 @@ public enum SoundName
     PlayCard,
     EndTurnButton,
     ActionNotEndable,
-    CollectRelicCard
+    CollectRelicCard,
+    MatchVictory,
+    OpenHelpPanel,
+    CloseHelpPanel
 }
 
 public class AudioManagerScript : MonoBehaviour
