@@ -13,7 +13,7 @@ public class LifeHUB : MonoBehaviour
 
     public Image shieldImage;
     public TMP_Text shieldText;
-
+    
     public void SetMaxHealth(int maxHealth) 
     { 
         healthSlider.maxValue = maxHealth;

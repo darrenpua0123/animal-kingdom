@@ -108,58 +108,58 @@ public class CardDBSchema
         #endregion
 
         #region Trap
-        //defaultChestCardDeck.AddSingleCard(new Card(
-        //        Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}AncientContract"),
-        //        Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
-        //        CardCategory.Chest,
-        //        CardType.Trap,
-        //        new AncientContract()),
-        //        3
-        //    );
+        defaultChestCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}AncientContract"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
+                CardCategory.Chest,
+                CardType.Trap,
+                new AncientContract()),
+                3
+            );
 
-        //defaultChestCardDeck.AddSingleCard(new Card(
-        //        Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}BearTrap"),
-        //        Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
-        //        CardCategory.Chest,
-        //        CardType.Trap,
-        //        new BearTrap()),
-        //        3
-        //    );
+        defaultChestCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}BearTrap"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
+                CardCategory.Chest,
+                CardType.Trap,
+                new BearTrap()),
+                3
+            );
 
-        //defaultChestCardDeck.AddSingleCard(new Card(
-        //        Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}BookOfCorruption"),
-        //        Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
-        //        CardCategory.Chest,
-        //        CardType.Trap,
-        //        new BookOfCorruption()),
-        //        3
-        //    );
+        defaultChestCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}BookOfCorruption"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
+                CardCategory.Chest,
+                CardType.Trap,
+                new BookOfCorruption()),
+                3
+            );
 
-        //defaultChestCardDeck.AddSingleCard(new Card(
-        //        Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}CalamityBomb"),
-        //        Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
-        //        CardCategory.Chest,
-        //        CardType.Trap,
-        //        new CalamityBomb()),
-        //        3
-        //    );
+        defaultChestCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}CalamityBomb"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
+                CardCategory.Chest,
+                CardType.Trap,
+                new CalamityBomb()),
+                3
+            );
 
-        //defaultChestCardDeck.AddSingleCard(new Card(
-        //        Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}MaliciousRuby"),
-        //        Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
-        //        CardCategory.Chest,
-        //        CardType.Trap,
-        //        new MaliciousRuby()),
-        //        2
-        //    );
+        defaultChestCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}MaliciousRuby"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
+                CardCategory.Chest,
+                CardType.Trap,
+                new MaliciousRuby()),
+                2
+            );
 
-        //defaultChestCardDeck.AddSingleCard(new Card(
-        //        Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}UnspeakableCurse"),
-        //        Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
-        //        CardCategory.Chest,
-        //        CardType.Trap,
-        //        new UnspeakableCurse())
-        //    );
+        defaultChestCardDeck.AddSingleCard(new Card(
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Trap)}UnspeakableCurse"),
+                Resources.Load<Sprite>($"{GetSpritePath(SpritePath.Cardback)}Chest_Cardback"),
+                CardCategory.Chest,
+                CardType.Trap,
+                new UnspeakableCurse())
+            );
         #endregion
 
         return defaultChestCardDeck;
@@ -491,7 +491,7 @@ public class CardDBSchema
                 CardCategory.Hornterror,
                 CardType.Hornterror,
                 new HeatWave()),
-                3
+                1
             );
 
         hornterrorDefaultCardDeck.AddSingleCard(new Card(
@@ -509,7 +509,7 @@ public class CardDBSchema
                 CardCategory.Hornterror,
                 CardType.Hornterror,
                 new VenomousSplit()),
-                3
+                5
             );
 
         return hornterrorDefaultCardDeck;

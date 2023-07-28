@@ -17,7 +17,8 @@ public enum SoundName
     CollectRelicCard,
     MatchVictory,
     OpenHelpPanel,
-    CloseHelpPanel
+    CloseHelpPanel,
+    ActivateTrap
 }
 
 public class AudioManagerScript : MonoBehaviour

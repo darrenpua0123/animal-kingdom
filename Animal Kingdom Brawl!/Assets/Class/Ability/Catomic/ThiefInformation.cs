@@ -7,6 +7,13 @@ public class ThiefInformation : Ability
 
     public override void ActivateAbility(Player caster, List<Player> targetPlayers)
     {
+        if (caster.cardDeck.GetAllCards().Count <= 0)
+        {
+            caster.cardDeck.AddCards(caster.discardDeck.GetAllCards());
+            caster.cardDeck.ShuffleCards();
+            //TODO: Test
+            caster.discardDeck = new CardDeck();
+        }
         caster.playerHandDeck.AddCards(caster.cardDeck.DrawCards(3));
 
         int damage = 1;

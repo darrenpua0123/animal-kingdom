@@ -21,7 +21,7 @@ public class LastResort : Ability
         {
             if (targetPlayer.activeEffects.Contains(ActiveEffect.Trap_BookOfCorruption))
             {
-                return;
+                break;
             }
 
             if (targetPlayer.activeEffects.Contains(ActiveEffect.Piggion_ThickSkin) && targetPlayer.shield > 0)
@@ -32,7 +32,7 @@ public class LastResort : Ability
                 }
                 else
                 {
-                    return;
+                    break;
                 }
             }
             else

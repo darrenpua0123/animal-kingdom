@@ -149,3 +149,11 @@ MonoBehaviour:
     loop: 0
     source: {fileID: 0}
     isPlaying: 0
+  - name: 13
+    clip: {fileID: 8300000, guid: 018dc3d5b109f594a82bb72663840125, type: 3}
+    volume: 0.2
+    pitch: 1
+    autoPlay: 0
+    loop: 0
+    source: {fileID: 0}
+    isPlaying: 0

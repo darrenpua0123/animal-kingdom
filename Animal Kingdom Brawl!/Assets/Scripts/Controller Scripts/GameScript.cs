@@ -11,6 +11,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEditor.Experimental.RestService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 using UnityEngine.XR;
 using static UnityEngine.GraphicsBuffer;
@@ -32,6 +33,7 @@ public class GameScript : MonoBehaviour
     public TMP_Text currentTurnText;
     public TMP_Text currentPlayerTurnText;
     public GameObject popupTextParent;
+    public TMP_Text playerDeathText;
 
     // Player
     public TMP_Text remainingCardText;
@@ -111,7 +113,7 @@ public class GameScript : MonoBehaviour
     private Player enemyThreeNPC;
     private Player hornterrorNPC;
     private List<Player> allCharacters;
-
+    private bool deathCoroutineRunning = false;
 
     void Awake()
     {
@@ -169,21 +171,21 @@ public class GameScript : MonoBehaviour
         #endregion
 
         //TODO: Remove after testing
-        player.knockoutCounter = 4;
-        player.relicCounter = 2;
+        //player.knockoutCounter = 4;
+        //player.relicCounter = 2;
 
-        player.health = 1;
-        enemyOneNPC.health = 3;
-        enemyTwoNPC.health = 3;
-        enemyThreeNPC.health = 3;
+        //player.health = 1;
+        //enemyOneNPC.health = 3;
+        //enemyTwoNPC.health = 3;
+        //enemyThreeNPC.health = 3;
 
-        enemyOneNPC.knockoutCounter = 4;
-        enemyTwoNPC.knockoutCounter = 4;
-        enemyThreeNPC.knockoutCounter = 4;
+        //enemyOneNPC.knockoutCounter = 4;
+        //enemyTwoNPC.knockoutCounter = 4;
+        //enemyThreeNPC.knockoutCounter = 4;
 
-        enemyOneNPC.relicCounter = 2;
-        enemyTwoNPC.relicCounter = 2;
-        enemyThreeNPC.relicCounter = 2;
+        //enemyOneNPC.relicCounter = 2;
+        //enemyTwoNPC.relicCounter = 2;
+        //enemyThreeNPC.relicCounter = 2;
         // testing area
 
         // Function to call when game first started, before variable setting
@@ -193,6 +195,14 @@ public class GameScript : MonoBehaviour
         foreach (Player character in allCharacters)
         {
             character.cardDeck.ShuffleCards();
+
+            if (character.cardDeck.GetAllCards().Count <= 0)
+            {
+                character.cardDeck.AddCards(character.discardDeck.GetAllCards());
+                character.cardDeck.ShuffleCards();
+                //TODO: Test
+                character.discardDeck = new CardDeck();
+            }
 
             if (character == hornterrorNPC)
             {
@@ -355,7 +365,14 @@ public class GameScript : MonoBehaviour
             }
             else
             {
-                NextPlayerTurn();
+                if (!deathCoroutineRunning) 
+                { 
+                    StartCoroutine(ShowPlayerDeathText(() => 
+                    { 
+                        NextPlayerTurn();
+                        deathCoroutineRunning = false;
+                    }));
+                }
             }
         }
     }
@@ -365,6 +382,15 @@ public class GameScript : MonoBehaviour
         // Check if hands are empty
         if (currentTurnPlayer.playerHandDeck.GetAllCards().Count <= 0)
         {
+            // Check if card deck are empty
+            if (currentTurnPlayer.cardDeck.GetAllCards().Count <= 0)
+            {
+                currentTurnPlayer.cardDeck.AddCards(currentTurnPlayer.discardDeck.GetAllCards());
+                currentTurnPlayer.cardDeck.ShuffleCards();
+                //TODO: Test
+                currentTurnPlayer.discardDeck = new CardDeck();
+            }
+
             currentTurnPlayer.playerHandDeck.AddCards(currentTurnPlayer.cardDeck.DrawCards(2));
 
             if (currentTurnPlayer == player)
@@ -397,6 +423,37 @@ public class GameScript : MonoBehaviour
         popupPrefab.GetComponent<TextMeshProUGUI>().text = message;
 
         Destroy(popupPrefab, duration);
+    }
+
+    private IEnumerator ShowPlayerDeathText(Action onComplete)
+    {
+        deathCoroutineRunning = true;
+
+        // Delay 4 seconds if is AI, else player just show immediately
+        if (currentTurnPlayer != player) 
+        { 
+            yield return new WaitForSeconds(4);    
+        }
+
+        // Show player is death text
+        string[] currentPlayerString = { "You", "Enemy 1", "Enemy 2", "Enemy 3", "Hornterror" };
+        int index = allCharacters.IndexOf(currentTurnPlayer);
+
+        playerDeathText.gameObject.SetActive(true);
+        playerDeathText.text = $"{currentPlayerString[index]} has knocked himself out!";
+
+        // If player knock himself is different sentence
+        if (index == 0)
+        {
+            playerDeathText.text = $"{currentPlayerString[index]} has knocked yourself out!";
+        }
+
+        // Show for 4 second and close
+        yield return new WaitForSeconds(4);
+        playerDeathText.gameObject.SetActive(false);
+        playerDeathText.text = "";
+
+        onComplete?.Invoke();
     }
 
     public void ClearCardsInPlayerHandPanel()
@@ -434,11 +491,19 @@ public class GameScript : MonoBehaviour
         Destroy(cardPlaceholder);
     }
 
+    private void UpdateActionPointText(int actionPoint)
+    {
+        if (actionPoint >= 0)
+        {
+            actionPointLeftText.text = actionPoint.ToString();
+        }
+    }
+
     private void UpdatePlayerEndTurnButton()
     {
         endTurnButton.interactable = false;
 
-        if (currentTurnPlayer == startingPlayer)
+        if (currentTurnPlayer == startingPlayer && !currentTurnPlayer.isKnockedOut)
         {
             endTurnButton.interactable = true;
         }
@@ -460,7 +525,16 @@ public class GameScript : MonoBehaviour
         else
         {
             AudioManagerScript.instance.Play(SoundName.EndTurnButton);
+            
+            if (chestCardDeck.GetAllCards().Count <= 0) 
+            {
+                chestCardDeck.AddCards(discardChestCardDeck.GetAllCards());
+                chestCardDeck.ShuffleCards();
+                // TODO: Test
+                discardChestCardDeck = new CardDeck();
+            }
             List<Card> drawnCards = chestCardDeck.DrawCards(1);
+
 
             // Draw Relic Card
             if (drawnCards[0].CardType == CardType.Relic)
@@ -489,6 +563,8 @@ public class GameScript : MonoBehaviour
             // Draw Trap Card
             else if (drawnCards[0].CardType == CardType.Trap)
             {
+                AudioManagerScript.instance.Play(SoundName.ActivateTrap);
+
                 StartCoroutine(ShowChestDrawnCardPanel(drawnCards[0], () => { }));
                 StartCoroutine(ShowReinsertTrapCardPanel(drawnCards[0], () =>
                 {
@@ -505,14 +581,6 @@ public class GameScript : MonoBehaviour
         }
 
         UpdateCardsInPlayerHandPanel(player.playerHandDeck.GetAllCards());
-    }
-
-    private void UpdateActionPointText(int actionPoint)
-    {
-        if (actionPoint >= 0)
-        {
-            actionPointLeftText.text = actionPoint.ToString();
-        }
     }
 
     private bool ActionNotEndable(int actionPoint)
@@ -553,6 +621,14 @@ public class GameScript : MonoBehaviour
         // Starting turn action for the next player
         currentTurnPlayer.actionPoint = currentTurnPlayer.animalHero.startingActionPoint;
 
+        // Check if card decks are empty
+        if (currentTurnPlayer.cardDeck.GetAllCards().Count <= 0)
+        {
+            currentTurnPlayer.cardDeck.AddCards(currentTurnPlayer.discardDeck.GetAllCards());
+            currentTurnPlayer.cardDeck.ShuffleCards();
+            //TODO: Test main check for hornterror
+            currentTurnPlayer.discardDeck = new CardDeck();
+        }
         // Draw starting turn's card
         currentTurnPlayer.playerHandDeck.AddCards(currentTurnPlayer.cardDeck.DrawCards(1));
 
@@ -700,7 +776,7 @@ public class GameScript : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         // Use and activate card
-        while (currentTurnPlayer.actionPoint > 0)
+        while (currentTurnPlayer.actionPoint > 0 && !currentTurnPlayer.isKnockedOut)
         {
             int cardIndex = rand.Next(0, currentTurnPlayer.playerHandDeck.GetAllCards().Count);
             Card playedCard = currentTurnPlayer.playerHandDeck.GetAllCards()[cardIndex];
@@ -737,17 +813,34 @@ public class GameScript : MonoBehaviour
             }
         }
 
-        Debug.Log($"Enemy {allCharacters.IndexOf(currentTurnPlayer)} now have total of {currentTurnPlayer.playerHandDeck.GetAllCards().Count} cards");
+        Debug.Log($"Enemy {allCharacters.IndexOf(currentTurnPlayer)} now have total of {currentTurnPlayer.cardDeck.GetAllCards().Count} in card deck");
+        Debug.Log($"Enemy {allCharacters.IndexOf(currentTurnPlayer)} now have total of {currentTurnPlayer.playerHandDeck.GetAllCards().Count} in hands");
 
         // After action point finish, draw a card from chest card deck
-        // Horn terror is not required
+        // Hornterror is not required
         if (currentTurnPlayer == hornterrorNPC)
         {
             NextPlayerTurn();
             yield break;
         }
+        
+        // If player knock himself out, do not draw any more cards
+        if (currentTurnPlayer.isKnockedOut) 
+        {
+            yield break;
+        }
 
+        if (chestCardDeck.GetAllCards().Count <= 0)
+        {
+            chestCardDeck.AddCards(discardChestCardDeck.GetAllCards());
+            chestCardDeck.ShuffleCards();
+            // TODO: Test
+            discardChestCardDeck = new CardDeck();
+        }
         List<Card> drawnCards = chestCardDeck.DrawCards(1);
+
+        Debug.Log($"chest card deck left {chestCardDeck.GetAllCards().Count}");
+        Debug.Log($"========================================================");
 
         // Drew Relic Card
         if (drawnCards[0].CardType == CardType.Relic)
@@ -768,6 +861,8 @@ public class GameScript : MonoBehaviour
         // Drew Trap Card
         else if (drawnCards[0].CardType == CardType.Trap)
         {
+            AudioManagerScript.instance.Play(SoundName.ActivateTrap);
+
             yield return StartCoroutine(ShowCardPlayedByAIPanel(drawnCards[0]));
             ActivateCardForAI(drawnCards[0]);
             chestCardDeck.InsertCardAt(drawnCards[0], rand.Next(0, chestCardDeck.GetAllCards().Count));
@@ -1082,14 +1177,8 @@ public class GameScript : MonoBehaviour
         CloseCardPlayedByAIPanel();
     }
 
-    public void CloseCardPlayedByAIPanel()
+    private void SetCardPlayedByAIText(Card card)
     {
-        cardPlayedByAIPanel.SetActive(false);
-        cardPlayedByAIImage.sprite = null;
-    }
-
-    private void SetCardPlayedByAIText(Card card) 
-    { 
         string[] currentPlayerString = { "You", "Enemy 1", "Enemy 2", "Enemy 3", "Hornterror" };
         int index = allCharacters.IndexOf(currentTurnPlayer);
 
@@ -1101,10 +1190,16 @@ public class GameScript : MonoBehaviour
         {
             cardPlayedByAIText.text = $"{currentPlayerString[index]} triggered this trap card!";
         }
-        else 
+        else
         {
             cardPlayedByAIText.text = $"{currentPlayerString[index]} played this card!";
         }
+    }
+
+    public void CloseCardPlayedByAIPanel()
+    {
+        cardPlayedByAIPanel.SetActive(false);
+        cardPlayedByAIImage.sprite = null;
     }
 
     public void ToggleHelpPanel()
@@ -1177,6 +1272,7 @@ public class GameScript : MonoBehaviour
 
     private IEnumerator AddToPlayerDatabase(Player victoryPlayer, Action onComplete) 
     {
+        // TODO: If lost reward 250 instead?
         int playerCurrency = 0;
         int coinReward = 500;
 

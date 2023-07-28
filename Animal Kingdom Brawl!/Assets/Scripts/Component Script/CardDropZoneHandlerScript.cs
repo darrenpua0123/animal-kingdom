@@ -25,10 +25,28 @@ public class CardDropZoneHandlerScript : MonoBehaviour, IDropHandler
 
         int droppedCardIndex = CardMovementHandlerScript.DraggedCardIndex;
 
-        if (gameScript.currentTurnPlayer != gameScript.startingPlayer) { return; }
+        if (gameScript.currentTurnPlayer != gameScript.startingPlayer) 
+        {
+            Sound actionNotEndableSound = AudioManagerScript.instance.GetSound(SoundName.ActionNotEndable);
+
+            if (!actionNotEndableSound.isPlaying)
+            {
+                AudioManagerScript.instance.Play(SoundName.ActionNotEndable);
+            }
+
+            gameScript.ShowPopupText("It is not your turn yet!");
+            return; 
+        }
 
         if (gameScript.currentTurnPlayer.actionPoint <= 0) 
         {
+            Sound actionNotEndableSound = AudioManagerScript.instance.GetSound(SoundName.ActionNotEndable);
+
+            if (!actionNotEndableSound.isPlaying)
+            {
+                AudioManagerScript.instance.Play(SoundName.ActionNotEndable);
+            }
+
             gameScript.ShowPopupText("You have no action point left!");
             return;
         }

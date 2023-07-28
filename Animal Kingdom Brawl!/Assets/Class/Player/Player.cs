@@ -52,7 +52,7 @@ public class Player
             heroCardCategory = CardCategory.Piggion;
         }
         else if (animalHero is Hornterror) 
-        { 
+        {
             heroCardCategory = CardCategory.Hornterror;
         }
     }

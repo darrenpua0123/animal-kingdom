@@ -92,8 +92,8 @@ public class LoginScript : MonoBehaviour
             }
         }
 
-        // DEV: Remove these when done
-        if (Input.GetKeyDown(KeyCode.R)) {
+        // TODO: DEV: Remove these when done
+        if (Input.GetKeyDown(KeyCode.P)) {
             loginEmailInput.text = "dummy@gmail.com";
             loginPasswordInput.text = "123123";
         }

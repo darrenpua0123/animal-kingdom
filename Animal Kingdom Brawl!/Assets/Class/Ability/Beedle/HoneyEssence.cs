@@ -9,6 +9,14 @@ public class HoneyEssence : Ability
     {
         caster.actionPoint += 1;
         caster.shield += 1;
+
+        if (caster.cardDeck.GetAllCards().Count <= 0) 
+        {
+            caster.cardDeck.AddCards(caster.discardDeck.GetAllCards());
+            caster.cardDeck.ShuffleCards();
+            //TODO: Test
+            caster.discardDeck = new CardDeck();
+        }
         caster.playerHandDeck.AddCards(caster.cardDeck.DrawCards(1));
     }
 }
