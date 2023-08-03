@@ -5,8 +5,8 @@ public class GameData
 {
     private static readonly GameData instance = new GameData();
 
-    public static readonly int DefaultStartingCurrency = 100;
-    public static readonly List<string> DefaultHeroes = new List<string>() { "piggion" };
+    public static readonly int DefaultStartingCurrency = 250;
+    public static readonly List<string> DefaultHeroes = new List<string>() { "catomic" };
     public static readonly int PiggionShopCost = 500;
     public static readonly int CatomicShopCost = 500;
     public static readonly int PandragonShopCost = 500;

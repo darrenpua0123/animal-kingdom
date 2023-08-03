@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Ability">
+    <Position X="6.25" Y="2.25" Width="2.25" />
+    <AssociationLine Name="abilityType" Type="AbilityType" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.375" Y="2.25" />
+        <Point X="7.375" Y="1.625" />
+        <Point X="3.75" Y="1.625" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Ability.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="abilityType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ClawOfBanshee">
+    <Position X="0.5" Y="5" Width="4.25" />
+    <InheritanceLine Type="Ability" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.25" Y="3.151" />
+        <Point X="2.625" Y="3.151" />
+        <Point X="2.625" Y="5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Relic\ClawOfBanshee.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QilinsFeather">
+    <Position X="10" Y="5" Width="4.25" />
+    <InheritanceLine Type="Ability" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.5" Y="3.207" />
+        <Point X="12.125" Y="3.207" />
+        <Point X="12.125" Y="5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Relic\QilinsFeather.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TheAncientGold">
+    <Position X="5.25" Y="5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Relic\TheAncientGold.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="AbilityType">
+    <Position X="1.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAgAgAAAIAEAIAAQAAAABAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Ability.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Card">
+    <Position X="1" Y="0.5" Width="8" />
+    <AssociationLine Name="CardCategory" Type="CardCategory">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.06" Y="0.378" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="CardType" Type="CardType" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="4.5" Y="2.247" />
+        <Point X="4.5" Y="2.622" />
+        <Point X="4.5" Y="2.622" />
+        <Point X="4.5" Y="3.25" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.101" Y="0.408" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="CardAbility" Type="Ability">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.055" Y="0.413" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAACAgAAAAgAAAAAAgIAAAAAAAA=</HashCode>
+      <FileName>Assets\Class\Card\Card.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CardCategory" />
+      <Property Name="CardType" />
+      <Property Name="CardAbility" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ability" Collapsed="true">
+    <Position X="6.25" Y="3.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Ability.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="CardCategory">
+    <Position X="1.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAQgAAAAAAAAIAAAAAAAAAAAAAAAIAIAA=</HashCode>
+      <FileName>Assets\Class\Card\CardEnum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CardType">
+    <Position X="3.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgECCAAgAAAAAAAAIAAAAAAAAAAAAAAAIAKAA=</HashCode>
+      <FileName>Assets\Class\Card\CardEnum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -20,13 +20,7 @@ public abstract class Ability
 
     protected Ability() 
     {
-        //when play
-        //1) Check card's ability type ^
-        //2) Prompt appropriate UI selection
-        //3) activate card ability
-        //    1) when activate, check player active effect
-        //    2) execute effect
-        //    3) update player effect again
+
     }
 
     public abstract void ActivateAbility(Player caster, List<Player> targetPlayers);

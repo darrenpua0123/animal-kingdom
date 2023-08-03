@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="AnimalHero">
+    <Position X="6.75" Y="1.25" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAQAAAAAAAAQAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Class\AnimalHeroes\AnimalHero.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Beedle">
+    <Position X="4" Y="4.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAQAAAAAAAAQAAAAAAQAAAAAAAgAAAA=</HashCode>
+      <FileName>Assets\Class\AnimalHeroes\Beedle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Catomic">
+    <Position X="10.5" Y="4.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAQAAAAAAAAQAAAAAAQAAAAAAAgAAAA=</HashCode>
+      <FileName>Assets\Class\AnimalHeroes\Catomic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Hornterror">
+    <Position X="0.75" Y="4.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAQAAAAAAAAQAAAAAAQAAAAAAAgAAAA=</HashCode>
+      <FileName>Assets\Class\AnimalHeroes\Hornterror.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandragon">
+    <Position X="7.25" Y="4.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAQAAAAAAAAQAAAAAAQAAAAAAAgAAAA=</HashCode>
+      <FileName>Assets\Class\AnimalHeroes\Pandragon.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Piggion">
+    <Position X="13.75" Y="4.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAQAAAAAAAAQAAAAAAQAAAAAAAgAAAA=</HashCode>
+      <FileName>Assets\Class\AnimalHeroes\Piggion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

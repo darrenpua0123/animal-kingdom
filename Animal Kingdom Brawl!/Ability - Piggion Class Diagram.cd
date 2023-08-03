@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Ability">
+    <Position X="7" Y="4" Width="2.25" />
+    <AssociationLine Name="abilityType" Type="AbilityType" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7" Y="4.75" />
+        <Point X="5.75" Y="4.75" />
+        <Point X="5.75" Y="4.75" />
+        <Point X="4.5" Y="4.75" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Ability.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="abilityType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="CounterPhalanx">
+    <Position X="1.25" Y="6.5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Piggion\CounterPhalanx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LateNoonNap">
+    <Position X="1.75" Y="9" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Piggion\LateNoonNap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PainAndGain">
+    <Position X="1.25" Y="11.25" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Piggion\PainAndGain.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PiggyPunch">
+    <Position X="6" Y="6.5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Piggion\PiggyPunch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Retaliation">
+    <Position X="6.5" Y="9" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Piggion\Retaliation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SuitUp">
+    <Position X="6" Y="11.25" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Piggion\SuitUp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ThickSkin">
+    <Position X="10.75" Y="6.5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Piggion\ThickSkin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WarriorsShield">
+    <Position X="11.25" Y="9" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Piggion\WarriorsShield.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="AbilityType">
+    <Position X="2.5" Y="3.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAgAgAAAIAEAIAAQAAAABAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Ability.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -7,13 +7,12 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using TMPro;
 using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
-using UnityEditor.Experimental.RestService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 using UnityEngine.XR;
+using static Unity.Burst.Intrinsics.X86.Avx;
 using static UnityEngine.GraphicsBuffer;
 
 public class GameScript : MonoBehaviour
@@ -33,7 +32,8 @@ public class GameScript : MonoBehaviour
     public TMP_Text currentTurnText;
     public TMP_Text currentPlayerTurnText;
     public GameObject popupTextParent;
-    public TMP_Text playerDeathText;
+    public TMP_Text gameAnnouncementText;
+    public TMP_Text remainingChestCardText;
 
     // Player
     public TMP_Text remainingCardText;
@@ -66,6 +66,10 @@ public class GameScript : MonoBehaviour
     // Hornterror
     public Image hornterrorHeroImage;
     public LifeHUB hornterrorLifeHUB;
+
+    // All players
+    public Color aliveColor;
+    public Color deadColor;
     public List<GameObject> characterGlowImages;
     public List<Button> enemySelectionButton;
 
@@ -114,6 +118,7 @@ public class GameScript : MonoBehaviour
     private Player hornterrorNPC;
     private List<Player> allCharacters;
     private bool deathCoroutineRunning = false;
+    private bool reviveCouroutineRunning = false;
 
     void Awake()
     {
@@ -134,6 +139,7 @@ public class GameScript : MonoBehaviour
         chestCardDeck = CardDBSchema.GetDefaultChestDeck();
         chestCardDeck.ShuffleCards();
         discardChestCardDeck = new CardDeck();
+        UpdateChestCardRemainingCardText(chestCardDeck.GetAllCards().Count);
         #endregion
 
         #region Player
@@ -170,24 +176,6 @@ public class GameScript : MonoBehaviour
         hornterrorLifeHUB.SetShield(hornterrorNPC.shield);
         #endregion
 
-        //TODO: Remove after testing
-        //player.knockoutCounter = 4;
-        //player.relicCounter = 2;
-
-        //player.health = 1;
-        //enemyOneNPC.health = 3;
-        //enemyTwoNPC.health = 3;
-        //enemyThreeNPC.health = 3;
-
-        //enemyOneNPC.knockoutCounter = 4;
-        //enemyTwoNPC.knockoutCounter = 4;
-        //enemyThreeNPC.knockoutCounter = 4;
-
-        //enemyOneNPC.relicCounter = 2;
-        //enemyTwoNPC.relicCounter = 2;
-        //enemyThreeNPC.relicCounter = 2;
-        // testing area
-
         // Function to call when game first started, before variable setting
         allCharacters = new List<Player>() { player, enemyOneNPC, enemyTwoNPC, enemyThreeNPC, hornterrorNPC };
 
@@ -200,7 +188,7 @@ public class GameScript : MonoBehaviour
             {
                 character.cardDeck.AddCards(character.discardDeck.GetAllCards());
                 character.cardDeck.ShuffleCards();
-                //TODO: Test
+
                 character.discardDeck = new CardDeck();
             }
 
@@ -217,42 +205,12 @@ public class GameScript : MonoBehaviour
         startingPlayer = allCharacters[0];
         currentTurnPlayer = allCharacters[currentPlayerIndex];
 
-        UpdateGameTurn();
+        StartCoroutine(UpdateGameTurn(() => { }));
         UpdateCardsInPlayerHandPanel(player.playerHandDeck.GetAllCards());
     }
 
     void Update()
     {
-        // DEV: Remove;
-        if (Input.GetKeyDown(KeyCode.T)) // Move to next turn
-        {
-            NextPlayerTurn();
-        }
-        if (Input.GetKeyDown(KeyCode.E)) // Kill player
-        {
-            player.health = 0;
-            player.isKnockedOut = true;
-        }
-        if (Input.GetKeyDown(KeyCode.Space)) // Reduce AP
-        {
-            player.actionPoint--;
-            UpdateActionPointText(player.actionPoint);
-        }
-        if (Input.GetKeyDown(KeyCode.R)) // Draw animal hero card
-        {
-            player.actionPoint = player.animalHero.startingActionPoint;
-            UpdateActionPointText(player.actionPoint);
-
-            player.playerHandDeck.AddCards(player.cardDeck.DrawCards(2));
-            UpdateCardsInPlayerHandPanel(player.playerHandDeck.GetAllCards());
-        }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            player.playerHandDeck.GetAllCards().Clear();
-            UpdateCardsInPlayerHandPanel(player.playerHandDeck.GetAllCards());
-        }
-        // REMOVE ^
-
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (viewCardPanel.activeSelf)
@@ -276,31 +234,40 @@ public class GameScript : MonoBehaviour
 
     private void UpdateUI()
     {
+        // Update UI that needs to be show prior to the start of a turn
+        UpdateChestCardRemainingCardText(chestCardDeck.GetAllCards().Count);
         UpdateRemainingCardText(player.cardDeck.GetAllCards().Count);
         UpdateActionPointText(player.actionPoint);
+
+        // Update Player related UI
         playerLifeHUB.SetHealthBar(player.health);
         playerLifeHUB.SetShield(player.shield);
         playerKnockoutCounterText.text = player.knockoutCounter.ToString();
         playerRelicCounterText.text = player.relicCounter.ToString();
 
+        // Update Enemy 1 related UI
         enemyOneLifeHUB.SetHealthBar(enemyOneNPC.health);
         enemyOneLifeHUB.SetShield(enemyOneNPC.shield);
         enemyOneKnockoutCounterText.text = enemyOneNPC.knockoutCounter.ToString();
         enemyOneRelicCounterText.text = enemyOneNPC.relicCounter.ToString();
 
+        // Update Enemy 2 related UI
         enemyTwoLifeHUB.SetHealthBar(enemyTwoNPC.health);
         enemyTwoLifeHUB.SetShield(enemyTwoNPC.shield);
         enemyTwoKnockoutCounterText.text = enemyTwoNPC.knockoutCounter.ToString();
         enemyTwoRelicCounterText.text = enemyTwoNPC.relicCounter.ToString();
 
+        // Update Enemy 3 related UI
         enemyThreeLifeHUB.SetHealthBar(enemyThreeNPC.health);
         enemyThreeLifeHUB.SetShield(enemyThreeNPC.shield);
         enemyThreeKnockoutCounterText.text = enemyThreeNPC.knockoutCounter.ToString();
         enemyThreeRelicCounterText.text = enemyThreeNPC.relicCounter.ToString();
 
+        // Update Hornterror related UI
         hornterrorLifeHUB.SetHealthBar(hornterrorNPC.health);
         hornterrorLifeHUB.SetShield(hornterrorNPC.shield);
 
+        // Update the player's end turn button at all time
         UpdatePlayerEndTurnButton();
     }
 
@@ -365,7 +332,7 @@ public class GameScript : MonoBehaviour
             }
             else
             {
-                if (!deathCoroutineRunning) 
+                if (!deathCoroutineRunning && !reviveCouroutineRunning) 
                 { 
                     StartCoroutine(ShowPlayerDeathText(() => 
                     { 
@@ -387,7 +354,7 @@ public class GameScript : MonoBehaviour
             {
                 currentTurnPlayer.cardDeck.AddCards(currentTurnPlayer.discardDeck.GetAllCards());
                 currentTurnPlayer.cardDeck.ShuffleCards();
-                //TODO: Test
+
                 currentTurnPlayer.discardDeck = new CardDeck();
             }
 
@@ -403,6 +370,11 @@ public class GameScript : MonoBehaviour
     private bool CheckCurrentPlayerVictory(Player checkPlayer)
     {
         return (checkPlayer.knockoutCounter >= 5 || checkPlayer.relicCounter >= 3);
+    }
+
+    private void UpdateChestCardRemainingCardText(int remainingCards) 
+    {
+        remainingChestCardText.text = $"Remaining:\n{remainingCards}";
     }
 
     private void UpdateRemainingCardText(int remainingCards)
@@ -439,19 +411,19 @@ public class GameScript : MonoBehaviour
         string[] currentPlayerString = { "You", "Enemy 1", "Enemy 2", "Enemy 3", "Hornterror" };
         int index = allCharacters.IndexOf(currentTurnPlayer);
 
-        playerDeathText.gameObject.SetActive(true);
-        playerDeathText.text = $"{currentPlayerString[index]} has knocked himself out!";
+        gameAnnouncementText.gameObject.SetActive(true);
+        gameAnnouncementText.text = $"{currentPlayerString[index]} has knocked himself out!";
 
         // If player knock himself is different sentence
         if (index == 0)
         {
-            playerDeathText.text = $"{currentPlayerString[index]} has knocked yourself out!";
+            gameAnnouncementText.text = $"{currentPlayerString[index]} have knocked yourself out!";
         }
 
         // Show for 4 second and close
         yield return new WaitForSeconds(4);
-        playerDeathText.gameObject.SetActive(false);
-        playerDeathText.text = "";
+        gameAnnouncementText.gameObject.SetActive(false);
+        gameAnnouncementText.text = "";
 
         onComplete?.Invoke();
     }
@@ -530,11 +502,10 @@ public class GameScript : MonoBehaviour
             {
                 chestCardDeck.AddCards(discardChestCardDeck.GetAllCards());
                 chestCardDeck.ShuffleCards();
-                // TODO: Test
+
                 discardChestCardDeck = new CardDeck();
             }
             List<Card> drawnCards = chestCardDeck.DrawCards(1);
-
 
             // Draw Relic Card
             if (drawnCards[0].CardType == CardType.Relic)
@@ -593,9 +564,7 @@ public class GameScript : MonoBehaviour
         // Take the previous player index, iterate to the next one
         currentPlayerIndex = (currentPlayerIndex + 1) % allCharacters.Count;
         currentTurnPlayer = allCharacters[currentPlayerIndex]; // Already switch to next player
-
-        UpdateGameTurn();
-
+        
         // Check whether the next player has been knocked out
         if (currentTurnPlayer.isKnockedOut)
         {
@@ -608,12 +577,17 @@ public class GameScript : MonoBehaviour
             // Clear next player's hand, add their discard cards to their card deck, then revive the player
             currentTurnPlayer.playerHandDeck.GetAllCards().Clear();
             currentTurnPlayer.cardDeck.AddCards(currentTurnPlayer.discardDeck.GetAllCards());
-            currentTurnPlayer.OnRevive();
 
             // However, player is not available to move this turn, as reviving takes one turn
-            NextPlayerTurn();
+            StartCoroutine(UpdateGameTurn(() => {
+                currentTurnPlayer.OnRevive();
+                reviveCouroutineRunning = false;
+                NextPlayerTurn();
+            }));
             return;
         }
+
+        StartCoroutine(UpdateGameTurn(() => { }));
 
         // Clear all active effects for the next player
         currentTurnPlayer.activeEffects.Clear();
@@ -626,7 +600,7 @@ public class GameScript : MonoBehaviour
         {
             currentTurnPlayer.cardDeck.AddCards(currentTurnPlayer.discardDeck.GetAllCards());
             currentTurnPlayer.cardDeck.ShuffleCards();
-            //TODO: Test main check for hornterror
+
             currentTurnPlayer.discardDeck = new CardDeck();
         }
         // Draw starting turn's card
@@ -642,7 +616,7 @@ public class GameScript : MonoBehaviour
         UpdateCardsInPlayerHandPanel(player.playerHandDeck.GetAllCards());
     }
 
-    private void UpdateGameTurn()
+    private IEnumerator UpdateGameTurn(Action onComplete)
     {
         string[] currentPlayerString = { "You", "Enemy 1", "Enemy 2", "Enemy 3", "Hornterror" };
         int index = allCharacters.IndexOf(currentTurnPlayer);
@@ -660,11 +634,34 @@ public class GameScript : MonoBehaviour
         currentTurnText.text = $"Turn: {gameTurn}";
         currentPlayerTurnText.text = currentPlayerString[index];
 
-        foreach (var glowImg in characterGlowImages)
+        foreach (GameObject glowImg in characterGlowImages)
         {
             glowImg.SetActive(false);
+            glowImg.GetComponent<Image>().color = aliveColor;
         }
         characterGlowImages[index].SetActive(true);
+
+        // If the turn's player were dead and is reviving
+        if (currentTurnPlayer.isKnockedOut)
+        {
+            reviveCouroutineRunning = true;
+
+            // Show player is reviving text and UI
+            gameAnnouncementText.gameObject.SetActive(true);
+            gameAnnouncementText.text = $"{currentPlayerString[index]} were knocked out and \nare reviving this turn!";
+            characterGlowImages[index].GetComponent<Image>().color = deadColor;
+
+            // Show for 4 second and proceed
+            yield return new WaitForSeconds(4);
+            gameAnnouncementText.gameObject.SetActive(false);
+            gameAnnouncementText.text = "";
+        }
+        else 
+        {
+            yield return null;
+        }
+
+        onComplete?.Invoke();
     }
 
     public void CardOnDrop(int cardIndex)
@@ -813,9 +810,6 @@ public class GameScript : MonoBehaviour
             }
         }
 
-        Debug.Log($"Enemy {allCharacters.IndexOf(currentTurnPlayer)} now have total of {currentTurnPlayer.cardDeck.GetAllCards().Count} in card deck");
-        Debug.Log($"Enemy {allCharacters.IndexOf(currentTurnPlayer)} now have total of {currentTurnPlayer.playerHandDeck.GetAllCards().Count} in hands");
-
         // After action point finish, draw a card from chest card deck
         // Hornterror is not required
         if (currentTurnPlayer == hornterrorNPC)
@@ -834,13 +828,10 @@ public class GameScript : MonoBehaviour
         {
             chestCardDeck.AddCards(discardChestCardDeck.GetAllCards());
             chestCardDeck.ShuffleCards();
-            // TODO: Test
+
             discardChestCardDeck = new CardDeck();
         }
         List<Card> drawnCards = chestCardDeck.DrawCards(1);
-
-        Debug.Log($"chest card deck left {chestCardDeck.GetAllCards().Count}");
-        Debug.Log($"========================================================");
 
         // Drew Relic Card
         if (drawnCards[0].CardType == CardType.Relic)
@@ -896,20 +887,24 @@ public class GameScript : MonoBehaviour
         // Target player who almost won
         List<Player> prioritisedTarget = new List<Player>();
 
-        foreach (Player targetPlayer in targetAllOpponents)
+        foreach (Player targetPlayer in targetAllEnemies)
         {
-            if (targetPlayer.isKnockedOut)
+            if (targetPlayer.isKnockedOut || 
+                targetPlayer.activeEffects.Contains(ActiveEffect.Trap_BookOfCorruption) ||
+                (targetPlayer.shield >= 1 && targetPlayer.activeEffects.Contains(ActiveEffect.Piggion_ThickSkin)))
             {
                 continue;
             }
 
-            if (targetPlayer.relicCounter == 1)
+            if (targetPlayer.health <= 5)
             {
                 prioritisedTarget.Add(targetPlayer);
+                break;
             }
-            else if (targetPlayer.health <= 5)
+            else if (targetPlayer.relicCounter == 1)
             {
                 prioritisedTarget.Add(targetPlayer);
+                break;
             }
             else if (targetPlayer.relicCounter >= 2 || targetPlayer.knockoutCounter == 4)
             {
@@ -1225,7 +1220,14 @@ public class GameScript : MonoBehaviour
 
         if (victoryPlayer == player)
         {
-            StartCoroutine(AddToPlayerDatabase(victoryPlayer, () => 
+            StartCoroutine(AddToPlayerDatabase(victoryPlayer, 500, "win", () =>
+            {
+                victoryOkayButton.gameObject.SetActive(true);
+            }));
+        }
+        else 
+        {
+            StartCoroutine(AddToPlayerDatabase(victoryPlayer, 250, "lost", () =>
             {
                 victoryOkayButton.gameObject.SetActive(true);
             }));
@@ -1270,11 +1272,11 @@ public class GameScript : MonoBehaviour
         }
     }
 
-    private IEnumerator AddToPlayerDatabase(Player victoryPlayer, Action onComplete) 
+    private IEnumerator AddToPlayerDatabase(Player victoryPlayer, int currencyReward, string winOrLost, Action onComplete) 
     {
-        // TODO: If lost reward 250 instead?
         int playerCurrency = 0;
-        int coinReward = 500;
+        List<string> matchHistories = new List<string>();
+        int coinReward = currencyReward;
 
         // Get player current's currency
         var userTask = firebaseDBReference.Child("users").Child(userID).GetValueAsync();
@@ -1288,12 +1290,23 @@ public class GameScript : MonoBehaviour
         {
             DataSnapshot userSnapshot = userTask.Result;
 
+            // Update the coins
             playerCurrency = int.Parse(userSnapshot.Child("currency").Value.ToString());
             playerCurrency += coinReward;
+
+            // Update the match history
+            var playerMatchHistory = userSnapshot.Child("matchHistory");
+            foreach (var matchHistory in playerMatchHistory.Children)
+            {
+                matchHistories.Add(matchHistory.Value.ToString());
+            }
+
+            matchHistories.Add(winOrLost);
         }
 
         // Update the database
         firebaseDBReference.Child("users").Child(userID).Child("currency").SetValueAsync(playerCurrency);
+        firebaseDBReference.Child("users").Child(userID).Child("matchHistory").SetValueAsync(matchHistories);
 
         onComplete?.Invoke();
     }

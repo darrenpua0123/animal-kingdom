@@ -53,8 +53,7 @@ public class MainMenuScript : MonoBehaviour
     public void PlayGame()
     {
         AudioManagerScript.instance.Play(SoundName.ButtonPressed);
-        // TODO: transition animation tutorial
-        // https://www.youtube.com/watch?v=CE9VOZivb3I
+
         SceneManager.LoadScene("ChooseHeroScene");
     }
 

@@ -10,6 +10,6 @@ public class AnimalHero
 
     public AnimalHero() 
     { 
-    // TODO: Change name to AnimalCharacter instead
+
     }
 }

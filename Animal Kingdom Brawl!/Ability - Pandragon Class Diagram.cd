@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Ability">
+    <Position X="7" Y="4.25" Width="2.25" />
+    <AssociationLine Name="abilityType" Type="AbilityType" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7" Y="5" />
+        <Point X="5.75" Y="5" />
+        <Point X="5.75" Y="5" />
+        <Point X="4.5" Y="5" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Ability.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="abilityType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="DracosMight">
+    <Position X="1.25" Y="6.5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Pandragon\DracosMight.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DragonClaw">
+    <Position X="1.75" Y="9" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Pandragon\DragonClaw.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DragonsRoar">
+    <Position X="1.25" Y="11.25" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Pandragon\DragonsRoar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DragonsScale">
+    <Position X="6" Y="6.5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Pandragon\DragonsScale.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FlightAndFight">
+    <Position X="6.5" Y="9" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Pandragon\FlightAndFight.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeatFeast">
+    <Position X="6" Y="11.25" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Pandragon\MeatFeast.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SharpenClaw">
+    <Position X="10.75" Y="6.5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Pandragon\SharpenClaw.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindGustAttack">
+    <Position X="11.25" Y="9" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Pandragon\WindGustAttack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="AbilityType">
+    <Position X="2.5" Y="3.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAgAgAAAIAEAIAAQAAAABAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Class\Ability\Ability.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -54,6 +54,11 @@ public class ShopScript : MonoBehaviour
     public GameObject purchasePanel;
     public TMP_Text purchasePanelText;
 
+    [Header("Hero Trait Panel")]
+    public GameObject heroTraitPanel;
+    public Image heroTraitImage;
+    public TMP_Text heroTraitText;
+
     void Awake()
     {
         InitialiseFirebase();
@@ -284,6 +289,42 @@ public class ShopScript : MonoBehaviour
     {
         firebaseDBReference.Child("users").Child(userID).Child("currency").SetValueAsync(currency);
         firebaseDBReference.Child("users").Child(userID).Child("unlockedAnimalHeroes").SetValueAsync(unlockHeroes);
+    }
+
+    public void ShowHeroTraitPanel(string heroName)
+    {
+        AudioManagerScript.instance.Play(SoundName.OpenHelpPanel);
+
+        heroTraitPanel.SetActive(true);
+
+        heroName.ToLower();
+        if (heroName.Equals(Piggion.HERO_NAME))
+        {
+            heroTraitImage.sprite = piggion.animalHeroImage;
+            heroTraitText.text = piggion.heroTrait;
+        }
+        else if (heroName.Equals(Catomic.HERO_NAME))
+        {
+            heroTraitImage.sprite = catomic.animalHeroImage;
+            heroTraitText.text = catomic.heroTrait;
+        }
+        else if (heroName.Equals(Pandragon.HERO_NAME))
+        {
+            heroTraitImage.sprite = pandragon.animalHeroImage;
+            heroTraitText.text = pandragon.heroTrait;
+        }
+        else if (heroName.Equals(Beedle.HERO_NAME))
+        {
+            heroTraitImage.sprite = beedle.animalHeroImage;
+            heroTraitText.text = beedle.heroTrait;
+        }
+    }
+
+    public void CloseHeroTraitPanel()
+    {
+        AudioManagerScript.instance.Play(SoundName.CloseHelpPanel);
+
+        heroTraitPanel.SetActive(false);
     }
 
     public void BackToMainMenu()

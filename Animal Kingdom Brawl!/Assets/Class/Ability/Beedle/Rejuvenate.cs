@@ -11,7 +11,7 @@ public class Rejuvenate : Ability
         {
             caster.cardDeck.AddCards(caster.discardDeck.GetAllCards());
             caster.cardDeck.ShuffleCards();
-            //TODO: Test
+
             caster.discardDeck = new CardDeck();
         }
         caster.playerHandDeck.AddCards(caster.cardDeck.DrawCards(2));

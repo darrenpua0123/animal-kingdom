@@ -12,7 +12,6 @@ using System.Linq.Expressions;
 using System.Security.Cryptography;
 using System;
 using UnityEngine.UI;
-using UnityEditor.VersionControl;
 
 public class LoginScript : MonoBehaviour
 {
@@ -74,11 +73,6 @@ public class LoginScript : MonoBehaviour
         });
     }
 
-    void Start()
-    {
-
-    }
-
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Tab)) {
@@ -90,12 +84,6 @@ public class LoginScript : MonoBehaviour
             {
                 TabToSwitchField("register");
             }
-        }
-
-        // TODO: DEV: Remove these when done
-        if (Input.GetKeyDown(KeyCode.P)) {
-            loginEmailInput.text = "dummy@gmail.com";
-            loginPasswordInput.text = "123123";
         }
     }
 
@@ -228,8 +216,7 @@ public class LoginScript : MonoBehaviour
             firebaseUser = loginTask.Result;
 
             SceneManager.LoadScene("MainMenuScene");        
-
-            Debug.Log($"User logged in with ID:{firebaseUser.UserId}, username: {firebaseUser.DisplayName}, and email: {firebaseUser.Email}");
+            //Debug.Log($"User logged in with ID:{firebaseUser.UserId}, username: {firebaseUser.DisplayName}, and email: {firebaseUser.Email}");
         }
 
         ResetLoginInputField();
@@ -427,12 +414,19 @@ public class LoginScript : MonoBehaviour
 
                                 loginPanel.SetActive(true);
                                 registerPanel.SetActive(false);
-                                Debug.Log($"User registered with ID: {firebaseUser.UserId}, username: {firebaseUser.DisplayName}, email: {firebaseUser.Email}, age: {registerAge}, and gender: {registerGender}");
+                                //Debug.Log($"User registered with ID: {firebaseUser.UserId}, username: {firebaseUser.DisplayName}, email: {firebaseUser.Email}, age: {registerAge}, and gender: {registerGender}");
                             }
                         }
                     }
                 }
             }
         }
+    }
+
+    public void QuitGame()
+    {
+        auth.SignOut();
+
+        Application.Quit();
     }
 }

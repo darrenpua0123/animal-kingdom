@@ -5,24 +5,40 @@ using UnityEngine.SceneManagement;
 
 public class TutorialScript : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public List<GameObject> pagePanels;
+    private int pageIndex = 0;
+
     void Start()
     {
-        
+        ShowPagePanel(pageIndex);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void ShowPagePanel(int index)
     {
+        foreach (GameObject panel in pagePanels)
+        {
+            panel.SetActive(false);
+        }
 
+        pagePanels[index].SetActive(true);
     }
 
-    // TODO: Check all the TODO Test, to make sure 3) is working
-    //2) test run one game
-    //3) fixed card deck issue ? try test one game and see hornterror still bug or not
-    //4) consider add when Revive text? Like "Enemy 1 has been revived this turn!"
+    public void NextPageButton()
+    {
+        AudioManagerScript.instance.Play(SoundName.ButtonPressed);
 
-    //TODO: Make tutorial scene
+        pageIndex = (pageIndex + 1) % pagePanels.Count;
+        ShowPagePanel(pageIndex);
+    }
+
+    public void PreviousPageButton()
+    {
+        AudioManagerScript.instance.Play(SoundName.ButtonPressed);
+
+        pageIndex = (pageIndex - 1 + pagePanels.Count) % pagePanels.Count;
+        ShowPagePanel(pageIndex);
+    }
+
     public void BackToMainMenu()
     {
         AudioManagerScript.instance.Play(SoundName.ButtonPressed);
